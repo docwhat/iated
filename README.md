@@ -8,6 +8,38 @@ plugins (or conceivably web pages).
 
 ## API
 
+Token is determined by the client. I recommend you use something like
+SHA or MD5 on some unique data.  Worst case scenario, you can ask for
+a token via the API.
+
+#### Ping
+
+Verify that the server is running.
+
+`GET /ping`
+
+Returns the string 'pong'.
+
+### Get a token
+
+`GET /token`
+
+Returns a token as a string.
+
+### Send a file to the editor
+
+`POST to /edit/<token>`
+
+Returns 'ok' or 'fail'.
+
+### Retrieve the result of an edit
+
+`GET /edit/<token>`
+
+### Open preferences
+
+`GET /preferences`
+
 ### Send Document
 
 ### Does Document Exist?

@@ -1,0 +1,7 @@
+== Compilation instructions
+
+In addition to your regular compilation environment you need:
+ * CMake: http://www.cmake.org/
+ * libevent: http://monkey.org/~provos/libevent/
+
+

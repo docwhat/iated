@@ -1,4 +1,4 @@
-package org.gerf.iated;
+package org.gerf.iated.rest;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -11,7 +11,7 @@ import javax.ws.rs.Produces;
 public class Ping {
 	
 	@GET
-	@Produces("test/plain")
+	@Produces("text/plain")
 	public String ping() {
 		return "pong";
 	}

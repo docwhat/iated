@@ -26,46 +26,12 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="extensionsLabel" min="-2" max="-2" attributes="0"/>
-                  <Component id="characterSetLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="positionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="fadeRateLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="hotKeyLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="editorLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="debuggingLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="refreshRateLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="disablePosition" alignment="0" pref="266" max="32767" attributes="1"/>
-                  <Component id="characterSetField" alignment="0" min="-2" pref="77" max="-2" attributes="0"/>
-                  <Component id="hotKeyField" alignment="0" min="-2" pref="187" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="removeAllBugsCheckbox" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="56" max="32767" attributes="0"/>
-                      <Component id="closeButton" min="-2" pref="81" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="fadeRateField" alignment="0" min="-2" pref="76" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="1">
-                      <Component id="refreshRateField" min="-2" pref="44" max="-2" attributes="0"/>
-                      <EmptySpace pref="164" max="32767" attributes="0"/>
-                      <Component id="browseButton" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="extensionsField" alignment="0" pref="266" max="32767" attributes="1"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="lowerLeftPosition" alignment="1" max="32767" attributes="1"/>
-                          <Component id="upperLeftPosition" alignment="1" min="-2" max="-2" attributes="1"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lowerRightPosition" min="-2" max="-2" attributes="0"/>
-                          <Component id="upperRightPosition" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Component id="editorField" alignment="0" pref="266" max="32767" attributes="1"/>
-              </Group>
+              <Component id="jTabbedPane1" min="-2" pref="479" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace pref="410" max="32767" attributes="0"/>
+              <Component id="closeButton" min="-2" pref="81" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -74,142 +40,15 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="editorField" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="editorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="refreshRateField" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="refreshRateLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="characterSetField" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="characterSetLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="browseButton" min="-2" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
+              <Component id="jTabbedPane1" min="-2" pref="255" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="extensionsField" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="extensionsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="upperLeftPosition" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="upperRightPosition" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lowerLeftPosition" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lowerRightPosition" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="positionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="disablePosition" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="fadeRateLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="fadeRateField" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="hotKeyLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="hotKeyField" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="debuggingLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="removeAllBugsCheckbox" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace pref="38" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="closeButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
-              </Group>
+              <Component id="closeButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JTextField" name="editorField">
-      <Properties>
-        <Property name="editable" type="boolean" value="false"/>
-        <Property name="text" type="java.lang.String" value="/usr/bin/gvim"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="editorLabel">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Editor:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="browseButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Browse"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="refreshRateLabel">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Seconds between refreshing:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="refreshRateField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="3"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="characterSetLabel">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Character Set (default: UTF-8):"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="characterSetField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="UTF-8"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="extensionsLabel">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="File Extensions:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="extensionsField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value=".xsl,.txt,.html,.css,.xml,.js"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="positionLabel">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Edit button position"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="fadeRateLabel">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Duration of button fade"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="hotKeyLabel">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Hot Key"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="debuggingLabel">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Debugging:"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="closeButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Close"/>
@@ -218,45 +57,92 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="closeButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="upperLeftPosition">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Upper Left"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JRadioButton" name="upperRightPosition">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Upper Right"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JRadioButton" name="lowerLeftPosition">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Lower Left"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JRadioButton" name="lowerRightPosition">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Lower Right"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JRadioButton" name="disablePosition">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Disable"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="fadeRateField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="2.3"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="hotKeyField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="&lt;none&gt;"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="removeAllBugsCheckbox">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Remove all bugs"/>
-      </Properties>
-    </Component>
+    <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
+      <SubComponents>
+        <Container class="javax.swing.JPanel" name="jPanel1">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="General">
+                <Property name="tabTitle" type="java.lang.String" value="General"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="editorLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="editorField" min="-2" pref="322" max="-2" attributes="1"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="1">
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="editorField1" min="-2" pref="53" max="-2" attributes="1"/>
+                              <EmptySpace min="-2" pref="269" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="browseButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="16" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="browseButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="editorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="editorField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="editorField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="138" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JTextField" name="editorField">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="/usr/bin/gvim"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="browseButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Browse"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="editorLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Editor:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Port:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="editorField1">
+              <Properties>
+                <Property name="columns" type="int" value="5"/>
+                <Property name="horizontalAlignment" type="int" value="11"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
   </SubComponents>
 </Form>

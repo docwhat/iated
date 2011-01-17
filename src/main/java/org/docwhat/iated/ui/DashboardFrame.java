@@ -10,6 +10,7 @@
 package org.docwhat.iated.ui;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -29,9 +30,29 @@ public class DashboardFrame extends javax.swing.JFrame {
     public DashboardFrame() throws IOException {
         initComponents();
 
-        server = HttpServerFactory.create("http://localhost:9090/");
+        int defaultPort = findFreePort();
+        String endpoint = String.format("http://localhost:%d/", defaultPort);
+
+        server = HttpServerFactory.create(endpoint);
         server.start();
+        System.out.println("Started server on: " + endpoint);
     }
+
+  public int findFreePort() throws IOException {
+    // From http://stackoverflow.com/questions/2675362/how-to-find-an-available-port
+    // Also see http://stackoverflow.com/questions/3265825/finding-two-free-tcp-ports
+    ServerSocket socket = null;
+    try {
+      socket = new ServerSocket(0);
+      return socket.getLocalPort();
+    } catch (Exception e) { 
+        throw new IOException("no free port found");
+    } finally {
+        if (socket != null) {
+            socket.close();
+        }
+    }
+  }
 
     /** This method is called from within the constructor to
      * initialize the form.

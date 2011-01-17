@@ -22,59 +22,18 @@ public class PreferencesDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        editorField = new javax.swing.JTextField();
-        editorLabel = new javax.swing.JLabel();
-        browseButton = new javax.swing.JButton();
-        refreshRateLabel = new javax.swing.JLabel();
-        refreshRateField = new javax.swing.JTextField();
-        characterSetLabel = new javax.swing.JLabel();
-        characterSetField = new javax.swing.JTextField();
-        extensionsLabel = new javax.swing.JLabel();
-        extensionsField = new javax.swing.JTextField();
-        positionLabel = new javax.swing.JLabel();
-        fadeRateLabel = new javax.swing.JLabel();
-        hotKeyLabel = new javax.swing.JLabel();
-        debuggingLabel = new javax.swing.JLabel();
         closeButton = new javax.swing.JButton();
-        upperLeftPosition = new javax.swing.JRadioButton();
-        upperRightPosition = new javax.swing.JRadioButton();
-        lowerLeftPosition = new javax.swing.JRadioButton();
-        lowerRightPosition = new javax.swing.JRadioButton();
-        disablePosition = new javax.swing.JRadioButton();
-        fadeRateField = new javax.swing.JTextField();
-        hotKeyField = new javax.swing.JTextField();
-        removeAllBugsCheckbox = new javax.swing.JCheckBox();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        editorField = new javax.swing.JTextField();
+        browseButton = new javax.swing.JButton();
+        editorLabel = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        editorField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("It's All Text! Preferences");
         setResizable(false);
-
-        editorField.setEditable(false);
-        editorField.setText("/usr/bin/gvim");
-
-        editorLabel.setText("Editor:");
-
-        browseButton.setText("Browse");
-
-        refreshRateLabel.setText("Seconds between refreshing:");
-
-        refreshRateField.setText("3");
-
-        characterSetLabel.setText("Character Set (default: UTF-8):");
-
-        characterSetField.setText("UTF-8");
-
-        extensionsLabel.setText("File Extensions:");
-
-        extensionsField.setText(".xsl,.txt,.html,.css,.xml,.js");
-
-        positionLabel.setText("Edit button position");
-
-        fadeRateLabel.setText("Duration of button fade");
-
-        hotKeyLabel.setText("Hot Key");
-
-        debuggingLabel.setText("Debugging:");
 
         closeButton.setText("Close");
         closeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -83,21 +42,53 @@ public class PreferencesDialog extends javax.swing.JDialog {
             }
         });
 
-        upperLeftPosition.setText("Upper Left");
+        editorField.setText("/usr/bin/gvim");
 
-        upperRightPosition.setText("Upper Right");
+        browseButton.setText("Browse");
 
-        lowerLeftPosition.setText("Lower Left");
+        editorLabel.setText("Editor:");
 
-        lowerRightPosition.setText("Lower Right");
+        jLabel1.setText("Port:");
 
-        disablePosition.setText("Disable");
+        editorField1.setColumns(5);
+        editorField1.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
 
-        fadeRateField.setText("2.3");
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(editorLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(editorField, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(editorField1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(269, 269, 269)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(browseButton)
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(browseButton)
+                    .addComponent(editorLabel)
+                    .addComponent(editorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(editorField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addContainerGap(138, Short.MAX_VALUE))
+        );
 
-        hotKeyField.setText("<none>");
-
-        removeAllBugsCheckbox.setText("Remove all bugs");
+        jTabbedPane1.addTab("General", jPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -105,95 +96,21 @@ public class PreferencesDialog extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(extensionsLabel)
-                    .addComponent(characterSetLabel)
-                    .addComponent(positionLabel)
-                    .addComponent(fadeRateLabel)
-                    .addComponent(hotKeyLabel)
-                    .addComponent(editorLabel)
-                    .addComponent(debuggingLabel)
-                    .addComponent(refreshRateLabel))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(disablePosition, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
-                    .addComponent(characterSetField, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(hotKeyField, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(removeAllBugsCheckbox)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
-                        .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(fadeRateField, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(refreshRateField, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
-                        .addComponent(browseButton))
-                    .addComponent(extensionsField, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(lowerLeftPosition, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(upperLeftPosition))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lowerRightPosition)
-                            .addComponent(upperRightPosition)))
-                    .addComponent(editorField, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(410, Short.MAX_VALUE)
+                .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(editorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(editorLabel))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(refreshRateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(refreshRateLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(characterSetField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(characterSetLabel)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(browseButton)))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(extensionsField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(extensionsLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(upperLeftPosition)
-                    .addComponent(upperRightPosition))
-                .addGap(4, 4, 4)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lowerLeftPosition)
-                    .addComponent(lowerRightPosition)
-                    .addComponent(positionLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(disablePosition)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fadeRateLabel)
-                    .addComponent(fadeRateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(hotKeyLabel)
-                    .addComponent(hotKeyField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(debuggingLabel)
-                            .addComponent(removeAllBugsCheckbox))
-                        .addContainerGap(38, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(closeButton)
-                        .addContainerGap())))
+                .addComponent(closeButton)
+                .addContainerGap())
         );
 
         pack();
@@ -224,27 +141,13 @@ public class PreferencesDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton browseButton;
-    private javax.swing.JTextField characterSetField;
-    private javax.swing.JLabel characterSetLabel;
     private javax.swing.JButton closeButton;
-    private javax.swing.JLabel debuggingLabel;
-    private javax.swing.JRadioButton disablePosition;
     private javax.swing.JTextField editorField;
+    private javax.swing.JTextField editorField1;
     private javax.swing.JLabel editorLabel;
-    private javax.swing.JTextField extensionsField;
-    private javax.swing.JLabel extensionsLabel;
-    private javax.swing.JTextField fadeRateField;
-    private javax.swing.JLabel fadeRateLabel;
-    private javax.swing.JTextField hotKeyField;
-    private javax.swing.JLabel hotKeyLabel;
-    private javax.swing.JRadioButton lowerLeftPosition;
-    private javax.swing.JRadioButton lowerRightPosition;
-    private javax.swing.JLabel positionLabel;
-    private javax.swing.JTextField refreshRateField;
-    private javax.swing.JLabel refreshRateLabel;
-    private javax.swing.JCheckBox removeAllBugsCheckbox;
-    private javax.swing.JRadioButton upperLeftPosition;
-    private javax.swing.JRadioButton upperRightPosition;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 
 }

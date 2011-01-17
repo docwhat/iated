@@ -4,6 +4,7 @@ package org.docwhat.iated;
 
 import com.sun.jersey.api.container.httpserver.HttpServerFactory;
 import com.sun.net.httpserver.HttpServer;
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.prefs.Preferences;
@@ -79,6 +80,10 @@ public class AppState {
 
   public void setEditor(String editor) {
       store.put(EDITOR, editor);
+  }
+
+  public File getSaveDir() {
+      return new File(System.getProperty("user.home") + "/.iat/");
   }
 
   public int findFreePort() throws IOException {

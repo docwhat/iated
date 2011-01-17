@@ -16,8 +16,6 @@ import java.io.IOException;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import com.sun.jersey.api.container.httpserver.HttpServerFactory;
-import com.sun.net.httpserver.HttpServer;
 import org.docwhat.iated.AppState;
 
 /**
@@ -107,6 +105,7 @@ public class DashboardFrame extends javax.swing.JFrame {
     private void preferencesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesButtonActionPerformed
         PreferencesDialog dialog = new PreferencesDialog(new javax.swing.JFrame(), true, state);
         dialog.setVisible(true);
+        updateDisplay();
     }//GEN-LAST:event_preferencesButtonActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing

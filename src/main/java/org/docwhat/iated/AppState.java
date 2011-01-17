@@ -42,7 +42,14 @@ public class AppState {
       server.stop(0);
   }
 
+  public void restartServer() {
+      //TODO Don't restart if stopped
+      stopServer();
+      startServer();
+  }
+
   public int getActivePort() {
+      //TODO Catch Exception in the case where the server is not started
       return server.getAddress().getPort();
   }
 
@@ -60,6 +67,9 @@ public class AppState {
 
   public void setPort(int port) {
       store.putInt(PORT, port);
+      if(port != getActivePort()) {
+        restartServer();
+      }
   }
 
   public int findFreePort() throws IOException {

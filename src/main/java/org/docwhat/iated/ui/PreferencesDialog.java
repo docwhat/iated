@@ -138,6 +138,8 @@ public class PreferencesDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        //TODO Catch the NumberFormatException and do something with it.
+        state.setPort(Integer.parseInt(portField.getText()));
         this.dispose();
     }//GEN-LAST:event_saveButtonActionPerformed
 

@@ -60,3 +60,8 @@ If not, then it returns nothing.
 The auth token should be used as a POST argument in the form:
 `auth=NNNN`
 
+### Java Notes
+#### JAX-RS
+Using the Jersey implementation of JAX-RS. Jersey (and it's documentation) is available at http://jersey.java.net/. The API is in the java.ws.rs.* package.
+
+

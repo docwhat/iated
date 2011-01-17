@@ -2,7 +2,7 @@
 
 set -eux
 
-port="${0:-9090}"
+port="${1:-9090}"
 
 echo "Ping: "
 

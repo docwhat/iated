@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import org.docwhat.iated.AppPrefs;
 
 import org.docwhat.iated.ui.PreferencesDialog;
 
@@ -29,7 +30,7 @@ public class Preferences {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				if (dialogIsNotVisible()) {
-					dialog = new PreferencesDialog(new JFrame(), true);
+					dialog = new PreferencesDialog(new JFrame(), true, new AppPrefs());
 					dialog.setVisible(true);
 				}
 			}

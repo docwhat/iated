@@ -10,14 +10,15 @@
 package org.docwhat.iated.ui;
 
 import java.io.IOException;
-import java.net.ServerSocket;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import com.sun.jersey.api.container.httpserver.HttpServerFactory;
 import com.sun.net.httpserver.HttpServer;
-import org.docwhat.Preferences;
+import org.docwhat.iated.AppPrefs;
 
 /**
  *
@@ -26,18 +27,25 @@ import org.docwhat.Preferences;
 public class DashboardFrame extends javax.swing.JFrame {
 
     private HttpServer server;
-    private Preferences prefs;
+    private AppPrefs prefs;
 
     /** Creates new form DashboardFrame */
-    public DashboardFrame() throws IOException {
+    public DashboardFrame() {
         initComponents();
 
-        prefs = new Preferences();
+        prefs = new AppPrefs();
 
         int defaultPort = prefs.getPort();
         String endpoint = String.format("http://localhost:%d/", defaultPort);
 
-        server = HttpServerFactory.create(endpoint);
+        try {
+            server = HttpServerFactory.create(endpoint);
+        } catch (IOException ex) {
+            //Logger.getLogger(DashboardFrame.class.getName()).log(Level.SEVERE, null, ex);
+            //TODO Add a meaningful subclass?
+            throw new RuntimeException(ex);
+        }
+
         server.start();
         System.out.println("Started server on: " + endpoint);
 
@@ -45,7 +53,7 @@ public class DashboardFrame extends javax.swing.JFrame {
     }
 
     private void updateDisplay() {
-        activePortTextBox.setText(String.valueOf(server.getAddress().getPort()));
+        activePortField.setText(String.valueOf(server.getAddress().getPort()));
     }
 
     /** This method is called from within the constructor to
@@ -59,7 +67,7 @@ public class DashboardFrame extends javax.swing.JFrame {
 
         preferencesButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        activePortTextBox = new javax.swing.JTextField();
+        activePortField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -77,8 +85,8 @@ public class DashboardFrame extends javax.swing.JFrame {
 
         jLabel1.setText("Port:");
 
-        activePortTextBox.setColumns(5);
-        activePortTextBox.setEditable(false);
+        activePortField.setColumns(5);
+        activePortField.setEditable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -92,7 +100,7 @@ public class DashboardFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(activePortTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(activePortField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(543, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -103,7 +111,7 @@ public class DashboardFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(activePortTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(activePortField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(336, Short.MAX_VALUE))
         );
 
@@ -111,7 +119,7 @@ public class DashboardFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void preferencesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesButtonActionPerformed
-        PreferencesDialog dialog = new PreferencesDialog(new javax.swing.JFrame(), true);
+        PreferencesDialog dialog = new PreferencesDialog(new javax.swing.JFrame(), true, prefs);
         dialog.setVisible(true);
     }//GEN-LAST:event_preferencesButtonActionPerformed
 
@@ -126,19 +134,13 @@ public class DashboardFrame extends javax.swing.JFrame {
         useSwingSystemLookAndFeel();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                try {
-                    new DashboardFrame().setVisible(true);
-                } catch (IOException e) {
-                    //TODO Show an error dialog box.
-                    System.err.println("Unable to start the server: " + e.getMessage());
-                    e.printStackTrace();
-                }
+               new DashboardFrame().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField activePortTextBox;
+    private javax.swing.JTextField activePortField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton preferencesButton;
     // End of variables declaration//GEN-END:variables

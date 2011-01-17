@@ -1,5 +1,9 @@
 package org.docwhat.iated.ui;
 
+import org.docwhat.iated.AppPrefs;
+
+
+
 /**
  * The preferences dialog for the Its All Text! application. This dialog box was
  * designed using the NetBeans GUI designer.
@@ -7,11 +11,16 @@ package org.docwhat.iated.ui;
 public class PreferencesDialog extends javax.swing.JDialog {
 	private static final long serialVersionUID = 1L;
 
+        private AppPrefs prefs;
+
 	/** Creates new form PreferencesDialog */
-	public PreferencesDialog(java.awt.Frame parent, boolean modal) {
+	public PreferencesDialog(java.awt.Frame parent, boolean modal, AppPrefs prefs) {
 		super(parent, modal);
 		initComponents();
-	}
+                this.prefs = prefs;
+                
+                portField.setText(String.valueOf(prefs.getPort()));
+        }
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -29,7 +38,7 @@ public class PreferencesDialog extends javax.swing.JDialog {
         browseButton = new javax.swing.JButton();
         editorLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        editorField1 = new javax.swing.JTextField();
+        portField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("It's All Text! Preferences");
@@ -50,8 +59,8 @@ public class PreferencesDialog extends javax.swing.JDialog {
 
         jLabel1.setText("Port:");
 
-        editorField1.setColumns(5);
-        editorField1.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+        portField.setColumns(5);
+        portField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -67,7 +76,7 @@ public class PreferencesDialog extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(editorField1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(portField, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(269, 269, 269)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(browseButton)
@@ -83,7 +92,7 @@ public class PreferencesDialog extends javax.swing.JDialog {
                     .addComponent(editorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(editorField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(portField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addContainerGap(138, Short.MAX_VALUE))
         );
@@ -120,34 +129,15 @@ public class PreferencesDialog extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_closeButtonActionPerformed
 
-	/**
-	 * @param args
-	 *            the command line arguments
-	 */
-	public static void main(String args[]) {
-		java.awt.EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				PreferencesDialog dialog = new PreferencesDialog(
-						new javax.swing.JFrame(), true);
-				dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-					public void windowClosing(java.awt.event.WindowEvent e) {
-						System.exit(0);
-					}
-				});
-				dialog.setVisible(true);
-			}
-		});
-	}
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton browseButton;
     private javax.swing.JButton closeButton;
     private javax.swing.JTextField editorField;
-    private javax.swing.JTextField editorField1;
     private javax.swing.JLabel editorLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField portField;
     // End of variables declaration//GEN-END:variables
 
 }

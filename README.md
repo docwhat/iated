@@ -29,20 +29,31 @@ Returns a token as a string.
 ### Send a file to the editor
 
 `POST to /edit/<token>`
-d
-Returns 'ok' or 'fail'.
+
+Arguments:
+
+extension
+: Extension for the file.
+content
+: The text.
+
+Returns `ok` or `fail`.
 
 ### Retrieve the result of an edit
 
 `GET /edit/<token>`
 
+Returns document.
+
 ### Open preferences
 
 `GET /preferences`
 
-### Send Document
+Returns `ok`.
 
 ### Does Document Exist?
+
+`POST /edit/`
 
 ### Get Document
 

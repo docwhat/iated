@@ -6,6 +6,10 @@ choice.
 It is based on HTTP, so that it can be used in an ajax style by
 plugins (or conceivably web pages).
 
+## Project and Bug Tracking
+
+See https://www.pivotaltracker.com/projects/178151
+
 ## API
 
 Token is determined by the client. I recommend you use something like

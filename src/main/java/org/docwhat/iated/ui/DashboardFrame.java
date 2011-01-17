@@ -17,6 +17,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import com.sun.jersey.api.container.httpserver.HttpServerFactory;
 import com.sun.net.httpserver.HttpServer;
+import org.docwhat.Preferences;
 
 /**
  *
@@ -25,12 +26,15 @@ import com.sun.net.httpserver.HttpServer;
 public class DashboardFrame extends javax.swing.JFrame {
 
     private HttpServer server;
+    private Preferences prefs;
 
     /** Creates new form DashboardFrame */
     public DashboardFrame() throws IOException {
         initComponents();
 
-        int defaultPort = findFreePort();
+        prefs = new Preferences();
+
+        int defaultPort = prefs.getPort();
         String endpoint = String.format("http://localhost:%d/", defaultPort);
 
         server = HttpServerFactory.create(endpoint);

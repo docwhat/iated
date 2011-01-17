@@ -79,7 +79,8 @@ public class DashboardFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void preferencesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesButtonActionPerformed
-        // TODO add your handling code here:
+        PreferencesDialog dialog = new PreferencesDialog(new javax.swing.JFrame(), true);
+        dialog.setVisible(true);
     }//GEN-LAST:event_preferencesButtonActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing

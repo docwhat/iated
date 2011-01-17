@@ -1,6 +1,6 @@
 package org.docwhat.iated.ui;
 
-import org.docwhat.iated.AppPrefs;
+import org.docwhat.iated.AppState;
 
 
 
@@ -11,14 +11,15 @@ import org.docwhat.iated.AppPrefs;
 public class PreferencesDialog extends javax.swing.JDialog {
 	private static final long serialVersionUID = 1L;
 
-        private AppPrefs prefs;
+        private AppState state;
 
 	/** Creates new form PreferencesDialog */
-	public PreferencesDialog(java.awt.Frame parent, boolean modal, AppPrefs prefs) {
+	public PreferencesDialog(java.awt.Frame parent, boolean modal, AppState prefs) {
 		super(parent, modal);
 		initComponents();
-                this.prefs = prefs;
-                
+                this.state = prefs;
+
+                editorField.setText(state.getEditor());
                 portField.setText(String.valueOf(prefs.getPort()));
         }
 
@@ -31,7 +32,7 @@ public class PreferencesDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        closeButton = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         editorField = new javax.swing.JTextField();
@@ -39,15 +40,16 @@ public class PreferencesDialog extends javax.swing.JDialog {
         editorLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         portField = new javax.swing.JTextField();
+        cancelButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("It's All Text! Preferences");
         setResizable(false);
 
-        closeButton.setText("Close");
-        closeButton.addActionListener(new java.awt.event.ActionListener() {
+        saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closeButtonActionPerformed(evt);
+                saveButtonActionPerformed(evt);
             }
         });
 
@@ -99,6 +101,13 @@ public class PreferencesDialog extends javax.swing.JDialog {
 
         jTabbedPane1.addTab("General", jPanel1);
 
+        cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -108,8 +117,10 @@ public class PreferencesDialog extends javax.swing.JDialog {
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(410, Short.MAX_VALUE)
-                .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(329, Short.MAX_VALUE)
+                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -118,26 +129,36 @@ public class PreferencesDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(closeButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(saveButton)
+                    .addComponent(cancelButton))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        //TODO Catch the NumberFormatException and do something with it.
+        state.setPort(Integer.parseInt(portField.getText()));
+        state.setEditor(editorField.getText());
         this.dispose();
-    }//GEN-LAST:event_closeButtonActionPerformed
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton browseButton;
-    private javax.swing.JButton closeButton;
+    private javax.swing.JButton cancelButton;
     private javax.swing.JTextField editorField;
     private javax.swing.JLabel editorLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField portField;
+    private javax.swing.JButton saveButton;
     // End of variables declaration//GEN-END:variables
 
 }

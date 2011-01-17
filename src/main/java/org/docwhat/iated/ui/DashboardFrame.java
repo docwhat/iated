@@ -16,9 +16,7 @@ import java.io.IOException;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import com.sun.jersey.api.container.httpserver.HttpServerFactory;
-import com.sun.net.httpserver.HttpServer;
-import org.docwhat.iated.AppPrefs;
+import org.docwhat.iated.AppState;
 
 /**
  *
@@ -26,34 +24,20 @@ import org.docwhat.iated.AppPrefs;
  */
 public class DashboardFrame extends javax.swing.JFrame {
 
-    private HttpServer server;
-    private AppPrefs prefs;
+    private AppState state;
 
     /** Creates new form DashboardFrame */
     public DashboardFrame() {
         initComponents();
 
-        prefs = new AppPrefs();
-
-        int defaultPort = prefs.getPort();
-        String endpoint = String.format("http://localhost:%d/", defaultPort);
-
-        try {
-            server = HttpServerFactory.create(endpoint);
-        } catch (IOException ex) {
-            //Logger.getLogger(DashboardFrame.class.getName()).log(Level.SEVERE, null, ex);
-            //TODO Add a meaningful subclass?
-            throw new RuntimeException(ex);
-        }
-
-        server.start();
-        System.out.println("Started server on: " + endpoint);
+        state = new AppState();
+        state.startServer();
 
         updateDisplay();
     }
 
     private void updateDisplay() {
-        activePortField.setText(String.valueOf(server.getAddress().getPort()));
+        activePortField.setText(String.valueOf(state.getActivePort()));
     }
 
     /** This method is called from within the constructor to
@@ -119,12 +103,13 @@ public class DashboardFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void preferencesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesButtonActionPerformed
-        PreferencesDialog dialog = new PreferencesDialog(new javax.swing.JFrame(), true, prefs);
+        PreferencesDialog dialog = new PreferencesDialog(new javax.swing.JFrame(), true, state);
         dialog.setVisible(true);
+        updateDisplay();
     }//GEN-LAST:event_preferencesButtonActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        server.stop(0);
+        state.stopServer();
     }//GEN-LAST:event_formWindowClosing
 
     /**

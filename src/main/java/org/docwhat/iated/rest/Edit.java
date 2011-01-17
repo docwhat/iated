@@ -1,6 +1,5 @@
 /*
  */
-
 package org.docwhat.iated.rest;
 
 import java.io.File;
@@ -13,9 +12,6 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.exec.Executor;
 import org.apache.commons.io.FileUtils;
 
 import org.docwhat.iated.AppState;
@@ -26,15 +22,15 @@ import org.docwhat.iated.AppState;
  */
 @Path("/edit")
 public class Edit {
+
     @POST
     @Produces("text/plain")
     @Consumes("application/x-www-form-urlencoded")
     public String edit(
             @DefaultValue("") @FormParam("token") String token,
             @DefaultValue("txt") @FormParam("extension") String extension,
-            @DefaultValue("") @FormParam("content") String content
-            ) {
-        
+            @DefaultValue("") @FormParam("content") String content) {
+
         System.out.println("Editing:");
         System.out.println("Token:" + token);
         System.out.println("Extension:" + extension);
@@ -44,17 +40,14 @@ public class Edit {
         File editFile = new File(state.getSaveDir(), token + "." + extension);
         try {
             FileUtils.write(editFile, content);
-
-            CommandLine cmd = new CommandLine(new File(state.getEditor()));
-            cmd.addArgument(editFile.toString());
-
-            Executor executor = new DefaultExecutor();
-            executor.execute(cmd);
-        } catch (IOException ex) {
+            state.editFile(editFile);
+        }
+        catch (IOException ex) {
             //TODO Do something meaningful with the exception.
             throw new RuntimeException(ex);
         }
 
         return token;
     }
+
 }

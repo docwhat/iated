@@ -29,7 +29,7 @@ Returns a token as a string.
 ### Send a file to the editor
 
 `POST to /edit/<token>`
-
+d
 Returns 'ok' or 'fail'.
 
 ### Retrieve the result of an edit
@@ -49,4 +49,14 @@ Returns 'ok' or 'fail'.
 #### ... Only If Changed Since ...
 
 ### Authenticate/Token Exchange
+
+`GET /hello`
+
+Pops up a "do you want to allow the user to connect to IATed"
+display. If the user agrees, then it returns an auth token.
+
+If not, then it returns nothing.
+
+The auth token should be used as a POST argument in the form:
+`auth=NNNN`
 

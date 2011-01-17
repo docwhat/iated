@@ -1,4 +1,4 @@
-package org.gerf.iated.rest;
+package org.docwhat.iated.rest;
 
 import java.awt.EventQueue;
 
@@ -7,7 +7,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import org.gerf.iated.ui.PreferencesDialog;
+import org.docwhat.iated.ui.PreferencesDialog;
 
 /**
  * The /preferences resource

@@ -1,4 +1,4 @@
-package org.gerf.iated;
+package org.docwhat;
 
 import java.io.IOException;
 

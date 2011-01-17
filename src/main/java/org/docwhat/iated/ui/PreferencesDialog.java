@@ -1,4 +1,4 @@
-package org.gerf.iated.ui;
+package org.docwhat.iated.ui;
 
 /**
  * The preferences dialog for the Its All Text! application. This dialog box was

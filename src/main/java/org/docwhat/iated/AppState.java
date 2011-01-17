@@ -13,6 +13,7 @@ import java.util.prefs.Preferences;
  * 
  */
 public class AppState {
+    public static final String EDITOR = "EDITOR";
   public static final String PORT = "PORT";
 
   private Preferences store;
@@ -70,6 +71,14 @@ public class AppState {
       if(port != getActivePort()) {
         restartServer();
       }
+  }
+
+  public String getEditor() {
+      return store.get(EDITOR,"");
+  }
+
+  public void setEditor(String editor) {
+      store.put(EDITOR, editor);
   }
 
   public int findFreePort() throws IOException {

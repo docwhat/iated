@@ -18,7 +18,8 @@ public class PreferencesDialog extends javax.swing.JDialog {
 		super(parent, modal);
 		initComponents();
                 this.state = prefs;
-                
+
+                editorField.setText(state.getEditor());
                 portField.setText(String.valueOf(prefs.getPort()));
         }
 
@@ -140,6 +141,7 @@ public class PreferencesDialog extends javax.swing.JDialog {
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         //TODO Catch the NumberFormatException and do something with it.
         state.setPort(Integer.parseInt(portField.getText()));
+        state.setEditor(editorField.getText());
         this.dispose();
     }//GEN-LAST:event_saveButtonActionPerformed
 

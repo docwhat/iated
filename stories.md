@@ -7,10 +7,11 @@
 * Prefs: User changes port from default.
 * Prefs: User changes port, presses save and the webserver is restarted on a new port.
 * Prefs: User changes editor by typing path.
+* User's browser sends `/edit` request to IATed and the editor is opened.
 
 # Now
-* User's browser sends `/edit` request to IATed and the editor is opened.
 * Prefs: User changes editor by pressing 'select editor' button.
+* Prefs: User changes savePath. Warning about closing all open editors should be shown and all files in old savePath should be moved.
 * Dashboard shows port number.
 * Dashboard shows requests.
 * Use a select to find an open default port in the range from 10,000-30,0000.

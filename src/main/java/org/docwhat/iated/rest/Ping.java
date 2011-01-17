@@ -1,4 +1,4 @@
-package org.gerf.iated.rest;
+package org.docwhat.iated.rest;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

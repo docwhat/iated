@@ -40,23 +40,13 @@ public class DashboardFrame extends javax.swing.JFrame {
         server = HttpServerFactory.create(endpoint);
         server.start();
         System.out.println("Started server on: " + endpoint);
+
+        updateDisplay();
     }
 
-  public int findFreePort() throws IOException {
-    // From http://stackoverflow.com/questions/2675362/how-to-find-an-available-port
-    // Also see http://stackoverflow.com/questions/3265825/finding-two-free-tcp-ports
-    ServerSocket socket = null;
-    try {
-      socket = new ServerSocket(0);
-      return socket.getLocalPort();
-    } catch (Exception e) { 
-        throw new IOException("no free port found");
-    } finally {
-        if (socket != null) {
-            socket.close();
-        }
+    private void updateDisplay() {
+        activePortTextBox.setText(String.valueOf(server.getAddress().getPort()));
     }
-  }
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -68,6 +58,8 @@ public class DashboardFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         preferencesButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        activePortTextBox = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -83,21 +75,36 @@ public class DashboardFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Port:");
+
+        activePortTextBox.setColumns(5);
+        activePortTextBox.setEditable(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(252, 252, 252)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(572, Short.MAX_VALUE)
                 .addComponent(preferencesButton)
-                .addContainerGap(332, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(activePortTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(543, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(167, 167, 167)
+                .addContainerGap()
                 .addComponent(preferencesButton)
-                .addContainerGap(214, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(activePortTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(336, Short.MAX_VALUE))
         );
 
         pack();
@@ -131,6 +138,8 @@ public class DashboardFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField activePortTextBox;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JButton preferencesButton;
     // End of variables declaration//GEN-END:variables
 

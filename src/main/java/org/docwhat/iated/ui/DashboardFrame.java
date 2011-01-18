@@ -6,15 +6,7 @@
  *
  * Created on Jan 17, 2011, 8:07:50 AM
  */
-
 package org.docwhat.iated.ui;
-
-import java.io.IOException;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
-
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import org.docwhat.iated.AppState;
 
@@ -27,11 +19,9 @@ public class DashboardFrame extends javax.swing.JFrame {
     private AppState state;
 
     /** Creates new form DashboardFrame */
-    public DashboardFrame() {
+    public DashboardFrame(AppState init_state) {
+        state = init_state;
         initComponents();
-
-        state = new AppState();
-        state.startServer();
 
         updateDisplay();
     }
@@ -108,51 +98,9 @@ public class DashboardFrame extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         state.stopServer();
     }//GEN-LAST:event_formWindowClosing
-
-    /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) throws IOException {
-        useSwingSystemLookAndFeel();
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-               new DashboardFrame().setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField activePortField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton preferencesButton;
     // End of variables declaration//GEN-END:variables
-
-
-	/**
-	 * Set the Swing look-and-feel to the System look-and-feel. The System look
-	 * and feel ensures that Swing windows closely match the native OS windows.
-	 */
-	private static void useSwingSystemLookAndFeel() {
-		try {
-			// Use the System (native) look and feel
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-		} catch (UnsupportedLookAndFeelException e) {
-			System.err.println("Unable to set the Swing Look and Feel. "
-					+ "The default look and feel will be used instead.");
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			System.err.println("Unable to set the Swing Look and Feel. "
-					+ "The default look and feel will be used instead.");
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			System.err.println("Unable to set the Swing Look and Feel. "
-					+ "The default look and feel will be used instead.");
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			System.err.println("Unable to set the Swing Look and Feel. "
-					+ "The default look and feel will be used instead.");
-			e.printStackTrace();
-		}
-	}
 }

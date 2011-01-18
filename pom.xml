@@ -68,7 +68,7 @@
             <argument>-classpath</argument>
             <!-- automatically creates the classpath using all project dependencies, also adding the project build directory -->
             <classpath />
-            <argument>org.docwhat.iated.ui.DashboardFrame</argument>
+            <argument>org.docwhat.iated.IATed</argument>
           </arguments>
         </configuration>
       </plugin>

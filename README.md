@@ -8,7 +8,7 @@ plugins (or conceivably web pages).
 
 ## Project and Bug Tracking
 
-See https://www.pivotaltracker.com/projects/178151
+See [the Pivotal Tracker for It's All Text!](https://www.pivotaltracker.com/projects/178151).
 
 ## API
 

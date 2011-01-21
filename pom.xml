@@ -63,6 +63,32 @@
                 </configuration>
             </plugin>
 
+            <!-- Generate a single jar with all dependencies -->
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-assembly-plugin</artifactId>
+              <version>2.2</version>
+              <configuration>
+                <descriptorRefs>
+                  <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+                <archive>
+                  <manifest>
+                    <mainClass>org.docwhat.iated.IATed</mainClass>
+                  </manifest>
+                </archive>
+              </configuration>
+              <executions>
+                  <execution>
+                      <id>generte-jar-with-dependencies</id>
+                      <phase>package</phase>
+                      <goals>
+                          <goal>single</goal>
+                      </goals>
+                </execution>
+              </executions>
+            </plugin>
+
             <!-- Configure the exec:exec goal to run the main class -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -115,7 +141,7 @@
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-project-info-reports-plugin</artifactId>
-              <version>2.2</version>
+              <version>2.1.2</version>
               <configuration>
                 <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
                 <dependencyLocationsEnabled>false</dependencyLocationsEnabled>

@@ -57,8 +57,11 @@ public class AppState {
     }
 
     public int getActivePort() {
-        //TODO Catch Exception in the case where the server is not started
-        return server.getAddress().getPort();
+        if (null == server) {
+            return getPort();
+        } else {
+            return server.getAddress().getPort();
+        }
     }
 
     public int getPort() {

@@ -8,21 +8,66 @@
  */
 package org.docwhat.iated.ui;
 
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import org.docwhat.iated.AppState;
+import org.simplericity.macify.eawt.Application;
+import org.simplericity.macify.eawt.ApplicationEvent;
+import org.simplericity.macify.eawt.ApplicationListener;
+import org.simplericity.macify.eawt.DefaultApplication;
 
 /**
  *
  * @author jhurne
  */
-public class DashboardFrame extends javax.swing.JFrame {
+public class DashboardFrame extends javax.swing.JFrame implements ApplicationListener {
 
     private AppState state;
+    private Application application;
+    private static final String APP_NAME = "IATed";
 
-    /** Creates new form DashboardFrame */
-    public DashboardFrame(AppState init_state) {
-        state = init_state;
+    public static void main(String[] args) {
+        Application application = new DefaultApplication();
+        useSwingSystemLookAndFeel();
+        DashboardFrame dashboard = new DashboardFrame();
+        dashboard.setApplication(application);
+        dashboard.init();
+    }
+
+    private void setApplication(Application application) {
+        this.application = application;
+    }
+
+    /* Initialize the Dashboard */
+    private void init() {
+        /* Get the application set up (macify). */
+        application.addApplicationListener(this);
+        application.addPreferencesMenuItem();
+        application.setEnabledPreferencesMenu(true);
+
+        /* Get the app state. */
+        state = new AppState();
+
+        /* Set the app state to start. */
+        SwingUtilities.invokeLater(new Runnable() {
+
+            public void run() {
+                // Set up the state.
+                state = new AppState();
+
+                // Start the server.
+                state.startServer();
+
+                // Show the dashboard.
+                setVisible(true);
+            }
+        });
+
+        /* Initialize the UI parts. */
         initComponents();
 
+        /* Update the display to set initial values. */
         updateDisplay();
     }
 
@@ -90,9 +135,7 @@ public class DashboardFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void preferencesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesButtonActionPerformed
-        PreferencesDialog dialog = new PreferencesDialog(new javax.swing.JFrame(), true, state);
-        dialog.setVisible(true);
-        updateDisplay();
+        showPreferences();
     }//GEN-LAST:event_preferencesButtonActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -103,4 +146,83 @@ public class DashboardFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton preferencesButton;
     // End of variables declaration//GEN-END:variables
+
+    private void showPreferences() {
+        PreferencesDialog dialog = new PreferencesDialog(new javax.swing.JFrame(), true, state);
+        dialog.setVisible(true);
+        updateDisplay();
+    }
+
+    @Override
+    public void handleAbout(ApplicationEvent ae) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void handleOpenApplication(ApplicationEvent ae) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void handleOpenFile(ApplicationEvent ae) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void handlePreferences(ApplicationEvent ae) {
+        showPreferences();
+    }
+
+    @Override
+    public void handlePrintFile(ApplicationEvent ae) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void handleQuit(ApplicationEvent ae) {
+        handleQuit();
+    }
+
+    public void handleQuit() {
+        state.stopServer();
+        System.out.println("NARF: Goodbye!");
+        System.exit(0);
+    }
+
+    @Override
+    public void handleReOpenApplication(ApplicationEvent ae) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * Set the Swing look-and-feel to the System look-and-feel. The System look
+     * and feel ensures that Swing windows closely match the native OS windows.
+     */
+    private static void useSwingSystemLookAndFeel() {
+        try {
+            // Use the System (native) look and feel
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+        }
+        catch (UnsupportedLookAndFeelException e) {
+            System.err.println("Unable to set the Swing Look and Feel. "
+                    + "The default look and feel will be used instead.");
+            e.printStackTrace();
+        }
+        catch (ClassNotFoundException e) {
+            System.err.println("Unable to set the Swing Look and Feel. "
+                    + "The default look and feel will be used instead.");
+            e.printStackTrace();
+        }
+        catch (InstantiationException e) {
+            System.err.println("Unable to set the Swing Look and Feel. "
+                    + "The default look and feel will be used instead.");
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e) {
+            System.err.println("Unable to set the Swing Look and Feel. "
+                    + "The default look and feel will be used instead.");
+            e.printStackTrace();
+        }
+    }
 }

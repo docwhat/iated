@@ -74,12 +74,29 @@
                         <argument>-classpath</argument>
                         <!-- automatically creates the classpath using all project dependencies, also adding the project build directory -->
                         <classpath />
-                        <argument>org.docwhat.iated.IATed</argument>
+                        <argument>org.docwhat.iated.ui.DashboardFrame</argument>
                     </arguments>
                 </configuration>
             </plugin>
 
-            <!-- TODO http://mojo.codehaus.org/osxappbundle-maven-plugin/index.html and http://simplericity.com/2007/09.html -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>osxappbundle-maven-plugin</artifactId>
+                <version>1.0-alpha-2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>bundle</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>org.docwhat.iated.ui.DashboardFrame</mainClass>
+                            <bundleName>IATed</bundleName>
+                            <vmOptions>-Dcom.apple.macos.useScreenMenuBar=true</vmOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 
@@ -94,6 +111,11 @@
             <id>repository.simplericity.org</id>
             <name>Simplericity Site for Macify</name>
             <url>http://simplericity.org/repository/</url>
+        </repository>
+        <repository>
+            <id>repository.mojo.codehaus.org</id>
+            <name>Mojo Codehaus Repository</name>
+            <url>http://mojo.codehaus.com</url>
         </repository>
     </repositories>
     <reporting>

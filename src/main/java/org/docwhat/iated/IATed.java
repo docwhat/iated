@@ -9,22 +9,39 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.docwhat.iated.ui.DashboardFrame;
+import org.simplericity.macify.eawt.Application;
+import org.simplericity.macify.eawt.ApplicationEvent;
+import org.simplericity.macify.eawt.ApplicationListener;
+import org.simplericity.macify.eawt.DefaultApplication;
 
 /**
  *
  * @author docwhat
  */
-public class IATed {
+public class IATed implements ApplicationListener {
 
     private JFrame dashboard;
     private AppState state;
+    private Application application;
     private static final String APP_NAME = "IATed";
 
     public static void main(String[] args) {
-        new IATed();
+        Application application = new DefaultApplication();
+        IATed iated = new IATed();
+        iated.setApplication(application);
+        iated.init();
     }
 
-    public IATed() {
+    private void setApplication(Application application) {
+        this.application = application;
+    }
+
+    public void init() {
+
+        application.addApplicationListener(this);
+        application.addPreferencesMenuItem();
+        application.setEnabledPreferencesMenu(true);
+
         // Set some mac-specific properties. This must go before enabling swing.
         if (System.getProperty("mrj.version") != null) {
             System.setProperty("apple.awt.graphics.EnableQ2DX", "true");
@@ -48,6 +65,39 @@ public class IATed {
                 dashboard.setVisible(true);
             }
         });
+    }
+
+    public void handleAbout(ApplicationEvent event) {
+        //aboutAction.actionPerformed(null);
+        event.setHandled(true);
+    }
+
+    public void handleOpenApplication(ApplicationEvent event) {
+        if(event.getFilename() != null) {
+            //openFileInEditor(new File(event.getFilename()));
+        }
+    }
+
+    public void handleOpenFile(ApplicationEvent event) {
+        //openFileInEditor(new File(event.getFilename()));
+    }
+
+    public void handlePreferences(ApplicationEvent event) {
+        //preferencesAction.actionPerformed(null);
+    }
+
+    public void handlePrintFile(ApplicationEvent event) {
+//        JOptionPane.showMessageDialog(this, "Sorry, printing not implemented");
+    }
+
+    public void handleQuit(ApplicationEvent event) {
+        state.stopServer();
+        System.out.println("NARF: Goodbye!");
+        System.exit(0);
+    }
+
+    public void handleReOpenApplication(ApplicationEvent event) {
+        System.out.println("NARF!");
     }
 
     /**

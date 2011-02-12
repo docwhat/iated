@@ -98,14 +98,14 @@ public class AppState {
     }
 
     public void editFile(File file) {
-        File editor = new File(getEditor());
+        String editor = getEditor();
         CommandLine cmd;
 
-        if (OS.isFamilyMac() && editor.isDirectory() && editor.toString().matches(".*\\.app")) {
-            cmd = new CommandLine(new File("/usr/bin/open"));
-            cmd.addArgument("-a").addArgument(editor.toString()).addArgument(file.toString());
+        if (OS.isFamilyMac() && editor.matches(".*\\.app")) {
+            cmd = new CommandLine("/usr/bin/open");
+            cmd.addArgument("-a").addArgument(editor).addArgument(file.toString());
         } else {
-            cmd = new CommandLine(new File(getEditor().toString()));
+            cmd = new CommandLine(editor);
             cmd.addArgument(file.toString());
         }
 

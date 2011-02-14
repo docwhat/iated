@@ -36,7 +36,8 @@ public class AppState {
 
         try {
             server = HttpServerFactory.create(endpoint);
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             //Logger.getLogger(DashboardFrame.class.getName()).log(Level.SEVERE, null, ex);
             //TODO Add a meaningful subclass?
             throw new RuntimeException(ex);
@@ -70,7 +71,8 @@ public class AppState {
             store.putInt(PORT, portNum);
 
             return portNum;
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             //TODO Add a meaningful subclass?
             throw new RuntimeException(e);
         }
@@ -116,10 +118,12 @@ public class AppState {
         Executor executor = new DefaultExecutor();
         try {
             executor.execute(cmd);
-        } catch (ExecuteException ex) {
+        }
+        catch (ExecuteException ex) {
             //TODO Do something meaningful with the exception.
             throw new RuntimeException(ex);
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             //TODO Do something meaningful with the exception.
             throw new RuntimeException(ex);
         }
@@ -150,11 +154,13 @@ public class AppState {
             return socket.getLocalPort();
 
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new IOException("no free port found");
 
 
-        } finally {
+        }
+        finally {
             if (socket != null) {
                 socket.close();
 

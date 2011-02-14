@@ -84,17 +84,21 @@ public class AppState {
     }
 
     public String getEditor() {
-        String defaultEditor;
-        if (OS.isFamilyMac()) {
-            defaultEditor = "/Applications/TextEdit.app";
-        } else if (OS.isFamilyUnix()) {
-            defaultEditor = "gvim";
-        } else if (OS.isFamilyWindows() || OS.isFamilyWin9x()) {
-            defaultEditor = "notepad.exe";
-        } else {
-            defaultEditor = "";
+        String editor;
+
+        editor = store.get(EDITOR, "");
+        if (null == editor || "".equals(editor)) {
+            if (OS.isFamilyMac()) {
+                editor = "/Applications/TextEdit.app";
+            } else if (OS.isFamilyUnix()) {
+                editor = "gvim";
+            } else if (OS.isFamilyWindows() || OS.isFamilyWin9x()) {
+                editor = "notepad.exe";
+            } else {
+                editor = "";
+            }
         }
-        return store.get(EDITOR, defaultEditor);
+        return editor;
     }
 
     public void editFile(File file) {

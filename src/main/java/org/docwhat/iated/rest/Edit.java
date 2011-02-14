@@ -27,14 +27,16 @@ public class Edit {
     @Produces("text/plain")
     @Consumes("application/x-www-form-urlencoded")
     public String edit(
-            @DefaultValue("") @FormParam("token") String token,
+            @DefaultValue("")    @FormParam("token") String token,
             @DefaultValue("txt") @FormParam("extension") String extension,
-            @DefaultValue("") @FormParam("content") String content) {
+            @DefaultValue("")    @FormParam("text") String content) {
 
         System.out.println("Editing:");
         System.out.println("Token:" + token);
         System.out.println("Extension:" + extension);
         System.out.println("Content:" + content);
+
+        //TODO If any values are missing and the request is not an XHR request, then show a form for debugging/testing.
 
         AppState state = new AppState();
         File editFile = new File(state.getSaveDir(), token + "." + extension);

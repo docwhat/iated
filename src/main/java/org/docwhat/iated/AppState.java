@@ -103,7 +103,7 @@ public class AppState {
         return editor;
     }
 
-    public void editFile(File file) {
+    public String editFile(File file) {
         String editor = getEditor();
         CommandLine cmd;
 
@@ -127,6 +127,8 @@ public class AppState {
             //TODO Do something meaningful with the exception.
             throw new RuntimeException(ex);
         }
+
+        return "bogus-token";
     }
 
     public void setEditor(String editor) {
@@ -139,6 +141,12 @@ public class AppState {
         return new File(System.getProperty("user.home") + "/.iat/");
 
 
+    }
+
+    public File getSaveFile(String url, String id, String extension) {
+        //TODO verify extension is valid.
+        //TODO munge url and id into a filename or randomly assign one.
+        return new File(this.getSaveDir(), "TODO-fix-this" + "." + extension);
     }
 
     public int findFreePort() throws IOException {

@@ -175,4 +175,8 @@ public class AppState {
             }
         }
     }
+
+    public EditSession getEditSession(String url, String id, String extension) {
+        return new EditSession(this, url, id, extension);
+    }
 }

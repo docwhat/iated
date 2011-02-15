@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.io.FileUtils;
 
 import org.docwhat.iated.AppState;
+import org.docwhat.iated.EditSession;
 
 /**
  *
@@ -33,20 +34,14 @@ public class Edit {
         System.out.println("Extension:" + extension);
         System.out.println("Content:" + text);
 
-        //TODO If any values are missing and the request is not an XHR request, then show a form for debugging/testing.
-
         AppState state = new AppState();
-        File editFile = state.getSaveFile(url, id, extension);
-        String token = "fail";
-        try {
-            FileUtils.write(editFile, text);
-            token = state.editFile(editFile);
+        EditSession session = state.getEditSession(url, id, extension);
+        if (session.exists()) {
+            return "exists";
+        } else if (session.create(text)) {
+            return session.getToken();
+        } else {
+            return "fail";
         }
-        catch (IOException ex) {
-            //TODO Do something meaningful with the exception.
-            throw new RuntimeException(ex);
-        }
-
-        return token;
     }
 }

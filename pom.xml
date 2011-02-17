@@ -100,6 +100,7 @@
             <url>http://mojo.codehaus.com</url>
         </repository>
     </repositories>
+
     <reporting>
         <plugins>
             <plugin>
@@ -108,6 +109,31 @@
                 <configuration>
                     <configLocation>config/sun_checks.xml</configLocation>
                 </configuration>
+            </plugin>
+
+            <!-- Generate common info reports -->
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-project-info-reports-plugin</artifactId>
+              <version>2.2</version>
+              <configuration>
+                <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+                <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+              </configuration>
+              <reportSets>
+                <reportSet>
+                  <reports>
+                    <report>dependencies</report>
+                    <report>dependency-management</report>
+                    <report>dependency-convergence</report>
+                    <report>plugin-management</report>
+                    <report>plugins</report>
+                    <report>summary</report>
+                    <!-- <report>cim</report> -->
+                    <report>index</report>
+                  </reports>
+                </reportSet>
+              </reportSets>
             </plugin>
         </plugins>
     </reporting>

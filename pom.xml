@@ -168,7 +168,6 @@
       <id>osx</id>
       <activation>
 	<os>
-	  <name>OS-X</name>
 	  <family>mac</family>
 	</os>
       </activation>
@@ -178,16 +177,18 @@
 	    <groupId>org.codehaus.mojo</groupId>
 	    <artifactId>osxappbundle-maven-plugin</artifactId>
 	    <version>1.0-alpha-2</version>
+	    <configuration>
+	      <mainClass>org.docwhat.iated.ui.DashboardFrame</mainClass>
+	      <bundleName>IATed</bundleName>
+	      <jvmVersion>1.6+</jvmVersion>
+	      <vmOptions>-Dcom.apple.macos.useScreenMenuBar=true</vmOptions>
+	    </configuration>
 	    <executions>
 	      <execution>
+		<phase>package</phase>
 		<goals>
 		  <goal>bundle</goal>
 		</goals>
-		<configuration>
-		  <mainClass>org.docwhat.iated.ui.DashboardFrame</mainClass>
-		  <bundleName>IATed</bundleName>
-		  <vmOptions>-Dcom.apple.macos.useScreenMenuBar=true</vmOptions>
-		</configuration>
 	      </execution>
 	    </executions>
 	  </plugin>

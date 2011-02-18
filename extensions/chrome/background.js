@@ -17,10 +17,8 @@ function onRequest(request, sender, callback) {
 	    url: base_url + 'edit',
 	    data: { 'text' : request.text },
 	    dataType: 'text',
-	    success: function () {
-		var data = { "text": "The New Text: " + request.text,
-			     "id" : request.id };
-		callback(data);
+	    success: function (data, textStatus) {
+		monitor(data, request.id, callback);
 	    },
 	    failure: function () {
 		alert("Failure");
@@ -29,5 +27,24 @@ function onRequest(request, sender, callback) {
     }
 };
 chrome.extension.onRequest.addListener(onRequest);
+
+/**
+ * Checks to see if anything has changed.
+ *
+ * @param token    String The token of this edit session.
+ * @param callback Function The method to call when something changes.
+ */
+function monitor(token, id, callback) {
+    jQuery.Updater(base_url + 'edit/' + token, {
+        data: {token: token},
+        type: 'text',
+        interval: '3000'
+    }, function (data, textStatus) {
+	var data = { text: data,
+		     id: id,
+		     status: textStatus };
+	callback(data);
+    });
+}
 
 console.debug('IAT background loaded.');

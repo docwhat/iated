@@ -180,11 +180,39 @@ public enum AppState {
         }
     }
 
-    public EditSession getEditSession(String url, String id, String extension) {
-        String key = url + "@@" + id + "@@" + extension;
-        if (!sessions.containsKey(key)) {
-            sessions.put(key, new EditSession(this, url, id, extension));
+    /**
+     * A hack needed by EditSession until it can be hooked into a DB.
+     *
+     * @param key
+     * @return
+     */
+    public EditSession hackGetEditSession(String key) {
+        if (sessions.containsKey(key)) {
+            return sessions.get(key);
+        } else {
+            return null;
         }
-        return sessions.get(key);
+    }
+
+    /**
+     * A hack needed by EditSession until it can be hooked into a DB.
+     *
+     * @param key
+     * @param value
+     */
+    public void hackPutEditSession(String key, EditSession value) {
+        sessions.put(key, value);
+    }
+
+    /**
+     * Gets an edit session.
+     *
+     * @param url       The URL of the page needed.
+     * @param id        The textarea id.
+     * @param extension The extension of the file desired.
+     * @return Returns an existing or new EditSession.
+     */
+    public EditSession getEditSession(String url, String id, String extension) {
+        return EditSession.getSession(url, id, extension);
     }
 }

@@ -13,26 +13,53 @@ import org.apache.commons.io.FileUtils;
  * @author docwhat
  */
 public class EditSession {
-
-    AppState state;
     String url;
     String id;
     String extension;
     Boolean created;
 
     EditSession(
-            AppState init_state,
             String init_url,
             String init_id,
             String init_extension) {
-        state = init_state;
         url = init_url;
         id = init_id;
         extension = init_extension;
         created = false;
     }
 
-    //TODO I need a factory method to hydrate an EditSession or create a new one.
+    /**
+     * Returns a unique key for the HashMap on AppState.
+     *
+     * In the future, we'll use the DB to look this up or assign a new
+     * unique one.
+     *
+     * @param url The URL of the page. Optional.
+     * @param id  The id of the TextArea.
+     * @param ext The file extension desired.
+     * @return A unique key for this specific set of values.
+     */
+    public static String getToken(String url, String id, String ext) {
+        return "TOKEN" + url + "@@@" + id + "@@@" + ext;
+    }
+
+    /**
+     * Factory method for retrieving the correct session.
+     *
+     * @param url The URL of the page. Optional.
+     * @param id  The id of the TextArea.
+     * @param ext The file extension desired.
+     * @return An existing edit session or a new edit session.
+     */
+    public static EditSession getSession(String url, String id, String ext) {
+        AppState state = AppState.INSTANCE;
+        EditSession session = state.hackGetEditSession("blah");
+        if (session == null) {
+            session = new EditSession(url, id, ext);
+            state.hackPutEditSession("blah", session);
+        }
+        return session;
+    }
 
     /**
      *
@@ -43,6 +70,7 @@ public class EditSession {
     }
 
     public boolean edit(String text) {
+        AppState state = AppState.INSTANCE;
         created = false;
         File editFile = state.getSaveFile(url, id, extension);
         try {
@@ -62,7 +90,7 @@ public class EditSession {
      * @returns the token for this session.
      */
     public String getToken() {
-        //TODO implement EditSession.getToken()
-        return "TODO-123";
+        //TODO This needs to be stored or fetched from the db.
+        return EditSession.getToken(url, id, extension);
     }
 }

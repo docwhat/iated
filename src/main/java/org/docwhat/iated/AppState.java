@@ -40,8 +40,7 @@ public enum AppState {
 
         try {
             server = HttpServerFactory.create(endpoint);
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             //Logger.getLogger(DashboardFrame.class.getName()).log(Level.SEVERE, null, ex);
             //TODO Add a meaningful subclass?
             throw new RuntimeException(ex);
@@ -122,60 +121,70 @@ public enum AppState {
         Executor executor = new DefaultExecutor();
         try {
             executor.execute(cmd);
-        }
-        catch (ExecuteException ex) {
+        } catch (ExecuteException ex) {
+            //TODO Do something meaningful with the exception.
+            throw new RuntimeException(ex);
+        } catch (IOException ex) {
             //TODO Do something meaningful with the exception.
             throw new RuntimeException(ex);
         }
-        catch (IOException ex) {
-            //TODO Do something meaningful with the exception.
-            throw new RuntimeException(ex);
-        }
-
         return "bogus-token";
     }
 
-    public void setEditor(String editor) {
+    /** Stores the editor to use.
+     *
+     * @param editor The string to save for the editor.
+     */
+    public void setEditor(final String editor) {
         store.put(EDITOR, editor);
-
-
     }
 
+    /** get the base directory for saving text to.
+     *
+     * @return The directory where we save to.
+     */
     public File getSaveDir() {
         return new File(System.getProperty("user.home") + "/.iat/");
-
-
     }
 
-    public File getSaveFile(String url, String id, String extension) {
+    /** Get the location for where to save text to.
+     *
+     * @param url The URL of the page the text is from.
+     * @param id  The id of the textarea where the text is from.
+     * @param extension The extension wanted for the filename.
+     * @return The file path where to save text to.
+     */
+    public File getSaveFile(
+            final String url,
+            final String id,
+            final String extension) {
         //TODO verify extension is valid.
         //TODO munge url and id into a filename or randomly assign one.
-        return new File(this.getSaveDir(), "TODO-fix-this" + "." + extension);
+        return new File(this.getSaveDir(),
+                "TODO-fix-this" + url + "." + id + "." + extension);
     }
 
-    public int findFreePort() throws IOException {
-        // From http://stackoverflow.com/questions/2675362/how-to-find-an-available-port
-        // Also see http://stackoverflow.com/questions/3265825/finding-two-free-tcp-ports
-        ServerSocket socket = null;
+    /** Find a free TCP port.
+     *
+     * From:
+     * http://stackoverflow.com/questions/2675362/how-to-find-an-available-port
+     * http://stackoverflow.com/questions/3265825/finding-two-free-tcp-ports
+     *
+     * @return A free socket number.
+     * @throws IOException If not free port can be found.
+     */
 
+    public int findFreePort() throws IOException {
+        ServerSocket socket = null;
 
         try {
             socket = new ServerSocket(0);
-
-
             return socket.getLocalPort();
-
-
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new IOException("no free port found");
-
-
-        }
-        finally {
+        } finally {
             if (socket != null) {
                 socket.close();
-
             }
         }
     }
@@ -183,10 +192,10 @@ public enum AppState {
     /**
      * A hack needed by EditSession until it can be hooked into a DB.
      *
-     * @param key
-     * @return
+     * @param key The key to lookup the EditSession for.
+     * @return The EditSession referred to by that key or null.
      */
-    public EditSession hackGetEditSession(String key) {
+    public EditSession hackGetEditSession(final String key) {
         if (sessions.containsKey(key)) {
             return sessions.get(key);
         } else {
@@ -214,5 +223,15 @@ public enum AppState {
      */
     public EditSession getEditSession(String url, String id, String extension) {
         return EditSession.getSession(url, id, extension);
+    }
+
+    /**
+     * Gets an edit session.
+     *
+     * @param token    The token of the session.
+     * @returns An EditSession or null.
+     */
+    public EditSession getEditSession(String token) {
+        return EditSession.getSession(token);
     }
 }

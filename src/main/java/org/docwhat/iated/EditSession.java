@@ -6,6 +6,7 @@ package org.docwhat.iated;
 
 import java.io.File;
 import java.io.IOException;
+
 import org.apache.commons.io.FileUtils;
 
 /**
@@ -13,6 +14,7 @@ import org.apache.commons.io.FileUtils;
  * @author docwhat
  */
 public class EditSession {
+
     String url;
     String id;
     String extension;
@@ -53,12 +55,23 @@ public class EditSession {
      */
     public static EditSession getSession(String url, String id, String ext) {
         AppState state = AppState.INSTANCE;
-        EditSession session = state.hackGetEditSession("blah");
+        String token = EditSession.getToken(url, id, ext);
+        EditSession session = state.hackGetEditSession(token);
         if (session == null) {
             session = new EditSession(url, id, ext);
-            state.hackPutEditSession("blah", session);
+            state.hackPutEditSession(token, session);
         }
         return session;
+    }
+
+    /**
+     * Retrieves the session based on the token.
+     *
+     * @param token The token of the EditSession.
+     * @return The matching EditSession or null.
+     */
+    static EditSession getSession(String token) {
+        return AppState.INSTANCE.hackGetEditSession(token);
     }
 
     /**
@@ -92,5 +105,16 @@ public class EditSession {
     public String getToken() {
         //TODO This needs to be stored or fetched from the db.
         return EditSession.getToken(url, id, extension);
+    }
+
+    public String getText() {
+        File editFile = AppState.INSTANCE.getSaveFile(url, id, extension);
+        try {
+            return FileUtils.readFileToString(editFile);
+        }
+        catch (IOException ex) {
+            //TODO Handle this better.
+            throw new RuntimeException(ex);
+        }
     }
 }

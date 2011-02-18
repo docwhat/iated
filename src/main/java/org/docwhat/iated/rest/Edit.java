@@ -28,6 +28,7 @@ public class Edit {
             @FormParam("text") String text) {
         //TODO edit should require auth-token.
 
+        System.out.println("--Edit");
         System.out.println("Editing:");
         System.out.println("Url:" + url);
         System.out.println("Id:" + id);

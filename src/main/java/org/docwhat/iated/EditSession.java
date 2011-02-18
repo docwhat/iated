@@ -18,6 +18,7 @@ public class EditSession {
     String url;
     String id;
     String extension;
+    Boolean created;
 
     EditSession(
             AppState init_state,
@@ -28,6 +29,7 @@ public class EditSession {
         url = init_url;
         id = init_id;
         extension = init_extension;
+        created = false;
     }
 
     //TODO I need a factory method to hydrate an EditSession or create a new one.
@@ -37,22 +39,22 @@ public class EditSession {
      * @returns true if an edit session with these parameters exists.
      */
     public boolean exists() {
-        //TODO implement EditSession.exists()
         return false;
     }
 
-    public boolean create(String text) {
+    public boolean edit(String text) {
+        created = false;
         File editFile = state.getSaveFile(url, id, extension);
-        String token = "fail";
         try {
             FileUtils.write(editFile, text);
             state.editFile(editFile);
+            created = true;
         }
         catch (IOException ex) {
             //TODO Do something meaningful with the exception.
             throw new RuntimeException(ex);
         }
-        return true; //TODO return based whether it was created or not.
+        return created;
     }
 
     /**

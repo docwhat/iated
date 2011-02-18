@@ -7,6 +7,8 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.prefs.Preferences;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
@@ -26,6 +28,7 @@ public enum AppState {
     public static final String PORT = "PORT";
     private Preferences store;
     private HttpServer server;
+    private Map<String, EditSession> sessions = new HashMap<String, EditSession>();
 
     private AppState() {
         store = Preferences.userNodeForPackage(this.getClass());
@@ -178,6 +181,10 @@ public enum AppState {
     }
 
     public EditSession getEditSession(String url, String id, String extension) {
-        return new EditSession(this, url, id, extension);
+        String key = url + "@@" + id + "@@" + extension;
+        if (!sessions.containsKey(key)) {
+            sessions.put(key, new EditSession(this, url, id, extension));
+        }
+        return sessions.get(key);
     }
 }

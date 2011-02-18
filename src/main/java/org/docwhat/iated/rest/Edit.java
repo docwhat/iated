@@ -38,7 +38,7 @@ public class Edit {
         EditSession session = state.getEditSession(url, id, extension);
         if (session.exists()) {
             return "exists";
-        } else if (session.create(text)) {
+        } else if (session.edit(text)) {
             return session.getToken();
         } else {
             return "fail";

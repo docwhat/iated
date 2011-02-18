@@ -139,16 +139,18 @@
             </plugin>
 
       <!-- Generate Findbugs report (invoke with findbugs:findbugs goal) -->
+      <!-- DOES NOT WORK FOR ME
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
-                <version>2.3.1</version>
+                <version>2.3.2-SNAPSHOT</version>
                 <configuration>
                     <findbugsXmlOutput>true</findbugsXmlOutput>
                     <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
                     <xmlOutput>true</xmlOutput>
                 </configuration>
             </plugin>
+            -->
 
        <!-- Generate PMD report (invoke with pmd:pmd goal) --> 
             <plugin>

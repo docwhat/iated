@@ -229,7 +229,7 @@ public enum AppState {
      * Gets an edit session.
      *
      * @param token    The token of the session.
-     * @returns An EditSession or null.
+     * @return An EditSession or null.
      */
     public EditSession getEditSession(String token) {
         return EditSession.getSession(token);

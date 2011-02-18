@@ -76,7 +76,7 @@ public class EditSession {
 
     /**
      *
-     * @returns true if an edit session with these parameters exists.
+     * @return true if an edit session with these parameters exists.
      */
     public boolean exists() {
         return false;
@@ -100,7 +100,7 @@ public class EditSession {
 
     /**
      *
-     * @returns the token for this session.
+     * @return the token for this session.
      */
     public String getToken() {
         //TODO This needs to be stored or fetched from the db.

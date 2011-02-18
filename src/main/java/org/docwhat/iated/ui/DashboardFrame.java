@@ -47,14 +47,14 @@ public class DashboardFrame extends javax.swing.JFrame implements ApplicationLis
         application.setEnabledPreferencesMenu(true);
 
         /* Get the app state. */
-        state = new AppState();
+        state = AppState.INSTANCE;
 
         /* Set the app state to start. */
         SwingUtilities.invokeLater(new Runnable() {
 
             public void run() {
                 // Set up the state.
-                state = new AppState();
+                state = AppState.INSTANCE;
 
                 // Start the server.
                 state.startServer();
@@ -148,7 +148,7 @@ public class DashboardFrame extends javax.swing.JFrame implements ApplicationLis
     // End of variables declaration//GEN-END:variables
 
     private void showPreferences() {
-        PreferencesDialog dialog = new PreferencesDialog(new javax.swing.JFrame(), true, state);
+        PreferencesDialog dialog = new PreferencesDialog(new javax.swing.JFrame(), true);
         dialog.setVisible(true);
         updateDisplay();
     }

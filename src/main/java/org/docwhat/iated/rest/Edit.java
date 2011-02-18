@@ -34,7 +34,7 @@ public class Edit {
         System.out.println("Extension:" + extension);
         System.out.println("Content:" + text);
 
-        AppState state = new AppState();
+        AppState state = AppState.INSTANCE;
         EditSession session = state.getEditSession(url, id, extension);
         if (session.exists()) {
             return "exists";

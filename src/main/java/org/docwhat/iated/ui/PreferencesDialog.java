@@ -16,13 +16,13 @@ public class PreferencesDialog extends javax.swing.JDialog {
     private AppState state;
 
     /** Creates new form PreferencesDialog */
-    public PreferencesDialog(java.awt.Frame parent, boolean modal, AppState prefs) {
+    public PreferencesDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.state = prefs;
+        this.state = AppState.INSTANCE;
 
         editorField.setText(state.getEditor());
-        portField.setText(String.valueOf(prefs.getPort()));
+        portField.setText(String.valueOf(state.getPort()));
     }
 
     public String getDefaultAppDirectory() {

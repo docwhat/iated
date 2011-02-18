@@ -30,7 +30,7 @@ public class Preferences {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				if (dialogIsNotVisible()) {
-					dialog = new PreferencesDialog(new JFrame(), true, new AppState());
+					dialog = new PreferencesDialog(new JFrame(), true);
 					dialog.setVisible(true);
 				}
 			}

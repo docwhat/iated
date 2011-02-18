@@ -19,14 +19,15 @@ import org.apache.commons.exec.environment.EnvironmentUtils;
  *
  * 
  */
-public class AppState {
+public enum AppState {
+    INSTANCE;
 
     public static final String EDITOR = "EDITOR";
     public static final String PORT = "PORT";
     private Preferences store;
     private HttpServer server;
 
-    public AppState() {
+    private AppState() {
         store = Preferences.userNodeForPackage(this.getClass());
     }
 

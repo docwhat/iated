@@ -38,7 +38,7 @@ public class EditSession {
      */
     public boolean exists() {
         //TODO implement EditSession.exists()
-        throw new UnsupportedOperationException("Not yet implemented");
+        return false;
     }
 
     public boolean create(String text) {
@@ -52,7 +52,7 @@ public class EditSession {
             //TODO Do something meaningful with the exception.
             throw new RuntimeException(ex);
         }
-        throw new UnsupportedOperationException("Not yet implemented");
+        return true; //TODO return based whether it was created or not.
     }
 
     /**
@@ -61,6 +61,6 @@ public class EditSession {
      */
     public String getToken() {
         //TODO implement EditSession.getToken()
-        throw new UnsupportedOperationException("Not yet implemented");
+        return "TODO-123";
     }
 }

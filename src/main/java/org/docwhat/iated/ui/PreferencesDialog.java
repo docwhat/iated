@@ -174,10 +174,8 @@ public class PreferencesDialog extends javax.swing.JDialog {
         chooser.setFileFilter(
                 new FileFilter() {
                     public boolean accept(File f) {
-                        if (OS.isFamilyMac()) {
-                            if (f.isDirectory() && f.getName().toLowerCase().endsWith(".app")) {
-                                return (true);
-                            }
+                        if (OS.isFamilyMac() && f.isDirectory() && f.getName().toLowerCase().endsWith(".app")) {
+                            return (true);
                         }
                         return f.canExecute();
                     }

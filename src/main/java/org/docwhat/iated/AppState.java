@@ -18,7 +18,7 @@ import org.apache.commons.exec.OS;
 
 /**
  *
- * 
+ *
  */
 public enum AppState {
     INSTANCE;
@@ -31,6 +31,16 @@ public enum AppState {
 
     private AppState() {
         store = Preferences.userNodeForPackage(this.getClass());
+    }
+
+    /**
+     * This should only be used for tests!!
+     *
+     * @param pref The Preferences object to use instead of the default.
+     */
+    public AppState instrumentForTests(Preferences pref) {
+        store = pref;
+        return this;
     }
 
     public void startServer() {

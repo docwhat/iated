@@ -19,13 +19,12 @@ import org.simplericity.macify.eawt.DefaultApplication;
 
 /**
  *
- * @author jhurne
+ * @author jhurne, docwhat
  */
 public class DashboardFrame extends javax.swing.JFrame implements ApplicationListener {
 
     private AppState state;
     private Application application;
-    private static final String APP_NAME = "IATed";
 
     public static void main(String[] args) {
         Application application = new DefaultApplication();

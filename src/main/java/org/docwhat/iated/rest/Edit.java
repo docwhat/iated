@@ -7,13 +7,16 @@ import javax.ws.rs.core.MediaType;
 
 import org.docwhat.iated.AppState;
 import org.docwhat.iated.EditSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
- * 
+ *
  */
 @Path("/edit")
 public class Edit {
+    private static final Logger logger = LoggerFactory.getLogger(Edit.class);
 
     @POST
     @Produces(MediaType.TEXT_PLAIN)
@@ -25,12 +28,12 @@ public class Edit {
             @FormParam("text") String text) {
         //TODO edit should require auth-token.
 
-        System.out.println("--Edit");
-        System.out.println("Editing:");
-        System.out.println("Url:" + url);
-        System.out.println("Id:" + id);
-        System.out.println("Extension:" + extension);
-        System.out.println("Content:" + text);
+        logger.debug("--Edit");
+        logger.debug("Editing:");
+        logger.debug("Url:" + url);
+        logger.debug("Id:" + id);
+        logger.debug("Extension:" + extension);
+        logger.debug("Content:" + text);
 
         AppState state = AppState.INSTANCE;
         EditSession session = state.getEditSession(url, id, extension);

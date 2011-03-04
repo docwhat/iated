@@ -12,16 +12,20 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.docwhat.iated.AppState;
+import org.docwhat.iated.rest.Edit;
 import org.simplericity.macify.eawt.Application;
 import org.simplericity.macify.eawt.ApplicationEvent;
 import org.simplericity.macify.eawt.ApplicationListener;
 import org.simplericity.macify.eawt.DefaultApplication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author jhurne, docwhat
  */
 public class DashboardFrame extends javax.swing.JFrame implements ApplicationListener {
+    private static final Logger logger = LoggerFactory.getLogger(DashboardFrame.class);
 
     private AppState state;
     private Application application;
@@ -184,7 +188,7 @@ public class DashboardFrame extends javax.swing.JFrame implements ApplicationLis
 
     public void handleQuit() {
         state.stopServer();
-        System.out.println("NARF: Goodbye!");
+        logger.info("Goodbye!");
         System.exit(0);
     }
 
@@ -204,24 +208,20 @@ public class DashboardFrame extends javax.swing.JFrame implements ApplicationLis
 
         }
         catch (UnsupportedLookAndFeelException e) {
-            System.err.println("Unable to set the Swing Look and Feel. "
-                    + "The default look and feel will be used instead.");
-            e.printStackTrace();
+            logger.warn("Unable to set the Swing Look and Feel. "
+                    + "The default look and feel will be used instead.", e);
         }
         catch (ClassNotFoundException e) {
-            System.err.println("Unable to set the Swing Look and Feel. "
-                    + "The default look and feel will be used instead.");
-            e.printStackTrace();
+            logger.warn("Unable to set the Swing Look and Feel. "
+                    + "The default look and feel will be used instead.", e);
         }
         catch (InstantiationException e) {
-            System.err.println("Unable to set the Swing Look and Feel. "
-                    + "The default look and feel will be used instead.");
-            e.printStackTrace();
+            logger.warn("Unable to set the Swing Look and Feel. "
+                    + "The default look and feel will be used instead.", e);
         }
         catch (IllegalAccessException e) {
-            System.err.println("Unable to set the Swing Look and Feel. "
-                    + "The default look and feel will be used instead.");
-            e.printStackTrace();
+            logger.warn("Unable to set the Swing Look and Feel. "
+                    + "The default look and feel will be used instead.", e);
         }
     }
 }

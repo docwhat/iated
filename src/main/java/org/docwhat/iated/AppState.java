@@ -15,6 +15,9 @@ import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.OS;
+import org.docwhat.iated.rest.Edit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -22,6 +25,7 @@ import org.apache.commons.exec.OS;
  */
 public enum AppState {
     INSTANCE;
+    private static final Logger logger = LoggerFactory.getLogger(AppState.class);
 
     public static final String EDITOR = "EDITOR";
     public static final String PORT = "PORT";
@@ -46,6 +50,7 @@ public enum AppState {
     public void startServer() {
         int defaultPort = this.getPort();
         String endpoint = String.format("http://localhost:%d/", defaultPort);
+        logger.debug("Starting server on " + endpoint);
 
         try {
             server = HttpServerFactory.create(endpoint);
@@ -56,10 +61,10 @@ public enum AppState {
         }
 
         server.start();
-        System.out.println("Started server on: " + endpoint);
     }
 
     public void stopServer() {
+        //TODO Don't puke if it is already stopped.
         server.stop(0);
     }
 

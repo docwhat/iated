@@ -8,6 +8,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import org.docwhat.iated.AppState;
 import org.docwhat.iated.EditSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -15,6 +17,7 @@ import org.docwhat.iated.EditSession;
  */
 @Path("/edit/{token}")
 public class EditToken {
+    private static final Logger logger = LoggerFactory.getLogger(EditToken.class);
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
@@ -22,8 +25,8 @@ public class EditToken {
     public String edit(@PathParam("token") String token) {
         EditSession session = AppState.INSTANCE.getEditSession(token);
 
-        System.out.println("--EditToken");
-        System.out.println("Session: " + token);
+        logger.debug("--EditToken");
+        logger.debug("Session: " + token);
 
         return session.getText();
     }

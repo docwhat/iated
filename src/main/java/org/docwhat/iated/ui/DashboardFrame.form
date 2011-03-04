@@ -30,7 +30,9 @@
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="activePortField" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="397" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+              <Component id="jToggleServer" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="266" max="32767" attributes="0"/>
               <Component id="preferencesButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -44,6 +46,7 @@
                   <Component id="preferencesButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="activePortField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jToggleServer" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="369" max="32767" attributes="0"/>
           </Group>
@@ -69,6 +72,19 @@
         <Property name="columns" type="int" value="5"/>
         <Property name="editable" type="boolean" value="false"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JToggleButton" name="jToggleServer">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Init..."/>
+        <Property name="toolTipText" type="java.lang.String" value="Start or stop the IATed server."/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="jToggleServer"/>
+      </AccessibilityProperties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jToggleServerItemStateChanged"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

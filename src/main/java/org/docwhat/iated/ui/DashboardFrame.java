@@ -25,8 +25,8 @@ import org.slf4j.LoggerFactory;
  * @author jhurne, docwhat
  */
 public class DashboardFrame extends javax.swing.JFrame implements ApplicationListener {
-    private static final Logger logger = LoggerFactory.getLogger(DashboardFrame.class);
 
+    private static final Logger logger = LoggerFactory.getLogger(DashboardFrame.class);
     private AppState state;
     private Application application;
 
@@ -76,6 +76,14 @@ public class DashboardFrame extends javax.swing.JFrame implements ApplicationLis
 
     private void updateDisplay() {
         activePortField.setText(String.valueOf(state.getActivePort()));
+        if (state.isServerRunning()) {
+            jToggleServer.setText("Running");
+            jToggleServer.setSelected(true);
+        } else {
+            jToggleServer.setText("Stopped");
+            jToggleServer.setSelected(false);
+        }
+        jToggleServer.setEnabled(true);
     }
 
     /** This method is called from within the constructor to
@@ -90,6 +98,7 @@ public class DashboardFrame extends javax.swing.JFrame implements ApplicationLis
         preferencesButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         activePortField = new javax.swing.JTextField();
+        jToggleServer = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -110,6 +119,15 @@ public class DashboardFrame extends javax.swing.JFrame implements ApplicationLis
         activePortField.setColumns(5);
         activePortField.setEditable(false);
 
+        jToggleServer.setText("Init...");
+        jToggleServer.setToolTipText("Start or stop the IATed server.");
+        jToggleServer.setEnabled(false);
+        jToggleServer.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jToggleServerItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -119,7 +137,9 @@ public class DashboardFrame extends javax.swing.JFrame implements ApplicationLis
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(activePortField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 397, Short.MAX_VALUE)
+                .addGap(54, 54, 54)
+                .addComponent(jToggleServer)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 266, Short.MAX_VALUE)
                 .addComponent(preferencesButton)
                 .addContainerGap())
         );
@@ -130,9 +150,12 @@ public class DashboardFrame extends javax.swing.JFrame implements ApplicationLis
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(preferencesButton)
                     .addComponent(jLabel1)
-                    .addComponent(activePortField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(activePortField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jToggleServer))
                 .addContainerGap(369, Short.MAX_VALUE))
         );
+
+        jToggleServer.getAccessibleContext().setAccessibleName("jToggleServer");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -144,9 +167,26 @@ public class DashboardFrame extends javax.swing.JFrame implements ApplicationLis
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         state.stopServer();
     }//GEN-LAST:event_formWindowClosing
+
+    private void jToggleServerItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jToggleServerItemStateChanged
+        jToggleServer.setEnabled(false);
+        if (jToggleServer.isSelected()) {
+            logger.debug("NARF0: " + jToggleServer.isSelected());
+
+            jToggleServer.setText("Starting...");
+            state.startServer();
+        } else {
+            logger.debug("NARF1: " + jToggleServer.isSelected());
+
+            jToggleServer.setText("Stopping...");
+            state.stopServer();
+        }
+        updateDisplay();
+    }//GEN-LAST:event_jToggleServerItemStateChanged
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField activePortField;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JToggleButton jToggleServer;
     private javax.swing.JButton preferencesButton;
     // End of variables declaration//GEN-END:variables
 

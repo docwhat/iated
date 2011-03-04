@@ -90,8 +90,7 @@ public class EditSession {
             FileUtils.write(editFile, text);
             state.editFile(editFile);
             created = true;
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             //TODO Do something meaningful with the exception.
             throw new RuntimeException(ex);
         }
@@ -111,8 +110,7 @@ public class EditSession {
         File editFile = AppState.INSTANCE.getSaveFile(url, id, extension);
         try {
             return FileUtils.readFileToString(editFile);
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             //TODO Handle this better.
             throw new RuntimeException(ex);
         }

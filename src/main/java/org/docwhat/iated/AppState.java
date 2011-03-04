@@ -64,8 +64,9 @@ public enum AppState {
     }
 
     public void stopServer() {
-        //TODO Don't puke if it is already stopped.
-        server.stop(0);
+        if (null != server) {
+            server.stop(0);
+        }
     }
 
     public void restartServer() {

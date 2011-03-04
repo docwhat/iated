@@ -48,24 +48,36 @@ public enum AppState {
     }
 
     public void startServer() {
-        int defaultPort = this.getPort();
-        String endpoint = String.format("http://localhost:%d/", defaultPort);
-        logger.debug("Starting server on " + endpoint);
+        if (null == server) {
+            int defaultPort = this.getPort();
+            String endpoint = String.format("http://localhost:%d/", defaultPort);
+            logger.debug("Starting server on " + endpoint);
 
-        try {
-            server = HttpServerFactory.create(endpoint);
-        } catch (IOException ex) {
-            //Logger.getLogger(DashboardFrame.class.getName()).log(Level.SEVERE, null, ex);
-            //TODO Add a meaningful subclass?
-            throw new RuntimeException(ex);
+            try {
+                server = HttpServerFactory.create(endpoint);
+            }
+            catch (IOException ex) {
+                // TODO The user should be notified why the server didn't start.
+                logger.error("Unable to start server", ex);
+            }
+
+            if (null != server) {
+                server.start();
+            } else {
+                logger.debug("Server failed to start.");
+            }
+        } else {
+            logger.debug("Starting server, but it was already started.");
         }
-
-        server.start();
     }
 
     public void stopServer() {
         if (null != server) {
-            server.stop(0);
+            logger.debug("Stopping server");
+            server.stop(1);
+            server = null;
+        } else {
+            logger.debug("Stopping server, but it was already stopped.");
         }
     }
 
@@ -73,6 +85,10 @@ public enum AppState {
         //TODO Don't restart if stopped
         stopServer();
         startServer();
+    }
+
+    public boolean isServerRunning() {
+        return server != null;
     }
 
     public int getActivePort() {
@@ -136,10 +152,12 @@ public enum AppState {
         Executor executor = new DefaultExecutor();
         try {
             executor.execute(cmd);
-        } catch (ExecuteException ex) {
+        }
+        catch (ExecuteException ex) {
             //TODO Do something meaningful with the exception.
             throw new RuntimeException(ex);
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             //TODO Do something meaningful with the exception.
             throw new RuntimeException(ex);
         }
@@ -188,16 +206,17 @@ public enum AppState {
      * @return A free socket number.
      * @throws IOException If not free port can be found.
      */
-
     public int findFreePort() throws IOException {
         ServerSocket socket = null;
 
         try {
             socket = new ServerSocket(0);
             return socket.getLocalPort();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new IOException("no free port found");
-        } finally {
+        }
+        finally {
             if (socket != null) {
                 socket.close();
             }

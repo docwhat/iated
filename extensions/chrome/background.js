@@ -18,19 +18,45 @@ function init() {
     console.debug('IAT background loaded.');
 }
 
-/** Handles an edit request.
+/** Handles request from contentscript.js
+ * @param msg      Object Data sent in the request.
+ * @param sender   Object Origin of the request.
+ * @param callback Function The method to call when the request completes.
  */
-function edit(text, callback) {
+function onRequest(msg, sender, callback) {
+    if ('edit' === msg.action) {
+	edit(msg.text, msg.url, msg.id, callback);
+    } else if ('update' == msg.action) {
+	update(msg.token, msg.change_id, callback);
+    } else {
+	console.error("Unknown msg: ", msg);
+    }
+};
+
+/** Handles an edit request.
+ * @param text
+ * @param url
+ * @param id
+ */
+function edit(text, url, id, callback) {
+    var data = { text : text };
+    if (url) {
+	data.url = url;
+    }
+    if (id) {
+	data.id = id;
+    }
     $.ajax({
 	url: base_url + 'edit',
 	type: 'POST',
-	data: { text : text },
+	data: data,
 	dataType: 'text',
 	success: function (token, textStatus) {
-	    callback(token);
+	    callback({token: token});
 	},
 	error: function (jqXHR, textStatus, errorThrown) {
 	    console.error("edit: failure: %o - %o - %o", jqXHR, textStatus, errorThrown);
+	    callback({ error: "Unable to get update from IATed" });
 	}
     });
 }
@@ -58,25 +84,10 @@ function update(token, change_id, callback) {
 	error: function (jqXHR, textStatus, errorThrown) {
 	    console.error("update: failure: %o - %o - %o", jqXHR, textStatus, errorThrown);
 	    console.log('narf4');
-	    callback(null);
+	    callback({ error: "Unable to get update from IATed" });
 	}
     });
 }
-
-/** Handles request from contentscript.js
- * @param msg      Object Data sent in the request.
- * @param sender   Object Origin of the request.
- * @param callback Function The method to call when the request completes.
- */
-function onRequest(msg, sender, callback) {
-    if ('edit' === msg.action) {
-	edit(msg.text, callback);
-    } else if ('update' == msg.action) {
-	update(msg.token, msg.change_id, callback);
-    } else {
-	console.error("Unknown msg: ", msg);
-    }
-};
 
 /* Main */
 init();

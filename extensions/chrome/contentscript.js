@@ -1,12 +1,26 @@
 var is_focused = true;
 var focus_queue = [];
 
+/** jQuery plugin to assign unique ids.
+ */
+(function( $ ){
+    var last_id = 0;
+    $.fn.getId = function() {
+	var el = this.first();
+	if (!el.attr('id')) {
+	    el.attr('id', 'iat-' + (++last_id));
+	}
+	return el.attr('id');
+    };
+})( jQuery );
+
 /** Scan the page for textareas and setup the buttons.
  */
 function init() {
     console.debug('IAT is loading...');
     $('textarea').each(function () {
-	var button = $('<button class="iat">IAT</button>'), jel = $(this);
+	var jel = $(this), tid = jel.getId(), button = $('<button class="iat">IAT</button>');
+;
 	jel.after(button);
 
 	button
@@ -34,12 +48,20 @@ function init() {
  * @param jel  A single jQuery element.
  */
 function edit(jel) {
-    var callback = function (token) {
-	console.debug("IAT edit succes for ", jel, " with ", token);
-	monitor(jel, token, null);
+    var callback = function (msg) {
+	console.debug("IAT edit reply for ", jel, " with ", msg);
+	if (msg && msg.error) {
+	    // Handle the error.
+	    handleError(msg);
+	    return;
+	}
+	monitor(jel, msg.token, null);
     }
     chrome.extension.sendRequest({ action : 'edit',
-				   text   : jel.val()},
+				   text   : jel.val(),
+				   id     : jel.getId(),
+				   url    : window.location.origin + window.location.pathname,
+				 },
 				 callback);
 }
 
@@ -48,11 +70,15 @@ function edit(jel) {
  * @param token The token for this element.
  */
 function monitor(jel, token, change_id) {
-    // TODO This should pause when tab is not the active tab.
     var callback = function (msg) {
 	new_change_id = (msg && msg.id) ? msg.id : change_id;
 	console.debug("monitor callback - token:%o msg:%o el:%o",
 		      token, msg, jel);
+	if (msg && msg.error) {
+	    // Handle the error.
+	    handleError(msg);
+	    return;
+	}
 	if (msg && msg.text && msg.text != jel.val()) {
 	    jel.val(msg.text);
 	    jel.effect("highlight", {}, 3 * 1000);
@@ -71,6 +97,13 @@ function monitor(jel, token, change_id) {
 				  token  : token,
 				  change_id : change_id},
 				callback);
+}
+
+/** Handle errors.
+ * @param msg A message object containing information on the error.
+ */
+function handleError(msg) {
+    alert("ERROR: " + msg.error);
 }
 
 /** Main **/

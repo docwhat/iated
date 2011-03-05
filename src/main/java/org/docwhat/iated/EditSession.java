@@ -128,12 +128,12 @@ public class EditSession {
      *
      * @return the number of the current change.
      */
-    public Number getChangeId() {
+    public Long getChangeId() {
+        logger.debug("Change Number for " + getToken() + " was " + changeId + "...");
+
         if (file != null) {
-            if (lastModified == null || fileSize == null) {
-                lastModified = file.lastModified();
-                fileSize = file.length();
-            } else if (lastModified != file.lastModified() && fileSize != file.length()) {
+            if (lastModified == null || fileSize == null ||
+                (lastModified != file.lastModified() && fileSize != file.length())) {
                 changeId = changeId + 1;
                 lastModified = file.lastModified();
                 fileSize = file.length();

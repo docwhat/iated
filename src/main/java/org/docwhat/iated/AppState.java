@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.prefs.Preferences;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
@@ -108,6 +109,10 @@ public enum AppState {
         }
     }
 
+    /** gets the port number for the server.
+     *
+     * @return the port number for the server.
+     */
     public int getPort() {
         try {
             int portNum = store.getInt(PORT, findFreePort());
@@ -239,6 +244,13 @@ public enum AppState {
         } else {
             return null;
         }
+    }
+
+    /**
+     * A hack to list all sessions.
+     */
+    public Set<String> hackGetAllSessionKeys() {
+        return sessions.keySet();
     }
 
     /**

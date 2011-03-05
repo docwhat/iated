@@ -38,19 +38,27 @@ function edit(text, callback) {
 /** Handles an update request.
  */
 function update(token, change_id, callback) {
+    var url = base_url + 'edit/' + token;
+    if (change_id) {
+	url = url + '/' + change_id;
+    }
+    console.log("NARF: %o", url);
     $.ajax({
-	url: base_url + 'edit/' + token,
-	data: { change_id : change_id },
-	type: 'HEAD',
+	url: url,
+	type: 'GET',
 	dataType: 'json',
 	success: function (resp, textStatus) {
 	    console.log("update: success: %o - %o", resp, textStatus);
-	    if ("notmodified" !== textStatus) {
-		callback(resp.text, resp.change_id);
+	    if (resp) {
+		callback(resp);
+	    } else {
+		callback(null);
 	    }
 	},
 	error: function (jqXHR, textStatus, errorThrown) {
 	    console.error("update: failure: %o - %o - %o", jqXHR, textStatus, errorThrown);
+	    console.log('narf4');
+	    callback(null);
 	}
     });
 }

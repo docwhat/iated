@@ -208,7 +208,7 @@ public class DashboardFrame extends javax.swing.JFrame implements ApplicationLis
 
     @Override
     public void handleOpenApplication(ApplicationEvent ae) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        logger.debug("Ignoring handleOpenApplication()", ae);
     }
 
     @Override

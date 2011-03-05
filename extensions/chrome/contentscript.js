@@ -1,3 +1,6 @@
+var is_focused = true;
+var focus_queue = [];
+
 /** Scan the page for textareas and setup the buttons.
  */
 function init() {
@@ -14,6 +17,17 @@ function init() {
 	    });
     });
     console.debug('IAT is loaded.');
+
+    $(window).focus(function () {
+	console.log("narf focus");
+	is_focused = true;
+	while (focus_queue.length > 0) {
+	    focus_queue.pop()();
+	}
+    }).blur(function () {
+	console.log("narf blur");
+	is_focused = false;
+    });
 }
 
 /** Called to edit a textarea.
@@ -22,7 +36,7 @@ function init() {
 function edit(jel) {
     var callback = function (token) {
 	console.debug("IAT edit succes for ", jel, " with ", token);
-	monitor(jel, token, 0);
+	monitor(jel, token, null);
     }
     chrome.extension.sendRequest({ action : 'edit',
 				   text   : jel.val()},
@@ -36,11 +50,22 @@ function edit(jel) {
 function monitor(jel, token, change_id) {
     // TODO This should pause when tab is not the active tab.
     var callback = function (msg) {
-	console.log("monitor callback: %o - %o - %o ", msg, token, jel);
-	jel.val(msg);
-	setTimeout(function () {
-	    monitor(jel, token);
-	}, 3000);
+	new_change_id = (msg && msg.id) ? msg.id : change_id;
+	console.debug("monitor callback - token:%o msg:%o el:%o",
+		      token, msg, jel);
+	if (msg && msg.text && msg.text != jel.val()) {
+	    jel.val(msg.text);
+	    jel.effect("highlight", {}, 3 * 1000);
+	}
+	if (is_focused) {
+	    setTimeout(function () {
+		monitor(jel, token, new_change_id);
+	    }, 3000);
+	} else {
+	    focus_queue.push(function () {
+		monitor(jel, token, new_change_id);
+	    });
+	}
     }
     chrome.extension.sendRequest({action : 'update',
 				  token  : token,

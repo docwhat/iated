@@ -20,13 +20,23 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- *
+ * @author Christian Hšltje
+ * @author Jim Hurne
  */
 public enum AppState {
+    /** This a trick to have a singleton AppState.
+     */
     INSTANCE;
+
+    /** Setup logging for this class.
+     */
     private static final Logger logger = LoggerFactory.getLogger(AppState.class);
 
+    /** Constant for the editor in the preferences.
+     */
     public static final String EDITOR = "EDITOR";
+    /** Constant for the port number in the preferences.
+     */
     public static final String PORT = "PORT";
     private Preferences store;
     private HttpServer server;

@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- *
+ * @author Christian Hšltje
  */
 @Path("/edit")
 public class Edit {

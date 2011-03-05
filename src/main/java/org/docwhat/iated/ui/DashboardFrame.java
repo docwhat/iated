@@ -12,7 +12,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.docwhat.iated.AppState;
-import org.docwhat.iated.rest.Edit;
 import org.simplericity.macify.eawt.Application;
 import org.simplericity.macify.eawt.ApplicationEvent;
 import org.simplericity.macify.eawt.ApplicationListener;
@@ -22,9 +21,15 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author jhurne, docwhat
+ * @author Christian Hšltje
+ * @author Jim Hurne
  */
 public class DashboardFrame extends javax.swing.JFrame implements ApplicationListener {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 7674724365090604770L;
 
     private static final Logger logger = LoggerFactory.getLogger(DashboardFrame.class);
     private AppState state;

@@ -8,17 +8,24 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author docwhat
+ * @author Christian Hšltje
+ * @author Jim Hurne
  */
 public class EditSession {
+    private static final Logger logger = LoggerFactory.getLogger(EditSession.class);
 
     String url;
     String id;
     String extension;
-    Boolean created;
+    private File file;
+    private Long lastModified;
+    private Long fileSize;
+    private Long changeId;
 
     EditSession(
             String init_url,
@@ -27,7 +34,8 @@ public class EditSession {
         url = init_url;
         id = init_id;
         extension = init_extension;
-        created = false;
+        file = null;
+        changeId = -1L;
     }
 
     /**
@@ -84,17 +92,17 @@ public class EditSession {
 
     public boolean edit(String text) {
         AppState state = AppState.INSTANCE;
-        created = false;
-        File editFile = state.getSaveFile(url, id, extension);
+        file = state.getSaveFile(url, id, extension);
         try {
-            FileUtils.write(editFile, text);
-            state.editFile(editFile);
-            created = true;
+            FileUtils.write(file, text);
+            state.editFile(file);
+            getChangeId();
         } catch (IOException ex) {
             //TODO Do something meaningful with the exception.
+            file = null;
             throw new RuntimeException(ex);
         }
-        return created;
+        return file != null;
     }
 
     /**
@@ -114,5 +122,24 @@ public class EditSession {
             //TODO Handle this better.
             throw new RuntimeException(ex);
         }
+    }
+
+    /** gets the number of the current change.
+     *
+     * @return the number of the current change.
+     */
+    public Number getChangeId() {
+        if (file != null) {
+            if (lastModified == null || fileSize == null) {
+                lastModified = file.lastModified();
+                fileSize = file.length();
+            } else if (lastModified != file.lastModified() && fileSize != file.length()) {
+                changeId = changeId + 1;
+                lastModified = file.lastModified();
+                fileSize = file.length();
+            }
+        }
+        logger.debug("Change Number for " + getToken() + " is now " + changeId);
+        return changeId;
     }
 }

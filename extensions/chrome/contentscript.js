@@ -1,64 +1,54 @@
-console.debug('IAT is loading...');
+/** Scan the page for textareas and setup the buttons.
+ */
+function init() {
+    console.debug('IAT is loading...');
+    $('textarea').each(function () {
+	var button = $('<button class="iat">IAT</button>'), jel = $(this);
+	jel.after(button);
 
-var id_incr = 1;
-
-/* Mini-plugin to fetch/set element ids */
-// (function ( $ ) {
-//     $.fn.id = function () {
-// 	this.each(function (i, el) {
-// 	    el = $(el);
-// 	    console.log('narfy ', el, el.attr('id'));
-// 	    if (!el.attr('id')) {
-// 		el.attr('id', 'iat-' + id_incr++);
-// 		console.log('narfy ! ', el.attr('id'));
-// 	    }
-// 	    return el.attr('id');
-// 	});
-//     };
-// })( jQuery );
-
-/* Store the relationship between button.id (key) and textarea elements (value) */
-var table = {};
-
-function edit_callback(data) {
-    console.log('edit_callback(', data, ');');
-    table[data.id].val(data.text);
-}
-
-function edit (ev) {
-    var id = $(ev.target).attr('id');
-    console.log('edit(', ev, ');', id);
-    if (table[id]) {
-	var text = table[id].val();
-	chrome.extension.sendRequest({'action' : 'edit',
-				      'text' : text,
-				      'id' : id},
-				     edit_callback);
-    } else {
-	console.error("Unable to find entry in table for", id);
-    }
-    console.log('...end edit');
-}
-
-$('textarea').each(function (i, el) {
-    var id="iat-" + id_incr++, button = $('<button class="iat" id="'+id+'">IAT</button>');
-    el = $(el);
-    el.after(button);
-
-    /* Create a lookup for the button for the future. */
-    table[id] = el;
-    console.log('narf added to table: ', id, el, table);
-
-    button
-	.hide()
-	.css('position', 'absolute')
-	.click(edit);
-    $(el, button).hover(function () {
-	button.stop(true, true).fadeIn(400);
-    }, function () {
-	button.stop(true).fadeOut(4 * 1000);
+	button
+	    .css('position', 'absolute')
+	    .click(function (event) {
+		edit(jel);
+		return false;
+	    });
     });
-});
+    console.debug('IAT is loaded.');
+}
 
+/** Called to edit a textarea.
+ * @param jel  A single jQuery element.
+ */
+function edit(jel) {
+    var callback = function (token) {
+	console.debug("IAT edit succes for ", jel, " with ", token);
+	monitor(jel, token, 0);
+    }
+    chrome.extension.sendRequest({ action : 'edit',
+				   text   : jel.val()},
+				 callback);
+}
 
-console.debug('IAT is loaded.');
+/** Start monitoring for changes.
+ * @param jel  A single jQuery element.
+ * @param token The token for this element.
+ */
+function monitor(jel, token, change_id) {
+    // TODO This should pause when tab is not the active tab.
+    var callback = function (msg) {
+	console.log("monitor callback: %o - %o - %o ", msg, token, jel);
+	jel.val(msg);
+	setTimeout(function () {
+	    monitor(jel, token);
+	}, 3000);
+    }
+    chrome.extension.sendRequest({action : 'update',
+				  token  : token,
+				  change_id : change_id},
+				callback);
+}
+
+/** Main **/
+init();
+
+/* EOF */

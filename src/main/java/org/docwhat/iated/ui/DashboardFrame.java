@@ -69,6 +69,9 @@ public class DashboardFrame extends javax.swing.JFrame implements ApplicationLis
 
                 // Show the dashboard.
                 setVisible(true);
+
+                // Update the dashboard.
+                updateDisplay();
             }
         });
 
@@ -176,13 +179,11 @@ public class DashboardFrame extends javax.swing.JFrame implements ApplicationLis
     private void jToggleServerItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jToggleServerItemStateChanged
         jToggleServer.setEnabled(false);
         if (jToggleServer.isSelected()) {
-            logger.debug("NARF0: " + jToggleServer.isSelected());
-
+            // TODO These don't seem to show up...
             jToggleServer.setText("Starting...");
             state.startServer();
         } else {
-            logger.debug("NARF1: " + jToggleServer.isSelected());
-
+            // TODO These don't seem to show up...
             jToggleServer.setText("Stopping...");
             state.stopServer();
         }

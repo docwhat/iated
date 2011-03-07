@@ -27,7 +27,7 @@ public class EditTokenId {
         EditSession session = AppState.INSTANCE.getEditSession(token);
         Long change_id = session.getChangeId();
 
-        boolean has_changed = change_id != id;
+        boolean has_changed = !change_id.equals(id);
 
         logger.debug("--EditTokenId");
         logger.debug("Session: " + token);

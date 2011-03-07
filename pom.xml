@@ -5,8 +5,8 @@
   <groupId>org.gerf.iated</groupId>
   <artifactId>iated-daemon</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  <name>Its All Text! Java Daemon</name>
-  <description>A java-based daemon for the totally awesome Its All Text! browser plugin</description>
+  <name>Its All Text! Editor Daemon</name>
+  <description>The editor daemon for the It's All Text! cross-browser plugin</description>
 
   <dependencyManagement>
     <dependencies>

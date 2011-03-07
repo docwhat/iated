@@ -10,7 +10,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author Christian Hšltje
+ * @author Christian HÃ¶ltje
  */
 @Path("/hello")
 public class Hello {

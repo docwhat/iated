@@ -11,7 +11,7 @@ import org.docwhat.iated.ui.PreferencesDialog;
 
 /**
  * The /preferences resource
- * @author Christian Hšltje
+ * @author Christian HÃ¶ltje
  */
 @Path("/preferences")
 public class Preferences {

@@ -9,7 +9,7 @@ import org.docwhat.iated.AppState;
 /**
  * The preferences dialog for the Its All Text! application. This dialog box was
  * designed using the NetBeans GUI designer.
- * @author Christian Hšltje
+ * @author Christian HÃ¶ltje
  * @author Jim Hurne
  */
 public class PreferencesDialog extends javax.swing.JDialog {

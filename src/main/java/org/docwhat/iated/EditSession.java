@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author Christian Hšltje
+ * @author Christian HÃ¶ltje
  * @author Jim Hurne
  */
 public class EditSession {

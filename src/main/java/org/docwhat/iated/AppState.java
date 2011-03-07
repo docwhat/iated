@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author Christian Hšltje
+ * @author Christian HÃ¶ltje
  * @author Jim Hurne
  */
 public enum AppState {

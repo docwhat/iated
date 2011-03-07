@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 
 /**
  *
- * @author docwhat
+ * @author Christian Höltje
  */
 public class AppStateTest extends TestCase {
 

@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author Christian Hšltje
+ * @author Christian HÃ¶ltje
  */
 @Path("/edit/{token}")
 public class EditToken {

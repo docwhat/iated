@@ -6,7 +6,7 @@ import javax.ws.rs.Produces;
 
 /**
  * The /ping resource.
- * @author Christian Hšltje
+ * @author Christian HÃ¶ltje
  */
 @Path("/ping")
 public class Ping {

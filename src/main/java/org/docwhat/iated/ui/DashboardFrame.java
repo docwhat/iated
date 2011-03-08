@@ -35,6 +35,9 @@ public class DashboardFrame extends javax.swing.JFrame implements ApplicationLis
     private AppState state;
     private Application application;
 
+    private final static String APP_NAME = "IATed";
+
+
     public static void main(String[] args) {
         Application application = new DefaultApplication();
         useSwingSystemLookAndFeel();
@@ -69,6 +72,9 @@ public class DashboardFrame extends javax.swing.JFrame implements ApplicationLis
 
                 // Show the dashboard.
                 setVisible(true);
+
+                // Set the title.
+                setTitle(APP_NAME);
 
                 // Update the dashboard.
                 updateDisplay();

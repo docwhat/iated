@@ -7,6 +7,8 @@ package org.docwhat.iated;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Formatter;
@@ -24,7 +26,8 @@ public class EditSession {
     private static final Logger logger = LoggerFactory
             .getLogger(EditSession.class);
 
-    String url;
+    URL url;
+    String url_string;
     String id;
     String extension;
     String token;
@@ -34,8 +37,14 @@ public class EditSession {
     private Long changeId;
 
     EditSession(String init_url, String init_id, String init_extension) {
-        url = init_url;
+        url_string = init_url;
+        try {
+            url = new URL(init_url);
+        } catch (MalformedURLException e) {
+            url = null;
+        }
         id = init_id;
+        //TODO verify extension is valid.
         extension = init_extension;
         token = null;
         file = null;
@@ -50,7 +59,7 @@ public class EditSession {
      */
     public String getToken() {
         if (null == token) {
-            token = EditSession.getToken(url, id, extension);
+            token = EditSession.getToken(url.toString(), id, extension);
         }
         // TODO This needs to be stored or fetched from the db.
         return token;
@@ -145,7 +154,7 @@ public class EditSession {
 
     public boolean edit(String text) {
         AppState state = AppState.INSTANCE;
-        file = state.getSaveFile(url, id, extension);
+        file = this.getSaveFile();
         try {
             FileUtils.write(file, text);
             state.editFile(file);
@@ -158,8 +167,27 @@ public class EditSession {
         return file != null;
     }
 
+    /** Get the location for where to save text to.
+     *
+     * @return The file path where to save text to.
+     */
+    public File getSaveFile() {
+        //TODO better munging.
+        String filename;
+        String disallowed = "[^a-zA-Z0-9_-]+";
+        if (url == null) {
+            filename = url_string.replaceAll(disallowed, "");
+            logger.debug("Using url_string for filename: " + filename);
+        } else {
+            filename = url.getHost() + "/" + url.getPath().replaceAll(disallowed, "");
+            logger.debug("Using url for filename: " + filename);
+        }
+        extension = extension.replaceAll(disallowed, "");
+        return new File(AppState.INSTANCE.getSaveDir(), filename + "." + extension);
+    }
+
     public String getText() {
-        File editFile = AppState.INSTANCE.getSaveFile(url, id, extension);
+        File editFile = this.getSaveFile();
         try {
             return FileUtils.readFileToString(editFile);
         } catch (IOException ex) {

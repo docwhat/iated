@@ -191,23 +191,6 @@ public enum AppState {
         return new File(System.getProperty("user.home") + "/.iat/");
     }
 
-    /** Get the location for where to save text to.
-     *
-     * @param url The URL of the page the text is from.
-     * @param id  The id of the textarea where the text is from.
-     * @param extension The extension wanted for the filename.
-     * @return The file path where to save text to.
-     */
-    public File getSaveFile(
-            final String url,
-            final String id,
-            final String extension) {
-        //TODO verify extension is valid.
-        //TODO munge url and id into a filename or randomly assign one.
-        return new File(this.getSaveDir(),
-                "TODO-fix-this" + url + "." + id + "." + extension);
-    }
-
     /** Find a free TCP port.
      *
      * From:

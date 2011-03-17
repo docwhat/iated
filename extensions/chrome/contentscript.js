@@ -60,7 +60,7 @@ function edit(jel) {
     chrome.extension.sendRequest({ action : 'edit',
 				   text   : jel.val(),
 				   id     : jel.getId(),
-				   url    : window.location.origin + window.location.pathname,
+				   url    : window.location.href,
 				 },
 				 callback);
 }

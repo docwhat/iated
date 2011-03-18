@@ -9,7 +9,7 @@ function init() {
 
     /* Defaults for ajax requests. */
     $.ajaxSetup({
-	cache: false
+        cache: false
     });
 
     /* Set up the listener. */
@@ -25,11 +25,11 @@ function init() {
  */
 function onRequest(msg, sender, callback) {
     if ('edit' === msg.action) {
-	edit(msg.text, msg.url, msg.id, callback);
+        edit(msg.text, msg.url, msg.id, callback);
     } else if ('update' == msg.action) {
-	update(msg.token, msg.change_id, callback);
+        update(msg.token, msg.change_id, callback);
     } else {
-	console.error("Unknown msg: ", msg);
+        console.error("Unknown msg: ", msg);
     }
 };
 
@@ -41,23 +41,23 @@ function onRequest(msg, sender, callback) {
 function edit(text, url, id, callback) {
     var data = { text : text };
     if (url) {
-	data.url = url;
+        data.url = url;
     }
     if (id) {
-	data.id = id;
+        data.id = id;
     }
     $.ajax({
-	url: base_url + 'edit',
-	type: 'POST',
-	data: data,
-	dataType: 'text',
-	success: function (token, textStatus) {
-	    callback({token: token});
-	},
-	error: function (jqXHR, textStatus, errorThrown) {
-	    console.error("edit: failure: %o - %o - %o", jqXHR, textStatus, errorThrown);
-	    callback({ error: "Unable to get update from IATed" });
-	}
+        url: base_url + 'edit',
+        type: 'POST',
+        data: data,
+        dataType: 'text',
+        success: function (token, textStatus) {
+            callback({token: token});
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("edit: failure: %o - %o - %o", jqXHR, textStatus, errorThrown);
+            callback({ error: "Unable to get update from IATed" });
+        }
     });
 }
 
@@ -66,26 +66,26 @@ function edit(text, url, id, callback) {
 function update(token, change_id, callback) {
     var url = base_url + 'edit/' + token;
     if (change_id) {
-	url = url + '/' + change_id;
+        url = url + '/' + change_id;
     }
     console.log("NARF: %o", url);
     $.ajax({
-	url: url,
-	type: 'GET',
-	dataType: 'json',
-	success: function (resp, textStatus) {
-	    console.log("update: success: %o - %o", resp, textStatus);
-	    if (resp) {
-		callback(resp);
-	    } else {
-		callback(null);
-	    }
-	},
-	error: function (jqXHR, textStatus, errorThrown) {
-	    console.error("update: failure: %o - %o - %o", jqXHR, textStatus, errorThrown);
-	    console.log('narf4');
-	    callback({ error: "Unable to get update from IATed" });
-	}
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+        success: function (resp, textStatus) {
+            console.log("update: success: %o - %o", resp, textStatus);
+            if (resp) {
+                callback(resp);
+            } else {
+                callback(null);
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("update: failure: %o - %o - %o", jqXHR, textStatus, errorThrown);
+            console.log('narf4');
+            callback({ error: "Unable to get update from IATed" });
+        }
     });
 }
 

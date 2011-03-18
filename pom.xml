@@ -7,6 +7,7 @@
   <version>1.0.0-SNAPSHOT</version>
   <name>Its All Text! Editor Daemon</name>
   <description>The editor daemon for the It's All Text! cross-browser plugin</description>
+  <url>file:///Users/docwhat/projects/iated/target/jnlp/</url>
 
   <dependencyManagement>
     <dependencies>
@@ -99,6 +100,10 @@
   <scm>
     <url>http://github.com/docwhat/iated</url>
   </scm>
+  <organization>
+    <name>Christian Höltje</name>
+    <url>http://docwhat.org/</url>
+  </organization>
   <build>
     <plugins>
       <!-- Compile with Java 6 -->
@@ -125,7 +130,7 @@
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>org.docwhat.iated.IATed</mainClass>
+              <mainClass>org.docwhat.iated.DashboardFrame</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -178,6 +183,46 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo.webstart</groupId>
+        <artifactId>webstart-maven-plugin</artifactId>
+        <version>1.0-beta-1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>jnlp-single</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+            <jnlp>
+                <outputFile>IATed.jnlp</outputFile>
+                <mainClass>org.docwhat.iated.ui.DashboardFrame</mainClass>
+            </jnlp>
+            <pack200>true</pack200>
+            <sign>
+              <keystore>/tmp/iated.keystore</keystore>
+              <keypass>m2m2m2</keypass>
+              <storepass>m2m2m2</storepass>
+              <alias>snakeoil</alias>
+              <validity>3650</validity>
+
+              <dnameCn>Christian Höltje</dnameCn>
+              <dnameO>Christian Höltje</dnameO>
+              <dnameL>Pittsburgh</dnameL>
+              <dnameSt>Pennsylvania</dnameSt>
+              <dnameC>US</dnameC>
+              <keystoreConfig>
+                <delete>true</delete>
+                <gen>true</gen>
+              </keystoreConfig>
+            </sign>
+            <verbose>true</verbose>
+            <unsign>true</unsign>
+            <verifyjar>false</verifyjar>
+        </configuration>
       </plugin>
     </plugins>
   </build>

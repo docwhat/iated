@@ -7,7 +7,11 @@ Pathname.glob(Pathname.new(__FILE__).dirname + 'iated' + 'pages' + '*.rb').each 
   require path.to_s
 end
 
+require 'iated/mcp'
+
 set :run, false
+
+$iated_mcp = IATed::MCP.new
 
 module IATed
   class Application

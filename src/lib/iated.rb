@@ -1,7 +1,12 @@
 
 require 'rubygems'
 require 'sinatra'
-require 'iated/ping'
+
+# Load all handlers in the iated/ directory
+Pathname.glob(Pathname.new(__FILE__).dirname + 'iated' + 'pages' + '*.rb').each do |path|
+  require path.to_s
+end
+
 set :run, false
 
 module IATed

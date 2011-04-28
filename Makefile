@@ -39,6 +39,7 @@ jar: target/iated.jar
 exe: target/iated.exe
 
 target/iated.exe: target/iated.jar
+	@if [ ! -x cache/launch4j/launch4j ]; then echo "Run 'make setup'"; exit 10; fi
 	cd target && ../cache/launch4j/launch4j $$(pwd)/../launch4j-config.xml
 
 target/iated.jar: build/build.jar

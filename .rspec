@@ -1,0 +1,4 @@
+-r test/common.rb
+--color
+--format documentation
+

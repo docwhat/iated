@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe 'IATed /ping' do
   include Rack::Test::Methods
 

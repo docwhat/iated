@@ -8,6 +8,7 @@ GEM
     rack-test (0.5.7)
       rack (>= 1.0)
     rake (0.8.7)
+    rcov (0.9.9-java)
     rspec (2.5.0)
       rspec-core (~> 2.5.0)
       rspec-expectations (~> 2.5.0)
@@ -17,7 +18,7 @@ GEM
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.5.0)
     rubyzip (0.9.4)
-    sinatra (1.2.3)
+    sinatra (1.2.6)
       rack (~> 1.1)
       tilt (>= 1.2.2, < 2.0)
     tilt (1.3)
@@ -32,6 +33,8 @@ PLATFORMS
 
 DEPENDENCIES
   rack-test
+  rake (~> 0.8.7)
+  rcov
   rspec
-  sinatra
-  warbler
+  sinatra (~> 1.2.6)
+  warbler (~> 1.3.0)

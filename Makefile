@@ -2,6 +2,7 @@
 
 SOURCE:=$(shell find src -type f)
 BUILD_SOURCE:=$(patsubst src/%, build/%, $(SOURCE))
+TEST_SOURCE := $(shell find spec -type f -iname '*.rb')
 
 # Downloadables
 LAUNCH4J_URL := http://sourceforge.net/projects/launch4j/files/launch4j-3/3.0.2/launch4j-3.0.2-macosx.tgz
@@ -18,10 +19,14 @@ all: build
 exec:
 	cd src && env RUBYLIB=./lib $(JRUBY) bin/iated --debug
 
-## Execute the tool
+## Execute tests and coverage
 .PHONY: test
 test:
-	$(JRUBY) -S rspec test
+	$(JRUBY) -S rspec spec
+
+.PHONY: coverage
+coverage: $(TEST_SOURCE)
+	$(JRUBY) -S jrcov --output target/coverage -I src/lib $(TEST_SOURCE)
 
 ## Setup the environment
 .PHONY: setup

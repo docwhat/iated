@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe 'IATed /hello' do
   include Rack::Test::Methods
   def app

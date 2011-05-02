@@ -58,7 +58,12 @@ document
 
 `GET /preferences` requires `auth-token`.
 
-Returns `ok` or `fail`.
+Opens a web-page displaying the preferences.  Note, there are other
+URLs that IATed supports for modifying the preferences.
+
+`GET /preferences/set-editor` require `auth-token`.
+
+This opens  a dialog on the system running IATed to choose the editor.
 
 ### Authenticate/Token Exchange
 
@@ -96,3 +101,12 @@ response.  Side-effects are in square braces (`[]`).
     b: GET /edit/<token>
     s: <next textarea data>
 
+## IATed Dialogs
+
+This is a list of dialogs that IATed needs to be able to generate:
+
+* Set Editor -- The dialog to select an editor.
+* Auth Code -- A dialog to show the auth-code for entering in the
+  browser.
+* Select Port -- A dialog to select the port to run on for the first
+  time or if changing.

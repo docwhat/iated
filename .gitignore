@@ -6,3 +6,4 @@ tmp/
 /cache/
 /build/
 /target/
+velocity.log

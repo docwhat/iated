@@ -7,3 +7,4 @@ tmp/
 /build/
 /target/
 velocity.log
+/.rspec

@@ -7,9 +7,11 @@ describe 'IATed /doesnotexist' do
     Sinatra::Application
   end
 
-  it "returns a 404" do
+  it "returns a 404 for a POST" do
     get '/doesnotexist'
     last_response.status.should == 404
-    last_response.body.should_not =~ /sinatra/
+    last_response.content_type =~ /text\/plain/
+    last_response.body.should_not =~ /sinatra/i
   end
+
 end

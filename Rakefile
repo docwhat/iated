@@ -26,7 +26,9 @@ end
 Warbler::Task.new do |t|
   t.config.jar_name = "target/iated"
 end
-task :jar => :target_dir
+# There is a weird bug in warbler where the jar grows without
+# bound unless this extra clean is specified.
+task :jar => [:target_dir, :'jar:clean']
 
 # TODO: Create .exe (windows with launch4j)
 # TODO: Create .app (os-x)

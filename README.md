@@ -15,6 +15,19 @@ See [the github Issue tracker](https://github.com/docwhat/iated/issues)
 See
 [the Pivotal Tracker for It's All Text!](https://www.pivotaltracker.com/projects/178151).
 
+## Developer Quickstart
+
+1. Install [RVM](https://rvm.beginrescueend.com/) in your user
+account.
+2. Install jruby-1.6.1: `rvm install jruby-1.6.1`
+3. Install bundler: `gem install bundler`
+4. Install all the rest of the gems: `bundle`
+5. You can now use rake to build things. :-)
+
+Hint: You can run `jruby --ng-server` in one window and then set
+`export JRUBY_OPTS=--ng` in another and all the jruby processes will
+use nail-gun to start faster.
+
 ## API
 
 #### Ping

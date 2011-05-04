@@ -9,8 +9,8 @@ describe 'IATed /hello' do
   def setup
     @authcode = '123456'
     @authtoken = 'iated-hello-auth-token'
-    $iated_mcp.should_recieve(:get_auth_code).and_return(@authcode)
-    $iated_mcp.should_recieve(:get_auth_token).with(@authcode).and_return(@authtoken)
+    IATed::MCP.instance.should_recieve(:get_auth_code).and_return(@authcode)
+    IATed::MCP.instance.should_recieve(:get_auth_token).with(@authcode).and_return(@authtoken)
   end
 
   it "returns ok to when greeted" do

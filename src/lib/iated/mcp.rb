@@ -3,13 +3,21 @@
 # all the data stored, and the UI.
 
 require 'sinatra'
+require 'singleton'
 require 'java'
 
 module IATed
   class MCP < java.lang.Object
+    include Singleton
+
     def initialize
       super
       @prefs = java.util.prefs.Preferences.userNodeForPackage(self.getClass)
+    end
+
+    ## Called by the main program to get everything started.
+    def begin!
+      start_server
     end
 
     ## Returns the current port number

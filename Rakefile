@@ -37,7 +37,7 @@ task :ci => [:sloccount, :'ci:setup:rspec', :rcov, :jar]
 
 # SLOCCount
 desc "Generate SLOCCount"
-task :sloccount do
+task :sloccount => :target_dir do
   system "sloccount --duplicates --wide --details src spec > target/sloccount.sc"
 end
 

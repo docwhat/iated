@@ -12,7 +12,7 @@ require 'warbler'
 raise "I require JRuby" unless RUBY_ENGINE == "jruby"
 
 TARGET_DIR = "target"
-ENV['CI_REPORTS'] = File.join TARGET_DIR, "junit"
+ENV['CI_REPORTS'] = File.join TARGET_DIR, "test-reports"
 
 # Default task is the coverage report and jar.
 task :default => [:rcov, :jar]

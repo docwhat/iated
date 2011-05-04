@@ -33,7 +33,13 @@ task :jar => :target_dir
 
 # Jenkins
 desc "Continuous integration"
-task :ci => [:'ci:setup:rspec', :rcov, :jar]
+task :ci => [:sloccount, :'ci:setup:rspec', :rcov, :jar]
+
+# SLOCCount
+desc "Generate SLOCCount"
+task :sloccount do
+  system "sloccount --duplicates --wide --details src spec > target/sloccount.sc"
+end
 
 # Testing
 desc "Run RSpec code examples"

@@ -1,7 +1,4 @@
 
-require 'rubygems'
-require 'sinatra'
-
 # Load all handlers in the iated/ directory
 Pathname.glob(Pathname.new(__FILE__).dirname + 'iated' + 'pages' + '*.rb').each do |path|
   require path.to_s
@@ -15,16 +12,16 @@ $iated_mcp = IATed::MCP.new
 
 module IATed
   class Application
+    attr_reader :mcp
 
-    def run #:nocov:
-      set :server, %w[webrick]
-      set :bind, 'localhost'
-      set :port, 9494
-      set :show_exceptions, true
-      set :environment, :development
-
-      Sinatra::Application.run!
-    end  #:nocov:
+    #:nocov:
+    def run
+      if @mcp.nil?
+        @mcp = IATed::MCP.new
+      end
+      @mcp.run!
+    end
+    #:nocov:
 
   end
 end

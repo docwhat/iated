@@ -2,7 +2,47 @@
 # This is the coordination point for
 # all the data stored, and the UI.
 
+require 'sinatra'
+require 'java'
+
 module IATed
-  class MCP
+  class MCP < java.lang.Object
+    def initialize
+      super
+      @prefs = java.util.prefs.Preferences.userNodeForPackage(self.getClass)
+    end
+
+    ## Returns the current port number
+    def port
+      @prefs.getInt("PORT", defaultPort)
+    end
+
+    ## Returns the default port number.
+    def defaultPort
+      # TODO: This should probe for unused ports.
+      9090
+    end
+
+    ## Sets the current port number
+    def port= val
+      @prefs.putInt("PORT", val.to_i)
+    end
+
+    def start_server
+      set :server, %w[webrick]
+      set :bind, 'localhost'
+      set :port, port
+      set :show_exceptions, true
+      set :environment, :development
+
+      @is_running = true
+      Sinatra::Application.run!
+    end
+
+    def stop_server
+      @is_running = false
+      Sinatra::Application.quit!
+    end
+
   end
 end

@@ -65,5 +65,5 @@ class EditSession
   def change_id
     raise "Not Done" # TODO implement save_file
   end
-  
+
 end

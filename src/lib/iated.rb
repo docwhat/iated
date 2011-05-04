@@ -13,6 +13,7 @@ module IATed
   class Application
     attr_reader :mcp
 
+    #:nocov:
     def initialize
       @optparse = OptionParser.new do |opts|
         opts.banner =    "Usage: #{opts.program_name} [OPTIONS]"
@@ -29,6 +30,7 @@ module IATed
       end
 
     end
+    #:nocov:
 
     #:nocov:
     def run

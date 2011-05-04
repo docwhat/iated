@@ -15,8 +15,8 @@ $iated_mcp = IATed::MCP.new
 
 module IATed
   class Application
-    def run
 
+    def run #:nocov:
       set :server, %w[webrick]
       set :bind, 'localhost'
       set :port, 9494
@@ -24,7 +24,8 @@ module IATed
       set :environment, :development
 
       Sinatra::Application.run!
-    end
+    end  #:nocov:
+
   end
 end
 

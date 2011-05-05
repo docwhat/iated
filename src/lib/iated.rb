@@ -19,7 +19,7 @@ module IATed
         opts.banner =    "Usage: #{opts.program_name} [OPTIONS]"
 
         opts.on('-p', '--port PORT', Integer,
-                "The port number to run the server on (default: #{IATed::MCP.instance.port}.") do |p|
+                "The port number to run the server on (default: #{IATed::MCP.instance.port}).") do |p|
           IATed::MCP.instance.port = p
         end
 

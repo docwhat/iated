@@ -23,11 +23,9 @@ describe 'IATed /preferences' do
 
   it "returns a preferences web page" do
     get "/preferences", { :auth_token => @authtoken }
-    pending "getting web pages working" do
-      last_response.status.should == 200
-      last_response.content_type.should =~ /text\/html/
-      last_response.body =~ /<h1>/i
-    end
+    last_response.status.should == 200
+    last_response.content_type.should =~ /text\/html/
+    last_response.body =~ /<h1>/i
   end
 
 end

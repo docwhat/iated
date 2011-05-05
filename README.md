@@ -26,7 +26,9 @@ account.
 
 Hint: You can run `jruby --ng-server` in one window and then set
 `export JRUBY_OPTS=--ng` in another and all the jruby processes will
-use nail-gun to start faster.
+use nail-gun to start faster.  Though this can produce weird effects
+at time.  An example is that sinatra can only be "control-c"''d from
+the nail-gun server shell, not the shell you ran iated from.
 
 ## API
 

@@ -16,7 +16,6 @@ describe 'IATed /hello' do
   it "returns ok to when greeted" do
     get '/hello'
     last_response.status.should == 200
-    last_response.body.should == 'ok'
   end
 
   it "returns auth-token when code is sent" do

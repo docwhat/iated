@@ -13,6 +13,8 @@ gem 'sinatra', "~>1.2.6"
   gem 'rack-test'
   gem 'watchr'
   gem 'autowatchr'
+  gem 'cucumber'
+  gem 'webrat'
 #end
 
 # Local Variables:

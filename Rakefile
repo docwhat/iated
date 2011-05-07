@@ -6,6 +6,8 @@ Bundler.setup(:default, :development)
 require 'rake'
 require 'rspec/core/rake_task'
 require 'ci/reporter/rake/rspec'
+require 'cucumber'
+require 'cucumber/rake/task'
 require 'warbler'
 
 # Verify that we're in jruby. This helped with debugging.
@@ -43,20 +45,34 @@ task :sloccount => :target_dir do
   system "sloccount --duplicates --wide --details src spec > target/sloccount.sc"
 end
 
-# Testing
+# RSpec Testing
 desc "Run RSpec code examples"
 RSpec::Core::RakeTask.new(:rspec) do |t|
   t.skip_bundler = true # Suggested on some website about jruby.
 end
 
-# Coverage
+# RSpec Coverage
 desc "Run RSpec code examples with RCov"
-RSpec::Core::RakeTask.new(:rcov) do |t|
+RSpec::Core::RakeTask.new(:'rspec:rcov') do |t|
   t.skip_bundler = true # Suggested on some website about jruby.
   t.rcov = true
   t.rcov_opts = ['--exclude', 'spec,/gems/,jsignal_internal',
                  '--output', 'target/coverage']
 end
+
+desc "Run Cucumber features"
+Cucumber::Rake::Task.new(:features) do |t|
+#  puts "NARF #{t.inspect}"
+#  t.skip_bundler = true # Suggested on some website about jruby.
+end
+
+desc "Run Cucumber features with RCov"
+Cucumber::Rake::Task.new(:'features:rcov') do |t|
+  t.rcov = true
+end
+
+desc "Run all examples and features with RCov"
+task :rcov => [:'rspec:rcov', :'features:rcov']
 
 # Utility: clean
 desc "Cleans up the work environment"

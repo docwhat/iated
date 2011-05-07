@@ -14,6 +14,7 @@ module IATed
 
     attr_accessor :debug
     attr_reader :iat_dir
+    attr_reader :browser_token_db
 
     def initialize
       super
@@ -45,40 +46,41 @@ module IATed
       @prefs.putInt("PORT", val.to_i)
     end
 
-    def auth_token
-      if showing_auth_token?
-        return @auth_token
-      else
-        return :notset
-      end
+    def secret
+      is_showing_secret? ? @secret : :notset
     end
 
-    def showing_auth_token?
-      @is_showing_auth_token
+    def is_showing_secret?
+      @is_showing_secret
     end
 
-    def show_auth_token
-      @auth_token = (1..4).map{ rand(10).to_s }.join ""
-      @is_showing_auth_token = true
-      Thread.new do
-        puts " ** A browser requested authorization: #{@auth_token}"
-# TODO This needs to be abstracted. There is no reason a purely command line version can't be done. Also, loading swing will break CI.
-#        import javax.swing.JOptionPane
-#        JOptionPane.showMessageDialog(nil,
-#                                      "A browser has requested authorization: #{@auth_token}\nDo not press 'OK' until after you enter the number",
-#                                      "Authorize Browser",
-#                                      JOptionPane::INFORMATION_MESSAGE)
-        @is_showing_auth_token = false
-      end
+    def show_secret
+      @secret = (1..4).map{ rand(10).to_s }.join ""
+      @is_showing_secret = true
+##      Thread.new do
+##        puts " ** A browser requested authorization: #{@secret}"
+### TODO This needs to be abstracted. There is no reason a purely command line version can't be done. Also, loading swing will break CI.
+###        import javax.swing.JOptionPane
+###        JOptionPane.showMessageDialog(nil,
+###                                      "A browser has requested authorization: #{@secret}\nDo not press 'OK' until after you enter the number",
+###                                      "Authorize Browser",
+###                                      JOptionPane::INFORMATION_MESSAGE)
+##        @is_showing_secret = false
+##      end
     end
 
-    def hide_auth_token
-      # TODO auth_token should be using a JPanel or something, not a dialog.
+    def hide_secret
+      @is_showing_secret = false
+      # TODO secret should be using a JPanel or something, not a dialog.
     end
 
     # The magic value registering a browser.
-    def get_browser_token user_agent
+    def generate_browser_token user_agent
       @browser_token_db.add user_agent
+    end
+
+    def is_token_valid? token
+      @browser_token_db.has_token? token
     end
 
     def start_server

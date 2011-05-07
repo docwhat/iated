@@ -42,7 +42,7 @@ Returns the string `pong`.
 
 ### Send a file to the editor
 
-`POST /edit` requires `auth-token`.
+`POST /edit` requires "token".
 
 Arguments:
 
@@ -55,11 +55,11 @@ url
 id
 : The textarea id or identifier.
 
-Returns a token or `fail`.
+Returns a "sid" or `fail`.
 
 ### Retrieve the result of an edit
 
-`GET /edit/<token>` requires `auth-token`.
+`GET /edit/<sid>` requires "token".
 
 Returns:
 document
@@ -71,12 +71,12 @@ document
 
 ### Open preferences
 
-`GET /preferences` requires `auth-token`.
+`GET /preferences` requires "token".
 
 Opens a web-page displaying the preferences.  Note, there are other
 URLs that IATed supports for modifying the preferences.
 
-`GET /preferences/set-editor` require `auth-token`.
+`GET /preferences/set-editor` require "token".
 
 This opens  a dialog on the system running IATed to choose the editor.
 
@@ -87,13 +87,12 @@ This opens  a dialog on the system running IATed to choose the editor.
 Returns `ok`.
 
 IATed pops up a dialog box saying that someone is trying to access
-IATed and has a 6 digit number to enter into the web browser to allow
+IATed and has a 4 digit number (the "secret")to enter into the web browser to allow
 access.  Similar to bluetooth connections.
 
-`POST /hello` with auth=NNNNNN
+`POST /hello` with secret=/[0-9]{4}/
 
-If this is passed in, then the popup goes away and an `auth-token` is
-returned.
+If this is passed in, then the popup goes away and the "token" is returned.
 
 ## Example sessions.
 
@@ -103,17 +102,17 @@ response.  Side-effects are in square braces (`[]`).
 ### Initial authentication
 
     b: GET /hello
-    s: ok [a popup with a six digit number is shown]
-    b: POST /hello with data: auth=<NNNNNN>
-    s: auth-token=<MMMMMMMMMMMMMMMMM>
+    s: ok [a popup with the secret is shown]
+    b: POST /hello with data: secret=NNNN
+    s: token=<MMMMMMMMMMMMMMMMM>
 
 ### Editing session
 
     b: POST /edit text=<textarea data> url=<someurl> id=<textarea-id>
-    s: <token>
-    b: GET /edit/<token>
+    s: <sid>
+    b: GET /edit/<sid>
     s: nochange
-    b: GET /edit/<token>
+    b: GET /edit/<sid>
     s: <next textarea data>
 
 ## IATed Dialogs

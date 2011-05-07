@@ -1,4 +1,4 @@
-
+require 'pathname'
 # Load all handlers in the iated/ directory
 Pathname.glob(Pathname.new(__FILE__).dirname + 'iated' + 'pages' + '*.rb').each do |path|
   require path.to_s
@@ -12,6 +12,7 @@ require 'optparse'
 # Global settings for Sinatra
 set :run, false
 set :views, (Pathname.new(__FILE__).dirname.dirname + 'views').to_s
+set :public, (Pathname.new(__FILE__).dirname.dirname + 'public').to_s
 
 module IATed
   class Application

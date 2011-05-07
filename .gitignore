@@ -1,10 +1,10 @@
-.bundle
-db/*.sqlite3
-log/*.log
-tmp/
+/.bundle/
+/db/*.sqlite3
+/log/*.log
+/tmp/
 *~
+/.rspec
 /cache/
 /build/
 /target/
 velocity.log
-/.rspec

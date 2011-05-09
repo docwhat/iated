@@ -68,7 +68,7 @@ function update(token, change_id, callback) {
     if (change_id) {
         url = url + '/' + change_id;
     }
-    console.log("NARF: %o", url);
+    console.log("logging info: %o", url);
     $.ajax({
         url: url,
         type: 'GET',

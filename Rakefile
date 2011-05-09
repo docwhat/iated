@@ -62,7 +62,6 @@ end
 
 desc "Run Cucumber features"
 Cucumber::Rake::Task.new(:features) do |t|
-#  puts "NARF #{t.inspect}"
 #  t.skip_bundler = true # Suggested on some website about jruby.
 end
 

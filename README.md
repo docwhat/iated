@@ -24,11 +24,37 @@ account.
 4. Install all the rest of the gems: `bundle`
 5. You can now use rake to build things. :-)
 
-Hint: You can run `jruby --ng-server` in one window and then set
+### Nail Gun
+
+You can run `jruby --ng-server` in one window and then set
 `export JRUBY_OPTS=--ng` in another and all the jruby processes will
-use nail-gun to start faster.  Though this can produce weird effects
-at time.  An example is that sinatra can only be "control-c"''d from
-the nail-gun server shell, not the shell you ran iated from.
+use nail-gun to start faster.
+
+This *can*  produce weird effects.  An example is that sinatra can
+only be sent `control-c`  from the nail-gun server shell, not the
+shell you ran the sinatra process  from. I've also had problems with
+bundler not behaving correctly.
+
+### "client" instead of "server" optimizations
+
+Another option is to specify the "client" optimizations instead of
+"server" optimizations.  The server stuff takes longer to start, but
+runs much higher performance once it gets up to speed.
+
+You won't need this for the bulk of development, so you can turn it
+off by setting `export JAVA_OPTS="-d32"`.  You are supposed to have this work
+by setting `-client`, but that never works for me on OS-X.
+
+### Turning off the JRuby JIT compiler
+
+You can turn off the compilation of ruby stuff by using the `-X-C`
+flag for jruby.  You can set this with `export
+JRUBY_OPTS="-X-C"`. With server class processes this is desirable, but
+with development, we don't care.
+
+### Other ideas
+
+See Headius's [JRuby Startup Time tips](http://blog.headius.com/2010/03/jruby-startup-time-tips.html).
 
 ## API
 

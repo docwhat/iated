@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe IATed::MCP do
+describe "IATed::mcp" do
 
   it "should be able to fetch the port number from preferences" do
-    IATed::MCP.instance.port.should_not be_nil
+    IATed::mcp.port.should_not be_nil
   end
 
   it "should be able to set the port number to preferences" do
-    mcp = IATed::MCP.instance
+    mcp = IATed::mcp
     old_port = mcp.port
     begin
       mcp.port = 1234
@@ -18,11 +18,64 @@ describe IATed::MCP do
     end
   end
 
-  describe "#generate_browser_token" do
-    it "should return a token" do
-      mcp = IATed::MCP.instance
-      token = mcp.generate_browser_token "bogus user agent string"
-      token.should =~ /^[0-9a-f]{32}$/
+  context "while showing a secret" do
+    before(:each) do
+      IATed::mcp.show_secret
+    end
+    after(:each) do
+      IATed::mcp.hide_secret
+    end
+    describe "#secret" do
+      it "should be a string" do
+        IATed::mcp.secret.should be_a_kind_of(String)
+      end
+      it "should be 4 digits" do
+        IATed::mcp.secret.should =~ /^[0-9]{4}$/
+      end
+    end
+    describe "#showing_secret?" do
+      it "should be true" do
+        IATed::mcp.should be_showing_secret
+      end
+    end
+    describe "#confirm_secret" do
+      it "should return true if secret matches" do
+        IATed::mcp.confirm_secret(IATed::mcp.secret).should be_true
+      end
+      it "should return false if secret doesn't match" do
+        IATed::mcp.confirm_secret("qqqq").should be_false
+      end
+      it "should stow showing the secret" do
+        IATed::mcp.confirm_secret(IATed::mcp.secret)
+        IATed::mcp.should_not be_showing_secret
+      end
+    end
+  end
+
+  context "while not showing a secret" do
+    describe "#secret" do
+      it "should return :notset" do
+        IATed::mcp.secret.should == :notset
+      end
+    end
+    describe "#showing_secret?" do
+      it "should be false" do
+        IATed::mcp.should_not be_showing_secret
+      end
+    end
+  end
+
+
+  describe "#generate_token" do
+    before(:each) do
+      @token = IATed::mcp.generate_token "bogus user agent string"
+    end
+    it "should return a 32 hex character token" do
+      @token.should =~ /^[0-9a-f]{32}$/
+    end
+    it "should return a different token each time" do
+      token2 = IATed::mcp.generate_token "bogus user agent string"
+      @token.should_not == token2
     end
   end
 

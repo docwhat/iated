@@ -16,20 +16,20 @@ set :public, (Pathname.new(__FILE__).dirname.dirname + 'public').to_s
 
 module IATed
   class Application
-    attr_reader :mcp
 
     #:nocov:
     def initialize
+      @mcp = nil
       @optparse = OptionParser.new do |opts|
         opts.banner =    "Usage: #{opts.program_name} [OPTIONS]"
 
         opts.on('-p', '--port PORT', Integer,
                 "The port number to run the server on (default: #{IATed::MCP.instance.port}).") do |p|
-          IATed::MCP.instance.port = p
+          mcp.port = p
         end
 
         opts.on('-d', '--debug', "Turn on debugging mode.") do
-          IATed::MCP.instance.debug = true
+          mcp.debug = true
         end
 
         opts.on_tail('-h', '--help', 'Show this help.') do
@@ -44,10 +44,21 @@ module IATed
     #:nocov:
     def run
       @optparse.parse!
-      IATed::MCP.instance.begin!
+      mcp.begin!
     end
     #:nocov:
 
   end
+
+  ## Resets the Master Control Program
+  def self.reset_mcp
+    @mcp = nil
+  end
+
+  ## Access to the Master Control Program
+  def self.mcp
+    @mcp ||= IATed::MCP.new
+  end
+
 end
 

@@ -1,14 +1,29 @@
 # -*- ruby -*-
 
+require 'rubygems'
 require 'bundler'
 Bundler.setup(:default, :development)
 
 require 'rake'
 require 'rspec/core/rake_task'
 require 'ci/reporter/rake/rspec'
+require 'ci/reporter/rake/cucumber'
 require 'cucumber'
 require 'cucumber/rake/task'
 require 'warbler'
+
+### Hack for cucumber on jruby
+module Cucumber
+  module Rake
+    class Task
+      class ForkedCucumberRunner
+        def runner
+          [RUBY]
+        end
+      end
+    end
+  end
+end
 
 # Verify that we're in jruby. This helped with debugging.
 raise "I require JRuby" unless RUBY_ENGINE == "jruby"
@@ -37,7 +52,7 @@ task :jar => [:target_dir, :'jar:clean']
 
 # Jenkins
 desc "Continuous integration"
-task :ci => [:sloccount, :'ci:setup:rspec', :rcov, :jar]
+task :ci => [:sloccount, :'ci:setup:cucumber', :'ci:setup:rspec', :rcov, :jar]
 
 # SLOCCount
 desc "Generate SLOCCount"
@@ -47,17 +62,17 @@ end
 
 # RSpec Testing
 desc "Run RSpec code examples"
-RSpec::Core::RakeTask.new(:rspec) do |t|
+RSpec::Core::RakeTask.new(:spec) do |t|
   t.skip_bundler = true # Suggested on some website about jruby.
 end
 
 # RSpec Coverage
 desc "Run RSpec code examples with RCov"
-RSpec::Core::RakeTask.new(:'rspec:rcov') do |t|
+RSpec::Core::RakeTask.new(:'spec:rcov') do |t|
   t.skip_bundler = true # Suggested on some website about jruby.
   t.rcov = true
   t.rcov_opts = ['--exclude', 'spec,/gems/,jsignal_internal',
-                 '--output', 'target/coverage']
+                 '--output', 'target/spec-coverage']
 end
 
 desc "Run Cucumber features"
@@ -68,10 +83,12 @@ end
 desc "Run Cucumber features with RCov"
 Cucumber::Rake::Task.new(:'features:rcov') do |t|
   t.rcov = true
+  t.rcov_opts = ['--exclude', '/gems/,jsignal_internal',
+                 '--output', 'target/feature-coverage']
 end
 
 desc "Run all examples and features with RCov"
-task :rcov => [:'rspec:rcov', :'features:rcov']
+task :rcov => [:'features:rcov', :'spec:rcov']
 
 # Utility: clean
 desc "Cleans up the work environment"

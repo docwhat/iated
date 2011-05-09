@@ -3,14 +3,12 @@
 # all the data stored, and the UI.
 
 require 'sinatra'
-require 'singleton'
 require 'pathname'
 require 'iated/browser_token_db'
 require 'java'
 
 module IATed
   class MCP < java.lang.Object
-    include Singleton
 
     attr_accessor :debug
     attr_reader :iat_dir
@@ -47,16 +45,21 @@ module IATed
     end
 
     def secret
-      is_showing_secret? ? @secret : :notset
+      showing_secret? ? @secret : :notset
     end
 
-    def is_showing_secret?
+    def confirm_secret guess
+      success = (guess == secret)
+      hide_secret
+      return success
+    end
+
+    def showing_secret?
       @is_showing_secret
     end
 
     def show_secret
-      @secret = (1..4).map{ rand(10).to_s }.join ""
-      @is_showing_secret = true
+      generate_secret
 ##      Thread.new do
 ##        puts " ** A browser requested authorization: #{@secret}"
 ### TODO This needs to be abstracted. There is no reason a purely command line version can't be done. Also, loading swing will break CI.
@@ -74,8 +77,15 @@ module IATed
       # TODO secret should be using a JPanel or something, not a dialog.
     end
 
+    # The magic value shown to user to confirm a connection
+    def generate_secret
+      @secret = (1..4).map{ rand(10).to_s }.join ""
+      @is_showing_secret = true
+      return @secret
+    end
+
     # The magic value registering a browser.
-    def generate_browser_token user_agent
+    def generate_token user_agent
       @browser_token_db.add user_agent
     end
 

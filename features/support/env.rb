@@ -1,3 +1,6 @@
+require 'rubygems'
+require 'bundler/setup'
+
 require 'pathname'
 $: << (Pathname.new(__FILE__).dirname.dirname.dirname + 'src' + 'lib').to_s
 

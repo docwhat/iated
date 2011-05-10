@@ -36,6 +36,7 @@ Then /^I should be sent a response with a token$/ do
 end
 
 Then /^the token should be registered$/ do
+  IATed::mcp.cucumber_coverage_check
   IATed::mcp.is_token_valid?(@token).should be_true
 end
 

@@ -71,6 +71,7 @@ describe "IATed::mcp" do
       @token = IATed::mcp.generate_token "bogus user agent string"
     end
     it "should return a 32 hex character token" do
+      IATed::mcp.rspec_coverage_check
       @token.should =~ /^[0-9a-f]{32}$/
     end
     it "should return a different token each time" do

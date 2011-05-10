@@ -115,5 +115,13 @@ module IATed
       Sinatra::Application.quit!
     end
 
+    def cucumber_coverage_check
+      @cucumber_check = true
+    end
+
+    def rspec_coverage_check
+      @rspec_check = true
+    end
+
   end
 end

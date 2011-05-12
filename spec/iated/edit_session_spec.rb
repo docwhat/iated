@@ -6,11 +6,11 @@ describe IATed::EditSession do
     IATed::EditSession.new(:url => 'http://example.com/').should be_a_kind_of IATed::EditSession
   end
 
-  it "should have the correct token for a new session" do
-    params = {:url => "http://example.com/token-test", :extension => '.xml'}
-    raw_token = IATed::EditSession.calculate_token(params)
-    cooked_token = IATed::EditSession.new(params).token
-    raw_token.should == cooked_token
+  it "should have the correct sid for a new session" do
+    params = {:url => "http://example.com/sid-test", :extension => '.xml'}
+    raw_sid = IATed::EditSession.calculate_sid(params)
+    cooked_sid = IATed::EditSession.new(params).sid
+    raw_sid.should == cooked_sid
   end
 
   it "should be able to find existing sessions by params" do
@@ -21,7 +21,7 @@ describe IATed::EditSession do
   it "should be able to find existing sessions by sid" do
     params = {:url => 'http://example.com/'}
     sess1 = IATed::EditSession.new(params)
-    sess1.should == IATed::EditSession.find(sess1.token)
+    sess1.should == IATed::EditSession.find(sess1.sid)
   end
 
   it "should be able to find or create a session by exact match" do
@@ -33,17 +33,17 @@ describe IATed::EditSession do
     sess1.should == sess2
   end
 
-  context "token calculations" do
-    it "should be able to calculate tokens" do
-      tok = IATed::EditSession.calculate_token :url => 'http://example.com/'
+  context "sid calculations" do
+    it "should be able to calculate sids" do
+      tok = IATed::EditSession.calculate_sid :url => 'http://example.com/'
       tok.should =~ /^[a-f0-9]{32}$/
     end
 
-    it "should be able to reliably calculate tokens" do
-      tok1 = IATed::EditSession.calculate_token :url => "http://example.com"
-      tok2 = IATed::EditSession.calculate_token :url => "http://example.com", :extension => '.txt'
-      tok3 = IATed::EditSession.calculate_token :url => "http://example.com", :tid => nil
-      tok4 = IATed::EditSession.calculate_token :url => "http://example.com/differet"
+    it "should be able to reliably calculate sids" do
+      tok1 = IATed::EditSession.calculate_sid :url => "http://example.com"
+      tok2 = IATed::EditSession.calculate_sid :url => "http://example.com", :extension => '.txt'
+      tok3 = IATed::EditSession.calculate_sid :url => "http://example.com", :tid => nil
+      tok4 = IATed::EditSession.calculate_sid :url => "http://example.com/differet"
       tok1.should == tok2
       tok1.should == tok3
       tok1.should_not == tok4

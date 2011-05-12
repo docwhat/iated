@@ -13,10 +13,10 @@ Feature: Extension edits files
      And I request an extension of ".txt"
      And I POST an /edit request
     Then I expect a valid session id
-    And I expect an editor to be opened
     And I expect the editor file to have an extension of ".txt"
     And I expect the editor file to have "example.com" in it
     And I expect the editor file to have "foobarpage" in it
+    And I expect an editor to be opened
 
   Scenario: First check of text
     Given I have a new session id

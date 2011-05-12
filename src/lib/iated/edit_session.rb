@@ -1,9 +1,10 @@
 require 'digest/md5'
 require 'set'
+require 'addressable/uri'
 
 module IATed
     class EditSession
-      attr_reader :url, :tid, :extension, :token
+      attr_reader :url, :tid, :extension, :sid
 
       ##
       # @param [Hash] options Various optional arguments (:url, :tid, :extension)
@@ -13,16 +14,17 @@ module IATed
         @tid = options[:tid]
         @extension = options[:extension]
         @change_id = 0
-        @token = self.class.calculate_token options
-        IATed::sessions[@token] = self
+        @sid = self.class.calculate_sid options
+        IATed::sessions[@sid] = self
       end
 
       ## Finds an existing session
       def self.find search=nil
+        # TODO Once the sid is random, then find needs to work via a data store.
         if search.is_a? String
           tok = search
         else
-          tok = calculate_token search
+          tok = calculate_sid search
         end
         IATed::sessions[tok]
       end
@@ -33,13 +35,13 @@ module IATed
         sess.nil? ? self.new(search) : sess
       end
 
-      ## Calculate a token based on url, id, ext
-      def self.calculate_token options
+      ## Calculate a sid based on url, id, ext
+      def self.calculate_sid options
         options = normalize_keys options
 
-        # TODO Should retrieve token from datastore if it exists.
-        # TODO The token calculation needs a random number
-        # TODO The token calculation needs the current time or date
+        # TODO Should retrieve sid from datastore if it exists.
+        # TODO The sid calculation needs a random number
+        # TODO The sid calculation needs the current time or date
         digest = Digest::MD5.new
         digest << "url: #{options[:url]}"
         digest << "id: #{options[:id]}"
@@ -50,7 +52,7 @@ module IATed
       ## Returns true if the editor is running.
       def running?
         # TODO This should check to see if a process is running or not.
-        return false
+        return true
       end
 
       ## Opens the user's configured editor.
@@ -60,7 +62,17 @@ module IATed
 
       ## Returns the file where the session is saved.
       def filename
-        raise "Not Done" # TODO implement save_file
+        if @filename.nil?
+          bad_chars = /[^a-zA-Z0-9._-]+/
+          url = Addressable::URI.parse(@url)
+          if url.host
+            @filename = IATed::mcp.config_dir + url.host.gsub(bad_chars, '') + 
+              "#{url.basename.gsub(bad_chars, '')}#{@extension}}"
+          else
+            @filename = IATed::mcp.config_dir + "#{@url.gsub(bad_chars, '')}#{@extension}"
+          end
+        end
+        return @filename
       end
 
       ## Returns the text of the save_file

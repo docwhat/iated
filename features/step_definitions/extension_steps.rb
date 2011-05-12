@@ -16,6 +16,14 @@ Given /^I have a token$/ do
   @token.should_not be_nil
 end
 
+Given /^I have a new session id$/ do
+  pending
+end
+
+Given /^the session has been edited (\d+) times$/ do |count|
+  pending
+end
+
 ## Whens
 When /^I GET (\/[a-z]+)( without a secret|)$/ do |url, junk|
   get url
@@ -51,11 +59,12 @@ When /^the textarea has a url of "([^"]*)"$/ do |url| #"
   @textarea[:url] = url
 end
 
-When /^I request an extension of "(\.[a-z]+)"$/ do |ext|
-  @textarea[:ext] = ext
+When /^I request an extension of "(\.[a-z]+)"$/ do |extension|
+  @textarea[:extension] = extension
 end
 
 When /^I POST an \/edit request$/ do
+  @textarea[:token] = @token
   post "/edit", @textarea
 end
 
@@ -82,19 +91,21 @@ end
 
 Then /^I expect a valid session id$/ do
   last_response.status.should == 200
-  IATed::mcp.sessions[last_yaml[:sid]].should_not be_nil
+  @sid = last_yaml[:sid]
+  @sid.should_not be_nil
+  @session = IATed::sessions[@sid]
+  @session.should_not be_nil
 end
 
 Then /^I expect an editor to be opened$/ do
-  session = IATed::mcp.sessions.last
-  session.should be_started
+  @session.should be_running
 end
 
 Then /^I expect the editor file to have an extension of "(\.[a-z]+)"$/ do |ext|
-  session = IATed::mcp.sessions.last
-  session.extension.should == ext
+  @session.extension.should == @textarea[:extension]
 end
 
 Then /^I expect the editor file to have "([a-z0-9._-]+)" in it$/ do |string|
-  session.filename.should =~ Regexp.new(Regexp.quote(string))
+  @session.filename.to_s.should =~ Regexp.new(Regexp.quote(string))
 end
+

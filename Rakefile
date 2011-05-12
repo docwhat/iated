@@ -41,6 +41,8 @@ ENV['CI_REPORTS'] = SPEC_REPORT_DIR
 # Default task is the coverage report and jar.
 task :default => [:rcov, :jar]
 
+desc "Run all tests"
+task :tests => [:features, :spec]
 
 ### Build Jar ###
 Warbler::Task.new do |t|

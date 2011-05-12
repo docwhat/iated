@@ -1,6 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    addressable (2.2.5)
     autowatchr (0.1.5)
       watchr
     builder (3.0.0)
@@ -55,6 +56,7 @@ PLATFORMS
   java
 
 DEPENDENCIES
+  addressable (~> 2.2.5)
   autowatchr
   ci_reporter
   cucumber

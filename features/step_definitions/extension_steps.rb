@@ -81,7 +81,8 @@ Then /^I expect the text to be sent$/ do
 end
 
 Then /^I expect a valid session id$/ do
-  last_yaml[:sid].should == IATed::mcp.sessions.last.id
+  last_response.status.should == 200
+  IATed::mcp.sessions[last_yaml[:sid]].should_not be_nil
 end
 
 Then /^I expect an editor to be opened$/ do

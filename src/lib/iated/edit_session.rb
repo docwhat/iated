@@ -1,25 +1,36 @@
 require 'digest/md5'
+require 'set'
 
 module IATed
     class EditSession
-      attr_reader :url, :tid, :extension
+      attr_reader :url, :tid, :extension, :token
 
       ##
-      # @param [Hash] options -- Various optional arguments (:url, :tid, :ext)
-      def initialize options = {}
+      # @param [Hash] options Various optional arguments (:url, :tid, :extension)
+      def initialize options=nil
         options = normalize_keys options
         @url = options[:url]
         @tid = options[:tid]
         @extension = options[:extension]
         @change_id = 0
-        tok = calculate_token
-        IATed::sessions[tok] = self
+        @token = self.class.calculate_token options
+        IATed::sessions[@token] = self
       end
 
-      ## Gets a new or existing session
-      def self.find search = {}
-        tok = calculate_token search
+      ## Finds an existing session
+      def self.find search=nil
+        if search.is_a? String
+          tok = search
+        else
+          tok = calculate_token search
+        end
         IATed::sessions[tok]
+      end
+
+      ## Finds an existing session or creates a new one
+      def self.find_or_create search=nil
+        sess = find search
+        sess.nil? ? self.new(search) : sess
       end
 
       ## Calculate a token based on url, id, ext
@@ -36,11 +47,6 @@ module IATed
         return digest.hexdigest
       end
 
-      ## The session token
-      def calculate_token
-        self.class.calculate_token :url => @url, :tid => @tid, :extension => @extension
-      end
-
       ## Returns true if the editor is running.
       def running?
         # TODO This should check to see if a process is running or not.
@@ -53,7 +59,7 @@ module IATed
       end
 
       ## Returns the file where the session is saved.
-      def save_file
+      def filename
         raise "Not Done" # TODO implement save_file
       end
 
@@ -67,13 +73,18 @@ module IATed
         raise "Not Done" # TODO implement save_file
       end
 
-      def self.normalize_keys hash
+      def self.normalize_keys hash=nil
         norm_hash = {}
+        hash = {} if hash.nil?
+
         [:url, :tid, :extension].each do |key|
-          norm_hash = hash[key] || (:extension == key ? '.txt' : nil)
-          hash.delete key
+          norm_hash[key] = hash[key] || hash[key.to_s] || (:extension == key ? '.txt' : nil)
         end
-        raise "Invalid keys: #{hash.keys.inspect}" if hash.count > 0
+
+        # Verify the keys are sane. We ignore :text.
+        accepted_keys = Set.new((hash.keys + [:text]).map {|x| [x, x.to_s]}.flatten)
+        unexpected_keys = Set.new(hash.keys) - accepted_keys
+        raise "Invalid keys: #{unexpected_keys.inspect}" if unexpected_keys.count > 0
         return norm_hash
       end
 

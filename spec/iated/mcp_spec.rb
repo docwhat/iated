@@ -89,10 +89,4 @@ describe "IATed::mcp" do
       lambda { IATed::mcp.ui = :flibbit }.should raise_error
     end
   end
-
-  describe "#sessions" do
-    it "should return a session keeper" do
-      IATed::sessions.should be_a_kind_of(IATed::SessionKeeper)
-    end
-  end
 end

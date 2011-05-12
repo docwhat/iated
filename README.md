@@ -150,3 +150,19 @@ This is a list of dialogs that IATed needs to be able to generate:
   browser.
 * Select Port -- A dialog to select the port to run on for the first
   time or if changing.
+
+
+## Future notes
+
+At some point I'm going to need concurrancy.  I'm thinking
+[jetlang](http://code.google.com/p/jetlang/) (a java library) is the
+right way to go.  It's Erlang style concurrancy, so it'll scale well
+and should be safe without having to worry about joins, etc.  There is
+a ruby gem called [jretlang](http://github.com/reevesg/jretlang)
+
+Some info here:
+
+* [Concurrancy models in JRuby using jetlang](http://www.blog.wordaligned.com/2010/02/17/concurrency-models-in-jruby-using-jetlang/)
+* [What is erlang style concurrency?](http://ulf.wiger.net/weblog/2008/02/06/what-is-erlang-style-concurrency/)
+* [LWN article](http://lwn.net/Articles/441790/)
+

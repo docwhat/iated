@@ -93,6 +93,19 @@ module IATed
       @browser_token_db.has_token? token
     end
 
+    def ui= ui_type
+      if [:text, :test, :gui].include? ui_type
+        @ui = ui_type
+      else
+        raise "Invalid UI type: #{ui_type.inspect}"
+      end
+    end
+
+    def ui
+      # Default UI
+      @ui ||= :text
+    end
+
     def start_server
       # TODO this needs to be in a separate thread.
       set :server, %w[webrick]

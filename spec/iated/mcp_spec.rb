@@ -80,4 +80,19 @@ describe "IATed::mcp" do
     end
   end
 
+  describe "#ui" do
+    it "should only accept :test, :text, and :gui" do
+      IATed::mcp.ui = :gui
+      IATed::mcp.ui = :text
+      IATed::mcp.ui = :test
+      lambda { IATed::mcp.ui = nil }.should raise_error
+      lambda { IATed::mcp.ui = :flibbit }.should raise_error
+    end
+  end
+
+  describe "#sessions" do
+    it "should return a session keeper" do
+      IATed::sessions.should be_a_kind_of(IATed::SessionKeeper)
+    end
+  end
 end

@@ -58,13 +58,8 @@ See Headius's [JRuby Startup Time tips](http://blog.headius.com/2010/03/jruby-st
 
 ## API
 
-#### Ping
-
-Verify that the server is running.
-
-`GET /ping`
-
-Returns the string `pong`.
+The API is documented in the `features/extension_*.feature` files. You
+can run cucumber to read them.
 
 ### Send a file to the editor
 
@@ -105,20 +100,6 @@ URLs that IATed supports for modifying the preferences.
 `GET /preferences/set-editor` require "token".
 
 This opens  a dialog on the system running IATed to choose the editor.
-
-### Authenticate/Token Exchange
-
-`GET /hello`
-
-Returns `ok`.
-
-IATed pops up a dialog box saying that someone is trying to access
-IATed and has a 4 digit number (the "secret")to enter into the web browser to allow
-access.  Similar to bluetooth connections.
-
-`POST /hello` with secret=/[0-9]{4}/
-
-If this is passed in, then the popup goes away and the "token" is returned.
 
 ## Example sessions.
 

@@ -12,5 +12,6 @@ require 'rack/test'
 require 'iated'
 
 set :environment, :test
+IATed::environment = :test
 
 # EOF

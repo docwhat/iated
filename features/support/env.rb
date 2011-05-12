@@ -28,6 +28,10 @@ class MyWorld
   def app
     Sinatra::Application
   end
+
+  def last_yaml
+    YAML::load(last_response.body)
+  end
 end
 
 World do

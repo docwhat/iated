@@ -6,6 +6,7 @@ end
 
 require 'sinatra'
 require 'iated/mcp'
+require 'iated/edit_session'
 require 'iated/browser_token_db'
 require 'optparse'
 
@@ -48,6 +49,23 @@ module IATed
     end
     #:nocov:
 
+  end
+
+  def self.sessions
+    # TODO This needs to be replaced with a real persistant data store.
+    @sessions ||= {}
+  end
+
+  def self.environment
+    @environment ||= :development
+  end
+
+  def self.environment= env
+    if [:test, :development, :production].include? env
+      @environment = env
+    else
+      raise "Invalid IATed::environment specified: #{env.inspect}"
+    end
   end
 
   ## Resets the Master Control Program

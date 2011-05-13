@@ -51,15 +51,20 @@ module IATed
 
   end
 
+  # @return [Hash] Sessions
   def self.sessions
     # TODO This needs to be replaced with a real persistant data store.
     @sessions ||= {}
   end
 
+  # The current environment
+  # @return [Symbol] Returns one of: `:test`, `:development`, `:production`
   def self.environment
     @environment ||= :development
   end
 
+  # Set the current environment
+  # @return [Symbol] The symbol set.
   def self.environment= env
     if [:test, :development, :production].include? env
       @environment = env
@@ -69,11 +74,13 @@ module IATed
   end
 
   ## Resets the Master Control Program
+  # @return [nil]
   def self.reset_mcp
     @mcp = nil
   end
 
   ## Access to the Master Control Program
+  # @return [IATed::MCP]
   def self.mcp
     @mcp ||= IATed::MCP.new
   end

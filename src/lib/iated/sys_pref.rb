@@ -4,54 +4,64 @@ require 'java'
 require 'pathname'
 require 'tmpdir'
 
+## Class to wrap the system preferences for the user.
+#
+# This either uses Java System Preferences (if production) or an in-memory store (if testing).
 class SysPref
   # Why am I mucking around with JavaStore and FakeStore?
   #
   # Two reasons: It lets me drop in a fake version for testing and
   # because I want to use Java's System Preferences to persist preferences.
 
-  # :nodoc:
-  # This is not documented because it gives Yard fits.
-  class JavaStore < java.lang.Object
+  ## Wrapper around Java's `java.util.prefs.Preferences`
+  class JavaStore #< java.lang.Object
     def initialize
       super
       @store = java.util.prefs.Preferences.userNodeForPackage(self.getClass)
     end
+    # @return [Integer]
     def getInt key, default
       @store.getInt key.to_s, default.to_i
     end
+    # @return [nil]
     def putInt key, value
       @store.putInt key.to_s, value.to_i
     end
+    # @return [String]
     def get key, default
       @store.get key.to_s, default.to_s
     end
+    # @return [nil]
     def put key, value
       @store.put key.to_s, value.to_s
     end
   end
-  # :nodoc:
 
-  ## Fake replacement for a Java based preferences store.
+  ## An in-memory replacement for {JavaStore}
   class FakeStore
     def initialize
       @store = {}
     end
+    # @return [Integer]
     def getInt key, default
       (@store[key.to_s] || default).to_i
     end
+    # @return [nil]
     def putInt key, value
       @store[key.to_s] = value.to_i
     end
+    # @return [String]
     def get key, default
       (@store[key.to_s] || default).to_s
     end
+    # @return [nil]
     def put key, value
       @store[key.to_s] = value.to_s
     end
   end
 
   ## Returns the current port number
+  # @return [Integer] The port number
   def port
     store.getInt("PORT", default_port)
   end
@@ -64,7 +74,7 @@ class SysPref
   end
 
   ## The directory where stuff is saved.
-  # @return [Pathname]
+  # @return [Pathname] The configuration directory
   def config_dir
     Pathname.new store.get("CONFIG_DIR", default_config_dir)
   end

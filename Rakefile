@@ -173,5 +173,6 @@ end
 desc "Cleans up the work environment"
 task :clean => :'jar:clean' do
   rm_rf TARGET_DIR
+  rm_rf '.yardoc'
 end
 

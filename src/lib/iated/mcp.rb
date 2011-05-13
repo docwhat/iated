@@ -9,10 +9,17 @@ require 'iated/browser_token_db'
 require 'java'
 
 module IATed
+  ## The Master Control Progrom
+  #
+  # Yes, I've been watching Tron lately, why do ask?
   class MCP
 
     attr_accessor :debug
-    attr_reader :browser_token_db, :prefs
+
+    attr_reader :browser_token_db
+
+    # @return [SysPref] The current System Preferencs object
+    attr_reader :prefs
 
     def initialize
       @debug = false
@@ -25,20 +32,28 @@ module IATed
       start_server
     end
 
+    # @return [String,Symbol] The currently showing secret or the symbol `:notset`
     def secret
       showing_secret? ? @secret : :notset
     end
 
+    ## Confirm the secret
+    #
+    # @param [String] guess The string to check against the secret
+    # @return [Boolean] Was the guess right?
     def confirm_secret guess
       success = (guess == secret)
       hide_secret
       return success
     end
 
+    # @return [Boolean] Is the secret being shown to the user?
     def showing_secret?
       @is_showing_secret
     end
 
+    ## Show the secret to the user
+    # @return [nil]
     def show_secret
       generate_secret
 ##      Thread.new do
@@ -53,23 +68,29 @@ module IATed
 ##      end
     end
 
+    ## Hide the secret again
+    # @return [nil]
     def hide_secret
       @is_showing_secret = false
       # TODO secret should be using a JPanel or something, not a dialog.
     end
 
-    # The magic value shown to user to confirm a connection
+    ## The magic value shown to user to confirm a connection
+    # @return [String] The string
     def generate_secret
       @secret = (1..4).map{ rand(10).to_s }.join ""
       @is_showing_secret = true
       return @secret
     end
 
-    # The magic value registering a browser.
+    ## The magic value registering a browser.
+    # @return [String] The token
     def generate_token user_agent
       @browser_token_db.add user_agent
     end
 
+    ## Is the auth token a valid one?
+    # @return [Boolean] True if the token is valid and exist
     def is_token_valid? token
       @browser_token_db.has_token? token
     end

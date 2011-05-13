@@ -21,8 +21,11 @@ See
 account.
 2. Install jruby-1.6.1: `rvm install jruby-1.6.1`
 3. Install bundler: `gem install bundler`
-4. Install all the rest of the gems: `bundle`
+4. Install all the rest of the gems: `bundle install -p .bundle`
 5. You can now use rake to build things. :-)
+6. View the static docs with `rake yard`  and point your browser at
+the `target/doc/index.html` file
+7. Dynamically view the docs with `bundle exec yard server --reload`
 
 ### Nail Gun
 
@@ -60,35 +63,6 @@ See Headius's [JRuby Startup Time tips](http://blog.headius.com/2010/03/jruby-st
 
 The API is documented in the `features/extension_*.feature` files. You
 can run cucumber to read them.
-
-### Send a file to the editor
-
-`POST /edit` requires "token".
-
-Arguments:
-
-extension
-: Extension for the file.
-text
-: The text.
-url
-: The URL for the text.
-id
-: The textarea id or identifier.
-
-Returns a "sid" or `fail`.
-
-### Retrieve the result of an edit
-
-`GET /edit/<sid>` requires "token".
-
-Returns:
-document
-: If the document has changed.
-`nochange`
-: If the document hasn't changed.
-`fail`
-: If the token isn't valid or some other error has happened.
 
 ### Open preferences
 

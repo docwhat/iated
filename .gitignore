@@ -8,3 +8,4 @@
 /build/
 /target/
 velocity.log
+/.yardoc/

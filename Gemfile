@@ -16,6 +16,8 @@ gem 'addressable', "~>2.2.5"
   gem 'autowatchr'
   gem 'cucumber'
   gem 'webrat'
+  gem 'yard'
+  gem 'kramdown'
 #end
 
 # Local Variables:

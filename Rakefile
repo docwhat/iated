@@ -11,6 +11,7 @@ require 'ci/reporter/rake/cucumber'
 require 'cucumber'
 require 'cucumber/rake/task'
 require 'warbler'
+require 'yard'
 
 ### Hack for cucumber on jruby
 class Cucumber::Rake::Task::ForkedCucumberRunner
@@ -31,6 +32,7 @@ raise "I require JRuby" unless RUBY_ENGINE == "jruby"
 
 TARGET_DIR = "target"
 COVERAGE_DIR = File.join(TARGET_DIR, "coverage")
+DOC_DIR = File.join(TARGET_DIR, "doc")
 AGGREGATE_COVERAGE = File.join(TARGET_DIR, "coverage.data")
 RCOV_OPTS = ['--exclude', 'spec,features,/gems/,jsignal_internal',
              '--output', COVERAGE_DIR]
@@ -39,7 +41,8 @@ FEATURES_REPORT_DIR = File.join TARGET_DIR, "features-reports"
 ENV['CI_REPORTS'] = SPEC_REPORT_DIR
 
 # Default task is the coverage report and jar.
-task :default => [:rcov, :jar]
+task :default => [:jar]
+task :all => [:rcov, :yard, :jar]
 
 desc "Run all tests"
 task :tests => [:features, :spec]
@@ -69,12 +72,25 @@ end
 
 # Jenkins
 desc "Continuous integration"
-task :ci => [:sloccount, :'features:ci', :'spec:ci', :jar]
+task :ci => [:sloccount, :'features:ci', :'spec:ci', :yard, :jar]
 
 # SLOCCount
 desc "Generate SLOCCount"
 task :sloccount => :target_dir do
   system "sloccount --duplicates --wide --details src spec > target/sloccount.sc"
+end
+
+
+YARD::Rake::YardocTask.new do |t|
+  t.files = ['src/**/*.rb', '**/*.md']
+  t.options = ['--output-dir', DOC_DIR]
+end
+
+desc "Generate UML graph (requires dot, download Graphviz from http://www.graphviz.org/)"
+task :graph => :yard do
+  # FIXME use --db to specify specific yardoc db, but this doesn't seem to work with current version of yard-graph
+  `yard graph --full | dot -T pdf -o #{TARGET_DIR}/yard-graph.pdf`
+  puts "Generated diagram to #{TARGET_DIR}/yard-graph.pdf"
 end
 
 

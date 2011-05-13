@@ -14,7 +14,7 @@ class SysPref
   # because I want to use Java's System Preferences to persist preferences.
 
   ## Wrapper around Java's `java.util.prefs.Preferences`
-  class JavaStore #< java.lang.Object
+  class JavaStore < java.lang.Object
     def initialize
       super
       @store = java.util.prefs.Preferences.userNodeForPackage(self.getClass)

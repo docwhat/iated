@@ -4,66 +4,25 @@
 
 require 'sinatra'
 require 'pathname'
+require 'iated/sys_pref'
 require 'iated/browser_token_db'
 require 'java'
 
 module IATed
-  class MCP < java.lang.Object
+  class MCP
 
     attr_accessor :debug
-    attr_reader :iat_dir
-    attr_reader :browser_token_db
+    attr_reader :browser_token_db, :prefs
 
     def initialize
-      super
-      @prefs = java.util.prefs.Preferences.userNodeForPackage(self.getClass)
       @debug = false
-      @iat_dir = Pathname.new(java.lang.System.getProperty("user.home")) + ".iated"
-      @iat_dir.mkdir unless @iat_dir.directory?
-      @browser_token_db = IATed::BrowserTokenDB.new(@iat_dir + 'browser_tokens.yml')
+      @prefs = SysPref.new
+      @browser_token_db = IATed::BrowserTokenDB.new(@prefs.config_dir + 'browser_tokens.yml')
     end
 
     ## Called by the main program to get everything started.
     def begin!
       start_server
-    end
-
-    ## Returns the current port number
-    def port
-      @prefs.getInt("PORT", default_port)
-    end
-
-    ## Sets the current port number
-    # @return [nil]
-    def port= val
-      @prefs.putInt("PORT", val.to_i)
-    end
-
-    ## Returns the default port number.
-    def default_port
-      # TODO: This should probe for unused ports.
-      9090
-    end
-
-    ## The directory where stuff is saved.
-    # @return [Pathname]
-    def config_dir
-      Pathname.new @prefs.get("CONFIG_DIR", default_config_dir)
-    end
-
-    ## Set the config directory.
-    # @return [nil]
-    def config_dir= path
-      @prefs.put("CONFIG_DIR", val.to_s)
-    end
-
-    ## Default config dir.
-    def default_config_dir
-      dir = Pathname.new(java.lang.System.getProperty("user.home"))
-      # FIXME Windows should probably use a different directory name.
-      # FIXME Mac maybe should be in library?
-      dir = dir + "/.iat/"
-      return dir.to_s
     end
 
     def secret

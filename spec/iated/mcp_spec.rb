@@ -3,19 +3,13 @@ require 'spec_helper'
 describe "IATed::mcp" do
 
   it "should be able to fetch the port number from preferences" do
-    IATed::mcp.port.should_not be_nil
+    IATed::mcp.prefs.port.should_not be_nil
   end
 
   it "should be able to set the port number to preferences" do
     mcp = IATed::mcp
-    old_port = mcp.port
-    begin
-      mcp.port = 1234
-      mcp.port.should == 1234
-    ensure
-      # To be sure that the old port gets put back.
-      mcp.port = old_port
-    end
+    mcp.prefs.port = 1234
+    mcp.prefs.port.should == 1234
   end
 
   context "while showing a secret" do

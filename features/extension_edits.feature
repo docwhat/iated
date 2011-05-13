@@ -20,7 +20,7 @@ Feature: Extension edits files
 
   Scenario: First check of text
     Given I have a new session id
-    When I GET /edit/<session id>/0?token=<token>
+    When I GET /edit/<session id>/0
     Then I expect a change-count of 0
     And I expect no text to be sent
 

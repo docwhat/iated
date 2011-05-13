@@ -4,7 +4,7 @@ require 'addressable/uri'
 
 module IATed
     class EditSession
-      attr_reader :url, :tid, :extension, :sid
+      attr_reader :url, :tid, :extension, :sid, :change_id
 
       ##
       # @param [Hash] options Various optional arguments (:url, :tid, :extension)
@@ -65,11 +65,12 @@ module IATed
         if @filename.nil?
           bad_chars = /[^a-zA-Z0-9._-]+/
           url = Addressable::URI.parse(@url)
+          config_dir = IATed::mcp.prefs.config_dir
           if url.host
-            @filename = IATed::mcp.config_dir + url.host.gsub(bad_chars, '') + 
+            @filename = config_dir + url.host.gsub(bad_chars, '') + 
               "#{url.basename.gsub(bad_chars, '')}#{@extension}}"
           else
-            @filename = IATed::mcp.config_dir + "#{@url.gsub(bad_chars, '')}#{@extension}"
+            @filename = config_dir + "#{@url.gsub(bad_chars, '')}#{@extension}"
           end
         end
         return @filename
@@ -77,12 +78,7 @@ module IATed
 
       ## Returns the text of the save_file
       def text
-        raise "Not Done" # TODO implement save_file
-      end
-
-      ## Returns the current change_id.
-      def change_id
-        raise "Not Done" # TODO implement save_file
+        "fake text" # TODO implement text
       end
 
       def self.normalize_keys hash=nil

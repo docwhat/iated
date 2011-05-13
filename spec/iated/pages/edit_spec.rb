@@ -32,7 +32,8 @@ describe 'IATed /edit' do
     end
 
     it "should return no changes" do
-      post '/edit'
+      get "/edit/#{@sid}/0"
+      last_yaml[:change_id].should == 0
     end
 
   end

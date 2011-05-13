@@ -17,7 +17,9 @@ Given /^I have a token$/ do
 end
 
 Given /^I have a new session id$/ do
-  pending
+  @session = IATed::EditSession.new :url => "http://example.com/cucumber"
+  @session.should_not be_nil
+  @sid = @session.sid
 end
 
 Given /^the session has been edited (\d+) times$/ do |count|
@@ -68,6 +70,10 @@ When /^I POST an \/edit request$/ do
   post "/edit", @textarea
 end
 
+When /^I GET \/edit\/<session id>\/(\d+)$/ do |change_id|
+  get "/edit/#{@sid}/#{change_id}"
+end
+
 ## Thens
 Then /^the user should be shown the secret$/ do
   IATed::mcp.should be_showing_secret
@@ -109,3 +115,10 @@ Then /^I expect the editor file to have "([a-z0-9._-]+)" in it$/ do |string|
   @session.filename.to_s.should =~ Regexp.new(Regexp.quote(string))
 end
 
+Then /^I expect a change\-count of (\d+)$/ do |change_count|
+  last_yaml[:change_id].should == change_count.to_i
+end
+
+Then /^I expect no text to be sent$/ do
+  last_yaml[:text].should be_nil
+end

@@ -23,7 +23,10 @@ Given /^I have a new session id$/ do
 end
 
 Given /^the session has been edited (\d+) times$/ do |count|
-  pending
+  count.to_i.times.each do
+    # This fakes that the file has been edited.
+    @session.increment_change_id
+  end
 end
 
 ## Whens

@@ -4,7 +4,6 @@ Feature: Extension edits files
   I want to open text in an editor
   So that I can allow users to edit textareas more elegantly.
 
-  @wip
   Scenario: Sending text to edit
     Given I have a token
     When I have a textarea to edit
@@ -24,6 +23,7 @@ Feature: Extension edits files
     Then I expect a change-count of 0
     And I expect no text to be sent
 
+  @wip
   Scenario: Checking unchanged text
     Given I have a new session id
     And the session has been edited 2 times

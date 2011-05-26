@@ -46,6 +46,15 @@ describe IATed::EditSession do
     end
   end
 
+  context "#increment_change_id" do
+    it "should increment the #change_id" do
+      sess1 = IATed::EditSession.new :url => 'http://example.com/'
+      sess1.change_id.should == 0
+      sess1.increment_change_id
+      sess1.change_id.should == 1
+    end
+  end
+
   context "param normalization" do
     it "should handle text keys the same as symbol keys" do
       [:url, :tid, :extension, :text].each do |key|

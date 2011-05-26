@@ -64,6 +64,12 @@ module IATed
       return digest.hexdigest
     end
 
+    ## Increment the change_id
+    # @return [Integer] The new number of changes
+    def increment_change_id
+      @change_id = @change_id + 1
+    end
+
     ## Returns true if the editor is running.
     # @return [Boolean] True if the editor is running
     def running?

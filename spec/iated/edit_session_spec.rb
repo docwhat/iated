@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 describe IATed::EditSession do
+  before(:each) do
+    IATed::reset
+  end
+  after(:each) do
+    IATed::reset
+  end
+
   it "should be able to find existing sessions by params" do
     params = {:url => 'http://example.com/'}
     IATed::EditSession.new(params).should == IATed::EditSession.find(params)
@@ -46,12 +53,39 @@ describe IATed::EditSession do
     end
   end
 
+  context "#text" do
+    it "should save the text when assigned" do
+      text = "\t Random Number: #{rand}"
+      sess = IATed::EditSession.new :url => 'http://example.com/', :text => text
+      sess.filename.should be_exist
+      sess.filename.read.should == text
+    end
+
+    it "should read back the text" do
+      text = "\t Random Number: #{rand}"
+      sess = IATed::EditSession.new :url => 'http://example.com/', :text => text
+      sess.text.should == text
+    end
+
+    it "shouldn't touch the change_id on first save" do
+      sess = IATed::EditSession.new :url => 'http://example.com/first_save_check', :tid => "#{rand}"
+      sess.text = "first-save-foo"
+      sess.change_id.should == 0
+    end
+
+    it "should increment the change_id on subsequent saves" do
+      sess = IATed::EditSession.new :url => 'http://example.com/subseq_save_check', :tid => "#{rand}", :text => "sub-foo"
+      sess.text = "sub-bar"
+      sess.change_id.should == 1
+    end
+  end
+
   context "#increment_change_id" do
     it "should increment the #change_id" do
-      sess1 = IATed::EditSession.new :url => 'http://example.com/'
-      sess1.change_id.should == 0
-      sess1.increment_change_id
-      sess1.change_id.should == 1
+      sess = IATed::EditSession.new :url => 'http://example.com/'
+      sess.change_id.should == 0
+      sess.increment_change_id
+      sess.change_id.should == 1
     end
   end
 

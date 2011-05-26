@@ -17,29 +17,32 @@ Feature: Extension edits files
     And I expect the editor file to have "foobarpage" in it
     And I expect an editor to be opened
 
+  @wip
   Scenario: First check of text
-    Given I have a new session id
+    Given I have a new session
     When I GET /edit/<session id>/0
     Then I expect a change-count of 0
     And I expect no text to be sent
 
   @wip
   Scenario: Checking unchanged text
-    Given I have a new session id
+    Given I have a new session
     And the session has been edited 2 times
     When I GET /edit/<session id>/2
     Then I expect a change-count of 2
     And I expect no text to be sent
 
+  @wip
   Scenario: Checking once changed text
-    Given I have a new session id
+    Given I have a new session
     And the session has been edited 2 times
     When I GET /edit/<session id>/1
     Then I expect a change-count of 2
     And I expect the text to be sent
 
+  @wip
   Scenario: Checking twice changed text
-    Given I have a new session id
+    Given I have a new session
     And the session has been edited 3 times
     When I GET /edit/<session id>/1
     Then I expect a change-count of 3

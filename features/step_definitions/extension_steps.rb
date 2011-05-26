@@ -16,9 +16,11 @@ Given /^I have a token$/ do
   @token.should_not be_nil
 end
 
-Given /^I have a new session id$/ do
-  @session = IATed::EditSession.new :url => "http://example.com/cucumber"
-  @session.should_not be_nil
+Given /^I have a new session$/ do
+  @params = {}
+  @params[:text] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  @params[:url] = "http://example.com/cucumber"
+  @session = IATed::EditSession.new :url => @params
   @sid = @session.sid
 end
 
@@ -95,7 +97,7 @@ Then /^the token should be registered$/ do
 end
 
 Then /^I expect the text to be sent$/ do
-  last_yaml[:text].should == @textarea_text
+  last_yaml[:text].should == @textarea[:text]
 end
 
 Then /^I expect a valid session id$/ do

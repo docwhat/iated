@@ -88,6 +88,14 @@ class SysPref
     return nil
   end
 
+  ## Resets the preferences module
+  # @return [nil]
+  def reset
+    @test_dir.rmtree unless @test_dir.nil?
+    @test_dir = nil
+    @store = nil
+  end
+
   private
 
   ## Returns the default port number.
@@ -99,7 +107,8 @@ class SysPref
   ## Default config dir.
   def default_config_dir
     if IATed::environment == :test
-      dir = Pathname.new(Dir.mktmpdir)
+      @test_dir = Pathname.new(Dir.mktmpdir) if @test_dir.nil?
+      dir = @test_dir
     else
       dir = Pathname.new(home)
       # FIXME Windows should probably use a different directory name.

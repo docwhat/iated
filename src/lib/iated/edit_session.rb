@@ -21,13 +21,20 @@ module IATed
     ##
     # @param [Hash] options Various optional arguments (:url, :tid, :extension)
     def initialize options=nil
-      options = normalize_keys options
-      @url = options[:url]
-      @tid = options[:tid]
-      @extension = options[:extension]
-      @change_id = 0
-      @sid = self.class.calculate_sid options
+      normalized_options = normalize_keys options
+      @url               = normalized_options[:url]
+      @tid               = normalized_options[:tid]
+      @extension         = normalized_options[:extension]
+      @change_id         = 0
+      @sid               = self.class.calculate_sid normalized_options
+
+      # Save session.
       IATed::sessions[@sid] = self
+
+      # Save the text, if passed in the original options
+      if options.key? :text
+        self.text = options[:text]
+      end
     end
 
     ## Finds an existing session
@@ -90,8 +97,9 @@ module IATed
         url = Addressable::URI.parse(@url)
         config_dir = IATed::mcp.prefs.config_dir
         if url.host
-          @filename = config_dir + url.host.gsub(bad_chars, '') + 
-            "#{url.basename.gsub(bad_chars, '')}#{@extension}}"
+          # TODO Handle case where url is the root and filename is empty.
+          @filename = config_dir + url.host.gsub(bad_chars, '') +
+            "#{url.basename.gsub(bad_chars, '')}#{@extension}"
         else
           @filename = config_dir + "#{@url.gsub(bad_chars, '')}#{@extension}"
         end
@@ -99,9 +107,22 @@ module IATed
       return @filename
     end
 
-    ## Returns the text of the save_file
+    ## Returns the text of the filename
     def text
-      "fake text" # TODO implement text
+      if filename.exist?
+        filename.read
+      else
+        nil
+      end
+    end
+
+    def text= value
+      increment_change_id if filename.exist?
+      filename.dirname.mkdir unless filename.dirname.directory?
+      # TODO locking
+      filename.open('w') do |f|
+        f.write value
+      end
     end
 
     ## Normalizes the search options (`:url`, `:tid`, `:extension`)

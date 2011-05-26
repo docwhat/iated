@@ -68,15 +68,18 @@ module IATed
   def self.environment= env
     if [:test, :development, :production].include? env
       @environment = env
+      @mcp.prefs.reset unless @mcp.nil?
     else
       raise "Invalid IATed::environment specified: #{env.inspect}"
     end
   end
 
-  ## Resets the Master Control Program
+  ## Resets the Master Control Program, Preferences, and Sessions
   # @return [nil]
-  def self.reset_mcp
+  def self.reset
+    @mcp.prefs.reset unless @mcp.nil?
     @mcp = nil
+    @sessions = nil
   end
 
   ## Access to the Master Control Program

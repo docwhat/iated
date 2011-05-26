@@ -8,24 +8,29 @@ describe IATed::EditSession do
     IATed::reset
   end
 
-  it "should be able to find existing sessions by params" do
-    params = {:url => 'http://example.com/'}
-    IATed::EditSession.new(params).should == IATed::EditSession.find(params)
+  context "#find" do
+
+    it "should find existing by params" do
+      params = {:url => 'http://example.com/'}
+      IATed::EditSession.new(params).should == IATed::EditSession.find(params)
+    end
+
+    it "should find existing sessions by sid" do
+      params = {:url => 'http://example.com/'}
+      sess1 = IATed::EditSession.new(params)
+      sess1.should == IATed::EditSession.find(sess1.sid)
+    end
   end
 
-  it "should be able to find existing sessions by sid" do
-    params = {:url => 'http://example.com/'}
-    sess1 = IATed::EditSession.new(params)
-    sess1.should == IATed::EditSession.find(sess1.sid)
-  end
+  context "#find_or_create" do
+    it "should find or create by exact match" do
+      tid = "fc-tid#{rand(1000)}"
 
-  it "should be able to find or create a session by exact match" do
-    tid = "fc-tid#{rand(1000)}"
+      sess1 = IATed::EditSession.find_or_create(:url => 'http://example.com/', :tid => tid)
+      sess2 = IATed::EditSession.find_or_create(:url => 'http://example.com/', :tid => tid)
 
-    sess1 = IATed::EditSession.find_or_create(:url => 'http://example.com/', :tid => tid)
-    sess2 = IATed::EditSession.find_or_create(:url => 'http://example.com/', :tid => tid)
-
-    sess1.should == sess2
+      sess1.should == sess2
+    end
   end
 
   context "#sid" do
@@ -80,6 +85,16 @@ describe IATed::EditSession do
     end
   end
 
+  context "#change_id" do
+    it "should be zero for new sessions" do
+      params = {}
+      params[:text] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      params[:url] = "http://example.com/cucumber"
+      session = IATed::EditSession.new params
+      session.change_id.should == 0
+    end
+  end
+
   context "#increment_change_id" do
     it "should increment the #change_id" do
       sess = IATed::EditSession.new :url => 'http://example.com/'
@@ -100,6 +115,27 @@ describe IATed::EditSession do
         p2 = IATed::EditSession.normalize_keys h2
         p1.should == p2
       end
+    end
+
+    it "should not destroy the original" do
+      original = {
+        :url => "http://example.com/",
+        :tid => "some-tid",
+      }
+      normalized = IATed::EditSession.normalize_keys original
+      original.should_not be_nil
+    end
+
+    it "should strip :text being passed in" do
+      original = {
+        :url => "http://example.com/",
+        :text => "some text",
+        :tid => "some-tid",
+      }
+      normalized = IATed::EditSession.normalize_keys original
+      normalized[:url].should == original[:url]
+      normalized[:tid].should == original[:tid]
+      normalized[:text].should be_nil
     end
   end
 end

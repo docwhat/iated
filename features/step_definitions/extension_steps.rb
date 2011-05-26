@@ -17,11 +17,12 @@ Given /^I have a token$/ do
 end
 
 Given /^I have a new session$/ do
-  @params = {}
-  @params[:text] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  @params[:url] = "http://example.com/cucumber"
-  @session = IATed::EditSession.new :url => @params
+  @textarea = {}
+  @textarea[:text] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  @textarea[:url] = "http://example.com/cucumber"
+  @session = IATed::EditSession.new @textarea
   @sid = @session.sid
+  @session.change_id.should == 0
 end
 
 Given /^the session has been edited (\d+) times$/ do |count|

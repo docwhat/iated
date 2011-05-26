@@ -1,0 +1,17 @@
+#!/usr/bin/env jruby
+
+# Custom rake script, to automatically use bundler.
+
+require 'rubygems'
+require 'bundler'
+Bundler.setup(:default, :development)
+
+version = ">= 0"
+
+if ARGV.first =~ /^_(.*)_$/ and Gem::Version.correct? $1 then
+  version = $1
+  ARGV.shift
+end
+
+gem 'rake', version
+load Gem.bin_path('rake', 'rake', version)

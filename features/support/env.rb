@@ -10,6 +10,9 @@ require 'iated'
 ## Force the application name because polyglot breaks the auto-detection logic.
 #Sinatra::Application.app_file = app_file
 
+set :environment, :test
+IATed::environment = :test
+
 require 'rspec/expectations'
 require 'rack/test'
 require 'webrat'

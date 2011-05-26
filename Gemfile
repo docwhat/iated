@@ -6,7 +6,7 @@ gem 'addressable', "~>2.2.5"
 # FIXME: bundler groups and `rake rspec` don't work together for me.
 #group :development, :test do
   gem 'warbler', "~>1.3.0"
-  gem 'rake', "~>0.8.7"
+  gem 'rake'
   gem 'rspec'
   gem 'rspec-core'
   gem 'ci_reporter'

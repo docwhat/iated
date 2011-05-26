@@ -1,18 +1,6 @@
 require 'spec_helper'
 
 describe IATed::EditSession do
-  it "should be able to create new sessions" do
-    IATed::EditSession.new.should be_a_kind_of IATed::EditSession
-    IATed::EditSession.new(:url => 'http://example.com/').should be_a_kind_of IATed::EditSession
-  end
-
-  it "should have the correct sid for a new session" do
-    params = {:url => "http://example.com/sid-test", :extension => '.xml'}
-    raw_sid = IATed::EditSession.calculate_sid(params)
-    cooked_sid = IATed::EditSession.new(params).sid
-    raw_sid.should == cooked_sid
-  end
-
   it "should be able to find existing sessions by params" do
     params = {:url => 'http://example.com/'}
     IATed::EditSession.new(params).should == IATed::EditSession.find(params)

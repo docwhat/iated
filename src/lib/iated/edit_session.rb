@@ -59,7 +59,7 @@ module IATed
       # TODO The sid calculation needs the current time or date
       digest = Digest::MD5.new
       digest << "url: #{options[:url]}"
-      digest << "id: #{options[:id]}"
+      digest << "tid: #{options[:tid]}"
       digest << "extension: #{options[:extension]}"
       return digest.hexdigest
     end

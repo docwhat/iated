@@ -21,20 +21,28 @@ describe IATed::EditSession do
     sess1.should == sess2
   end
 
-  context "sid calculations" do
-    it "should be able to calculate sids" do
+  context "#sid" do
+    it "should be 32 character hex string" do
       tok = IATed::EditSession.calculate_sid :url => 'http://example.com/'
       tok.should =~ /^[a-f0-9]{32}$/
     end
 
-    it "should be able to reliably calculate sids" do
-      tok1 = IATed::EditSession.calculate_sid :url => "http://example.com"
+    it "should be different for different extensions" do
+      tok1 = IATed::EditSession.calculate_sid :url => "http://example.com", :extension => '.xml'
       tok2 = IATed::EditSession.calculate_sid :url => "http://example.com", :extension => '.txt'
-      tok3 = IATed::EditSession.calculate_sid :url => "http://example.com", :tid => nil
-      tok4 = IATed::EditSession.calculate_sid :url => "http://example.com/differet"
-      tok1.should == tok2
-      tok1.should == tok3
-      tok1.should_not == tok4
+      tok1.should_not == tok2
+    end
+
+    it "should be different for different urls" do
+      tok1 = IATed::EditSession.calculate_sid :url => "http://example.com/a"
+      tok2 = IATed::EditSession.calculate_sid :url => "http://example.com/b"
+      tok1.should_not == tok2
+    end
+
+    it "should be different for different tids" do
+      tok1 = IATed::EditSession.calculate_sid :url => "http://example.com/", :tid => 'a'
+      tok2 = IATed::EditSession.calculate_sid :url => "http://example.com/", :tid => 'b'
+      tok1.should_not == tok2
     end
   end
 

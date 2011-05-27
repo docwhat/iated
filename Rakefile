@@ -30,7 +30,8 @@ end
 # Verify that we're in jruby. This helped with debugging.
 raise "I require JRuby" unless RUBY_ENGINE == "jruby"
 
-TARGET_DIR = "target"
+TARGET_DIR  = "target"
+BUILD_DIR   = "build"
 COVERAGE_DIR = File.join(TARGET_DIR, "coverage")
 DOC_DIR = File.join(TARGET_DIR, "doc")
 AGGREGATE_COVERAGE = File.join(TARGET_DIR, "coverage.data")
@@ -49,8 +50,8 @@ task :tests => [:features, :spec]
 
 ### Build the staging directory
 task :build do
-  rm_rf "build"
-  mkdir "build"
+  rm_rf BUILD_DIR
+  mkdir BUILD_DIR
   cp_r Dir["src/*"], "build/"
   cp Dir["Gemfile*"].to_a, "build/"
 end
@@ -58,7 +59,7 @@ end
 ### Build Jar ###
 desc "Build the jar"
 task :jar => [:build] do
-  Dir.chdir "build" do |path|
+  Dir.chdir BUILD_DIR do |path|
     Rake::Task[:warble].invoke
   end
 end
@@ -186,8 +187,9 @@ task :jruby_debug do
 end
 
 desc "Cleans up the work environment"
-task :clean => :'jar:clean' do
+task :clean => :'warble:clean' do
   rm_rf TARGET_DIR
+  rm_rf BUILD_DIR
   rm_rf '.yardoc'
 end
 

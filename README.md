@@ -3,7 +3,7 @@
 This is a server that will open text data in the editor of your
 choice.
 
-It is based on HTTP, so that it can be used in an ajax style by
+It is based on HTTP, so that it can be used in an ajax style bye
 plugins (or conceivably web pages).
 
 ## Bugs and Issues
@@ -164,3 +164,8 @@ Some info here:
 * [What is erlang style concurrency?](http://ulf.wiger.net/weblog/2008/02/06/what-is-erlang-style-concurrency/)
 * [LWN article](http://lwn.net/Articles/441790/)
 
+## License
+
+IATed is licensed under the
+[MIT License](http://www.opensource.org/licenses/mit-license.php). A
+LICENSE should have been included with this code.

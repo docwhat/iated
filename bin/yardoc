@@ -1,0 +1,16 @@
+#!/usr/bin/env jruby
+
+# Custom rake script, to automatically use bundler.
+
+require 'rubygems'
+require 'bundler/setup'
+
+version = ">= 0"
+
+if ARGV.first =~ /^_(.*)_$/ and Gem::Version.correct? $1 then
+  version = $1
+  ARGV.shift
+end
+
+gem 'yard', version
+load Gem.bin_path('yard', 'yardoc', version)

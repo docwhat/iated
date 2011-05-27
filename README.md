@@ -59,6 +59,49 @@ with development, we don't care.
 
 See Headius's [JRuby Startup Time tips](http://blog.headius.com/2010/03/jruby-startup-time-tips.html).
 
+## Developing for IATed
+
+Thanks for taking the time to try building IATed!
+
+### Requirements
+
+* A Unix style OS (e.g. OS X or Linux)
+* Java 1.6
+* [RVM](https://rvm.beginrescueend.com/)
+
+### First time setup
+
+Add these lines to your `~/.rvmrc` file (create it if it doesn't exist):
+
+    rvm_install_on_use_flag=1
+    rvm_project_rvmrc=1
+    rvm_gemset_create_on_use_flag=1
+
+`cd` into checkout and you should see RVM install the correct JRuby.
+
+Then install bundler:
+
+    gem install bundler
+
+And tell bundler to install the rest of the gems:
+
+    bundle install --path .bundle
+
+### The ./bin directory
+
+The top level `bin` directory can be a useful alternative to prefixing
+all commands with `bundle exec`. It was added for the CI system, but
+can be used during normal development to prevent the double executions
+of JRuby that `bundle exec` causes.
+
+Because you can't set environment
+variables from within JRuby, the path stuff may not work
+unless you add the `bin` directory to your `PATH`.
+
+For example:
+
+    env PATH="$(pwd)/bin:${PATH}" bin/rake ci
+
 ## API
 
 The API is documented in the `features/extension_*.feature` files. You

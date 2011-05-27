@@ -47,13 +47,28 @@ task :all => [:rcov, :yard, :jar]
 desc "Run all tests"
 task :tests => [:features, :spec]
 
+### Build the staging directory
+task :build do
+  rm_rf "build"
+  mkdir "build"
+  cp_r Dir["src/*"], "build/"
+  cp Dir["Gemfile*"].to_a, "build/"
+end
+
 ### Build Jar ###
-Warbler::Task.new do |t|
-  t.config.jar_name = "target/iated"
+desc "Build the jar"
+task :jar => [:build] do
+  Dir.chdir "build" do |path|
+    Rake::Task[:warble].invoke
+  end
+end
+
+Warbler::Task.new :warble do |t|
+  t.config.jar_name = "../target/iated"
 end
 # There is a weird bug in warbler where the jar grows without
 # bound unless this extra clean is specified.
-task :jar => [:target_dir, :'jar:clean']
+task :warble => [:target_dir, :'warble:clean']
 
 # TODO: Create .exe (windows with launch4j)
 # TODO: Create .app (os-x)

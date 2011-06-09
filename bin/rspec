@@ -4,4 +4,13 @@
 
 require 'rubygems'
 require 'bundler/setup'
-require 'rspec/autorun'
+
+version = ">= 0"
+
+if ARGV.first =~ /^_(.*)_$/ and Gem::Version.correct? $1 then
+  version = $1
+  ARGV.shift
+end
+
+gem 'rspec', version
+load Gem.bin_path('rspec-core', 'rspec', version)

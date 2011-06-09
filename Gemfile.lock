@@ -63,6 +63,7 @@ DEPENDENCIES
   ci_reporter
   cucumber
   kramdown
+  nokogiri
   rack-test
   rake
   rcov

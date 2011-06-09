@@ -18,6 +18,7 @@ gem 'addressable', "~>2.2.5"
   gem 'webrat'
   gem 'yard'
   gem 'kramdown'
+  gem 'nokogiri'
 #end
 
 # Local Variables:

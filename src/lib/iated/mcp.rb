@@ -56,6 +56,8 @@ module IATed
     # @return [nil]
     def show_secret
       generate_secret
+      # TODO This should do something different for text, vs. gui.
+      puts " ** A browser requested authorization: #{@secret}"
 ##      Thread.new do
 ##        puts " ** A browser requested authorization: #{@secret}"
 ### TODO This needs to be abstracted. There is no reason a purely command line version can't be done. Also, loading swing will break CI.
@@ -112,7 +114,7 @@ module IATed
       # TODO this needs to be in a separate thread.
       set :server, %w[webrick]
       set :bind, 'localhost'
-      set :port, port
+      set :port, prefs.port
       if @debug
         set :show_exceptions, true
         set :environment, :development

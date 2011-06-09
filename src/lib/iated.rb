@@ -25,12 +25,17 @@ module IATed
         opts.banner =    "Usage: #{opts.program_name} [OPTIONS]"
 
         opts.on('-p', '--port PORT', Integer,
-                "The port number to run the server on (default: #{IATed::MCP.instance.port}).") do |p|
-          mcp.port = p
+                "The port number to run the server on (default: #{IATed.mcp.prefs.port}).") do |p|
+          IATed.mcp.prefs.port = p
         end
 
+        opts.on('-u', '--ui UI', "Set the UI to be 'gui' or 'text' (default #{IATed.mcp.ui}).") do |ui|
+          IATed.mcp.ui = ui.to_sym
+        end
+
+
         opts.on('-d', '--debug', "Turn on debugging mode.") do
-          mcp.debug = true
+          IATed.mcp.debug = true
         end
 
         opts.on_tail('-h', '--help', 'Show this help.') do
@@ -45,7 +50,7 @@ module IATed
     #:nocov:
     def run
       @optparse.parse!
-      mcp.begin!
+      IATed.mcp.begin!
     end
     #:nocov:
 

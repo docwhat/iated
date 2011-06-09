@@ -88,7 +88,7 @@ end
 
 # Jenkins
 desc "Continuous integration"
-task :ci => [:sloccount, :'features:ci', :'spec:ci', :yard, :jar]
+task :ci => [:sloccount, :download_jars, :'features:ci', :'spec:ci', :yard, :jar]
 
 # SLOCCount
 desc "Generate SLOCCount"

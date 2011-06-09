@@ -193,3 +193,115 @@ task :clean => :'warble:clean' do
   rm_rf '.yardoc'
 end
 
+### Maven ###
+# Fetching Java jars.
+
+## Generates the temporary pom file
+def build_pom_xml
+  require 'yaml'
+  require 'nokogiri'
+  jars_config = YAML::load_file "jars.yml"
+
+  builder = Nokogiri::XML::Builder.new do |pom|
+    pom.project do
+      pom.modelVersion  '4.0.0'
+      pom.groupId       'none'
+      pom.artifactId    'none'
+      pom.version       '1.0'
+      pom.dependencies do
+
+        jars_config[:jars].each do |jar_config|
+          pom.dependency do
+            pom.groupId     jar_config[:groupId]
+            pom.artifactId  jar_config[:artifactId]
+            pom.version     jar_config[:version]
+          end
+        end
+      end
+    end
+  end
+  return builder.to_xml
+end
+
+## Returns a list of jars' paths to copy.
+#
+# This also causes Maven to download the jars and
+# put it in its local repository.
+def get_jar_paths
+
+  begin
+    File.open(".mvnfetch.xml", 'w') do |f|
+      f.write build_pom_xml
+    end
+
+    # This is a simple state machine.  It looks for a line that
+    # says it has resolved the depencies and then parses each line after that
+    # until an empty line.
+    # [start] -> [resolutions] -> [end]
+    state = :start
+
+    # Simple regex for the 6 elements separated by colons.
+    re = Regexp.new( (["([^:]+)"] * 6).join(":"))
+
+    # Collect the paths here.
+    paths = []
+
+    # Warn the user this may take a while.
+    puts "Running Maven to get the correct jars (this may take a while)..."
+
+    # Execute Maven, and parse the input.
+    `mvn -f .mvnfetch.xml dependency:resolve -DoutputAbsoluteArtifactFilename=true`.each do |line|
+      line.chomp!
+
+      # Split out the log level (INFO, WARNING, ERROR) from the actual message.
+      # Usual format of Maven output is: [INFO]   Something happened some place.
+      if line =~ /^\[([A-Z]+)\]\s+(.*)$/
+        lvl = $1
+        txt = $2
+        if "INFO" == lvl
+          if :start == state
+            if txt =~ /The following files have been resolved/
+              state = :resolutions
+            end
+          elsif :resolutions == state
+            if txt =~ /^\s*$/
+              state = :end
+            else
+              m = re.match(line)
+              if m
+                paths << m[6] # The 6th element is the path to the jar.
+              else
+                raise "Unable to parse maven: #{txt.inspect}"
+              end
+            end
+          end
+        else
+          # Ignore the stupid warnings
+          puts "maven: #{line}" unless line =~ /decrypting password/
+        end
+      else
+        # Ignore the stupid warnings
+        puts "maven: #{line}" unless line =~ /password is not set/
+      end
+    end # mvn
+  ensure
+    rm_f ".mvnfetch.xml"
+  end
+
+  return paths
+end
+
+desc "Downloads the required jars and their dependencies"
+task :download_jars do
+  paths = get_jar_paths
+
+  # Remove previously downloaded jars.
+  Dir[File.join("src", "lib", "*.jar")].each do |path|
+    File.unlink path
+  end
+
+  # Copy over new jars.
+  paths.each do |path|
+    cp(path, File.join("src", "lib"))
+  end
+end

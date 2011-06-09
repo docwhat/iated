@@ -9,3 +9,4 @@
 /target/
 velocity.log
 /.yardoc/
+/src/lib/*.jar

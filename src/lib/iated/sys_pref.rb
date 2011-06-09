@@ -1,4 +1,3 @@
-
 require 'iated'
 require 'java'
 require 'pathname'
@@ -88,6 +87,19 @@ class SysPref
     return nil
   end
 
+  ## The editor to be used.
+  # @return [Pathname] The editor, possibly with path.
+  def editor
+    Pathname.new store.get("EDITOR", default_editor)
+  end
+
+  ## Set the editor
+  # @param [String] editor The editor (possibly with path) to store.
+  # @return [nil]
+  def editor= editor
+    store.put("EDITOR", editor.to_s)
+  end
+
   ## Resets the preferences module
   # @return [nil]
   def reset
@@ -105,6 +117,7 @@ class SysPref
   end
 
   ## Default config dir.
+  # @return [String]
   def default_config_dir
     if IATed::environment == :test
       @test_dir = Pathname.new(Dir.mktmpdir) if @test_dir.nil?
@@ -119,6 +132,24 @@ class SysPref
     return dir.to_s
   end
 
+  ## Default editor to use.
+  # @return [String]
+  def default_editor
+    os = org.apache.commons.exec.OS
+
+    if os.isFamilyMac
+      return "/Applications/TextEdit.app"
+    elsif os.isFamilyUnix
+      return "gvim"
+    elsif os.isFamilyWindows or os.isFamilyWin9x
+      return "notepad.exe"
+    else
+      return ""
+    end
+  end
+
+  ## User's home directory
+  # @return [String]
   def home
     java.lang.System.getProperty("user.home")
   end

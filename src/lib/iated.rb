@@ -10,6 +10,12 @@ require 'iated/edit_session'
 require 'iated/browser_token_db'
 require 'optparse'
 
+# Load all the jars in the lib directory.
+Dir[File.join(File.dirname(__FILE__), '*.jar')].each do |jar|
+  require jar
+end
+
+
 # Global settings for Sinatra
 set :run, false
 set :views, (Pathname.new(__FILE__).dirname.dirname + 'views').to_s
@@ -29,10 +35,13 @@ module IATed
           IATed.mcp.prefs.port = p
         end
 
+        opts.on('-e', '--editor EDITOR', "Set editor (default #{IATed.mcp.prefs.editor}).") do |editor|
+          IATed.mcp.prefs.editor = editor
+        end
+
         opts.on('-u', '--ui UI', "Set the UI to be 'gui' or 'text' (default #{IATed.mcp.ui}).") do |ui|
           IATed.mcp.ui = ui.to_sym
         end
-
 
         opts.on('-d', '--debug', "Turn on debugging mode.") do
           IATed.mcp.debug = true

@@ -53,7 +53,7 @@ function edit(jel) {
             handleError(msg);
             return;
         }
-        monitor(jel, msg.token, null);
+        monitor(jel, msg.sid, null);
     }
     chrome.extension.sendRequest({ action : 'edit',
                                    text   : jel.val(),
@@ -65,13 +65,13 @@ function edit(jel) {
 
 /** Start monitoring for changes.
  * @param jel  A single jQuery element.
- * @param token The token for this element.
+ * @param sid The sid for this element.
  */
-function monitor(jel, token, change_id) {
+function monitor(jel, sid, change_id) {
     var callback = function (msg) {
         new_change_id = (msg && msg.id) ? msg.id : change_id;
-        console.debug("monitor callback - token:%o msg:%o el:%o",
-                      token, msg, jel);
+        console.debug("monitor callback - sid:%o msg:%o el:%o",
+                      sid, msg, jel);
         if (msg && msg.error) {
             // Handle the error.
             handleError(msg);
@@ -83,16 +83,16 @@ function monitor(jel, token, change_id) {
         }
         if (is_focused) {
             setTimeout(function () {
-                monitor(jel, token, new_change_id);
+                monitor(jel, sid, new_change_id);
             }, 3000);
         } else {
             focus_queue.push(function () {
-                monitor(jel, token, new_change_id);
+                monitor(jel, sid, new_change_id);
             });
         }
     }
     chrome.extension.sendRequest({action : 'update',
-                                  token  : token,
+                                  sid  : sid,
                                   change_id : change_id},
                                  callback);
 }

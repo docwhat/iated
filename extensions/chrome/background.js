@@ -1,6 +1,7 @@
 /** The base URL for requests.
  */
 var base_url = 'http://127.0.0.1:9090/';
+var token = '655a93c645d1bf5d5ee972caf0eeaa86';
 
 /** Initialize the background handlers.
  */
@@ -27,7 +28,7 @@ function onRequest(msg, sender, callback) {
     if ('edit' === msg.action) {
         edit(msg.text, msg.url, msg.id, callback);
     } else if ('update' == msg.action) {
-        update(msg.token, msg.change_id, callback);
+        update(msg.sid, msg.change_id, callback);
     } else {
         console.error("Unknown msg: ", msg);
     }
@@ -39,20 +40,26 @@ function onRequest(msg, sender, callback) {
  * @param id
  */
 function edit(text, url, id, callback) {
-    var data = { text : text };
+    var data = {
+        text : text,
+        token : token
+        };
     if (url) {
         data.url = url;
     }
     if (id) {
         data.id = id;
     }
+    data.extension = '.txt';
     $.ajax({
         url: base_url + 'edit',
         type: 'POST',
         data: data,
         dataType: 'text',
-        success: function (token, textStatus) {
-            callback({token: token});
+        success: function (resp, textStatus) {
+            resp = YAML.eval(resp);
+            console.log("NARF edit response: %o %o", resp, textStatus);
+            callback({sid: resp.sid});
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("edit: failure: %o - %o - %o", jqXHR, textStatus, errorThrown);
@@ -63,17 +70,20 @@ function edit(text, url, id, callback) {
 
 /** Handles an update request.
  */
-function update(token, change_id, callback) {
-    var url = base_url + 'edit/' + token;
+function update(sid, change_id, callback) {
+    var url = base_url + 'edit/' + sid;
     if (change_id) {
         url = url + '/' + change_id;
+    } else {
+        url = url + '/0';
     }
     console.log("logging info: %o", url);
     $.ajax({
         url: url,
         type: 'GET',
-        dataType: 'json',
+        dataType: 'text',
         success: function (resp, textStatus) {
+            resp = YAML.eval(resp);
             console.log("update: success: %o - %o", resp, textStatus);
             if (resp) {
                 callback(resp);

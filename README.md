@@ -30,8 +30,8 @@ the `target/doc/index.html` file
 ### Nail Gun
 
 You can run `jruby --ng-server` in one window and then set
-`export JRUBY_OPTS=--ng` in another and all the jruby processes will
-use nail-gun to start faster.
+`export JRUBY_OPTS=--ng` in another and all the jruby processes
+will use nail-gun to start faster.
 
 This *can*  produce weird effects.  An example is that sinatra can
 only be sent `control-c`  from the nail-gun server shell, not the

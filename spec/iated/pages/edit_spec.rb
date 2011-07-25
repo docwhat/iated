@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'json'
 
 describe 'IATed /edit' do
   include Rack::Test::Methods
@@ -6,8 +7,8 @@ describe 'IATed /edit' do
     Sinatra::Application
   end
 
-  def last_yaml
-    YAML::load(last_response.body)
+  def last_json
+    JSON::load(last_response.body)
   end
 
   context "creating a new edit session" do
@@ -24,13 +25,13 @@ describe 'IATed /edit' do
     end
 
     it "should return a valid session id" do
-      last_yaml[:sid].should_not be_nil
-      IATed::sessions[last_yaml[:sid]].should_not be_nil
+      last_json["sid"].should_not be_nil
+      IATed::sessions[last_json["sid"]].should_not be_nil
     end
 
     context "polling the new session" do
       before(:each) do
-        @sid = last_yaml[:sid]
+        @sid = last_json["sid"]
         get "/edit/#{@sid}/0"
       end
       it "should return 200 (success)" do
@@ -38,11 +39,11 @@ describe 'IATed /edit' do
       end
 
       it "should return no changes" do
-        last_yaml[:change_id].should == 0
+        last_json["change_id"].should == 0
       end
 
       it "should return no text" do
-        last_yaml[:text].should be_nil
+        last_json["text"].should be_nil
       end
     end
   end
@@ -62,11 +63,11 @@ describe 'IATed /edit' do
       end
 
       it "should return a change_id of 1" do
-        last_yaml[:change_id].should == 1
+        last_json["change_id"].should == 1
       end
 
       it "should return the text" do
-        last_yaml[:text].should == @text
+        last_json["text"].should == @text
       end
     end
 

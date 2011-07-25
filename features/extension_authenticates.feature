@@ -12,14 +12,15 @@ Feature: Extension Authenticates
     Given I have not authenticated
     When I GET /hello without a secret
     Then the user should be shown the secret
-    And the page should be "text/plain"
-    And the page should say "ok"
+    And the page should be "text/json"
+    And the status should be "ok"
 
+  @wip
   Scenario: Extension posts secret
     Given I have a secret
     When I POST /hello with the secret
     Then I should be sent a response with a token
-    And the page should be "text/yaml"
+    And the page should be "text/json"
     And the token should be registered
 
   Scenario: Extension pings with secret

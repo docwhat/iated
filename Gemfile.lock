@@ -62,6 +62,7 @@ DEPENDENCIES
   autowatchr
   ci_reporter
   cucumber
+  json
   kramdown
   nokogiri
   rack-test

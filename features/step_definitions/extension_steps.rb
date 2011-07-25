@@ -87,8 +87,8 @@ end
 
 Then /^I should be sent a response with a token$/ do
   last_response.status.should == 200
-  last_yaml[:token].should_not be_nil
-  @token = last_yaml[:token]
+  last_json["token"].should_not be_nil
+  @token = last_json["token"]
 end
 
 Then /^the token should be registered$/ do
@@ -98,12 +98,12 @@ Then /^the token should be registered$/ do
 end
 
 Then /^I expect the text to be sent$/ do
-  last_yaml[:text].should == @textarea[:text]
+  last_json["text"].should == @textarea[:text]
 end
 
 Then /^I expect a valid session id$/ do
   last_response.status.should == 200
-  @sid = last_yaml[:sid]
+  @sid = last_json["sid"]
   @sid.should_not be_nil
   @session = IATed::sessions[@sid]
   @session.should_not be_nil
@@ -111,6 +111,10 @@ end
 
 Then /^I expect an editor to be opened$/ do
   @session.should be_running
+end
+
+Then /^the status should be "([a-z0-9]+)"$/ do |string|
+  last_json["status"].should be == string
 end
 
 Then /^I expect the editor file to have an extension of "(\.[a-z]+)"$/ do |ext|
@@ -122,9 +126,9 @@ Then /^I expect the editor file to have "([a-z0-9._-]+)" in it$/ do |string|
 end
 
 Then /^I expect a change\-count of (\d+)$/ do |change_count|
-  last_yaml[:change_id].should == change_count.to_i
+  last_json["change_id"].should == change_count.to_i
 end
 
 Then /^I expect no text to be sent$/ do
-  last_yaml[:text].should be_nil
+  last_json["text"].should be_nil
 end

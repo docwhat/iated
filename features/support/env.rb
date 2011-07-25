@@ -5,6 +5,7 @@ require 'pathname'
 $: << (Pathname.new(__FILE__).dirname.dirname.dirname + 'src' + 'lib').to_s
 
 require 'yaml'
+require 'json'
 require 'iated'
 
 ## Force the application name because polyglot breaks the auto-detection logic.
@@ -34,6 +35,10 @@ class MyWorld
 
   def last_yaml
     YAML::load(last_response.body)
+  end
+
+  def last_json
+    JSON::load(last_response.body)
   end
 end
 

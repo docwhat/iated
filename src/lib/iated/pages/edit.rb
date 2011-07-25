@@ -1,12 +1,13 @@
 require 'iated/mcp'
 require 'sinatra'
 require 'iated/page_helpers'
+require 'json'
 
 post '/edit' do
   requires_token
   session = IATed::EditSession.new params
-  content_type "text/yaml"
-  {:sid => session.sid}.to_yaml
+  content_type "text/json"
+  {:sid => session.sid}.to_json
 end
 
 get '/edit/:sid/:change_id' do |sid, change_id|
@@ -15,12 +16,13 @@ get '/edit/:sid/:change_id' do |sid, change_id|
   if session.nil?
     halt 404
   else
+    content_type "text/json"
     resp = {
       :change_id => session.change_id,
     }
     if session.change_id > change_id
       resp[:text] = session.text
     end
-    return resp.to_yaml
+    return resp.to_json
   end
 end

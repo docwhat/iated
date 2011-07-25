@@ -30,8 +30,9 @@ end
 # Verify that we're in jruby. This helped with debugging.
 raise "I require JRuby" unless RUBY_ENGINE == "jruby"
 
-TARGET_DIR  = "target"
-BUILD_DIR   = "build"
+TOP = File.dirname(__FILE__)
+TARGET_DIR  = File.join(TOP, "target")
+BUILD_DIR   = File.join(TOP, "build")
 COVERAGE_DIR = File.join(TARGET_DIR, "coverage")
 DOC_DIR = File.join(TARGET_DIR, "doc")
 AGGREGATE_COVERAGE = File.join(TARGET_DIR, "coverage.data")
@@ -65,7 +66,7 @@ task :jar => [:build] do
 end
 
 Warbler::Task.new :warble do |t|
-  t.config.jar_name = "../target/iated"
+  t.config.jar_name = File.join(TARGET_DIR, "iated")
 end
 # There is a weird bug in warbler where the jar grows without
 # bound unless this extra clean is specified.
@@ -178,7 +179,7 @@ end
 ### Utility ####
 # Create the target directory.
 task :target_dir do
-  Dir.mkdir TARGET_DIR unless File.directory? TARGET_DIR
+  mkdir TARGET_DIR unless File.directory? TARGET_DIR
 end
 
 # Turn on --debug for jruby, used for rcov targets

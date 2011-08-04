@@ -6,8 +6,9 @@ require 'json'
 post '/edit' do
   requires_token
   session = IATed::EditSession.new params
+  # TODO: session.edit
   content_type "text/json"
-  {:sid => session.sid}.to_json
+  return {:sid => session.sid}.to_json
 end
 
 get '/edit/:sid/:change_id' do |sid, change_id|

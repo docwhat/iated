@@ -1,6 +1,9 @@
 require 'digest/md5'
 require 'set'
 require 'addressable/uri'
+require 'fileutils'
+require 'pathname'
+require 'digest/md5'
 
 module IATed
   ## An Edit Session
@@ -15,8 +18,6 @@ module IATed
     attr_reader :extension
     # @return [String] The session id
     attr_reader :sid
-    # @return [Integer] The number of changes recorded to the file
-    attr_reader :change_id
 
     ##
     # @param [Hash] options Various optional arguments (:url, :tid, :extension)
@@ -27,14 +28,13 @@ module IATed
       @extension         = normalized_options[:extension]
       @change_id         = 0
       @sid               = self.class.calculate_sid normalized_options
+      @last_checksum     = :nochecksum
 
       # Save session.
       IATed::sessions[@sid] = self
 
       # Save the text, if passed in the original options
-      if options.key? :text
-        self.text = options[:text]
-      end
+      self.text = options[:text] if options.key?(:text)
     end
 
     ## Finds an existing session
@@ -75,6 +75,22 @@ module IATed
     # @return [Integer] The new number of changes
     def increment_change_id
       @change_id = @change_id + 1
+    end
+
+    ## Return the change_id
+    # @returns [Integer] The new number of changes
+    def change_id
+      if filename.exist?
+        new_checksum = filename.open('r') do |f|
+          Digest::MD5.hexdigest(f.read)
+        end
+        
+        if @last_checksum != new_checksum
+          increment_change_id
+          @last_checksum = new_checksum
+        end
+      end
+      @change_id
     end
 
     ## Returns true if the editor is running.
@@ -118,11 +134,12 @@ module IATed
 
     def text= value
       increment_change_id if filename.exist?
-      filename.dirname.mkdir unless filename.dirname.directory?
-      # TODO locking
+      filename.dirname.mkpath
+      # TODO: locking
       filename.open('w') do |f|
         f.write value
       end
+      @last_checksum = Digest::MD5.hexdigest(value)
     end
 
     ## Normalizes the search options (`:url`, `:tid`, `:extension`)

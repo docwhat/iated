@@ -83,6 +83,13 @@ describe IATed::EditSession do
       sess.text = "sub-bar"
       sess.change_id.should == 1
     end
+
+    it "should be writen to disk" do
+      sess = IATed::EditSession.new :url => 'http://example.com/writeme', :tid => "#{rand}", :text => "written"
+      sess.filename.open('r') do |f|
+        f.read.should == "written"
+      end
+    end
   end
 
   context "#change_id" do
@@ -92,6 +99,15 @@ describe IATed::EditSession do
       params[:url] = "http://example.com/cucumber"
       session = IATed::EditSession.new params
       session.change_id.should == 0
+    end
+
+    it "should detect the change_id when the contents change" do
+      sess = IATed::EditSession.new :url => 'http://example.com/changer', :tid => "#{rand}", :text => "change me"
+      sess.change_id.should == 0
+      sess.filename.open('w') do |f|
+        f.write "I'm changed!"
+      end
+      sess.change_id.should == 1
     end
   end
 

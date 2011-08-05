@@ -1,0 +1,34 @@
+#!ruby
+
+require 'rubygems'
+require 'bundler'
+Bundler.setup(:default)
+require 'pathname'
+$: << (Pathname.new(__FILE__).dirname.dirname + 'lib').to_s
+
+require 'iated'
+
+#IATed::Application.new.run
+params = {
+  "tid"=>"#text",
+  "text"=>"Example text\n1.\n2.\n3.\n",
+  "url"=>"http://localhost/r/",
+  "extension"=>".txt",
+  "token"=>"e0528131ba268fc5ee8dfc1a2dc15d46"
+}
+params = {
+  "tid"=>"#text",
+  "text"=>"Example text\n1.\n2.\n3.\n",
+  "url"=>"http://localhost/r/",
+  "extension"=>".txt",
+}
+params = {
+  :tid =>"#text",
+  :text =>"Example text\n1.\n2.\n3.\n",
+  :url =>"http://localhost/r/",
+  :extension =>".txt",
+}
+s = IATed::EditSession.new params
+s.edit
+
+# EOF

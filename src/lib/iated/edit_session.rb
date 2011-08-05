@@ -84,7 +84,7 @@ module IATed
         new_checksum = filename.open('r') do |f|
           Digest::MD5.hexdigest(f.read)
         end
-        
+
         if @last_checksum != new_checksum
           increment_change_id
           @last_checksum = new_checksum
@@ -102,7 +102,28 @@ module IATed
 
     ## Opens the user's configured editor.
     def edit
-      raise "Not Done" # TODO implement edit
+      editor = IATed.mcp.prefs.editor.to_s
+      if IATed::environment == :test
+        # We don't want to fire up real editors in testing mode.
+        #$stderr.puts "I would have edited #{filename.to_s.inspect} with #{editor.inspect}"
+        return
+      end
+      cmd = nil # We will store the CommandLine object here.
+      java_import org.apache.commons.exec.OS
+      java_import org.apache.commons.exec.CommandLine
+      java_import org.apache.commons.exec.DefaultExecutor
+
+      if OS.is_family_mac && editor =~ /\.app$/
+        # It's a Mac .app
+        cmd = CommandLine.new "/usr/bin/open"
+        cmd.add_argument("-a").add_argument(editor)
+      else
+        cmd = CommandLine.new editor
+      end
+      cmd.add_argument(filename.to_s)
+
+      executor = DefaultExecutor.new
+      executor.execute(cmd)
     end
 
     ## Returns the file where the session is saved.

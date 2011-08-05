@@ -5,8 +5,16 @@ require 'json'
 
 post '/edit' do
   requires_token
-  session = IATed::EditSession.new params
-  # TODO: session.edit
+  halt 400 unless params['url']
+  halt 400 unless params['text']
+  values = {
+    :tid  => params['tid'] ? params['tid'] : '',
+    :text => params['text'],
+    :url  => params['url'],
+    :extension => params['extension'] ? params['extension'] : '.txt',
+  }
+  session = IATed::EditSession.new values
+  session.edit
   content_type "text/json"
   return {:sid => session.sid}.to_json
 end

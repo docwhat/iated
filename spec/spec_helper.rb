@@ -1,17 +1,27 @@
-require 'pathname'
-$: << (Pathname.new(__FILE__).dirname.dirname + 'src' + 'lib').to_s
-
-raise "I require JRuby" unless RUBY_ENGINE == "jruby"
-
 require 'rubygems'
 require 'bundler'
 Bundler.setup(:default, :test)
+require 'spork'
 
-require 'rspec'
-require 'rack/test'
-require 'iated'
+Spork.prefork do
+  # Loading more in this block will cause your tests to run faster. However,
+  # if you change any configuration or code from libraries loaded here, you'll
+  # need to restart spork for it take effect.
+  require 'pathname'
+  $: << (Pathname.new(__FILE__).dirname.dirname + 'src' + 'lib').to_s
 
-set :environment, :test
-IATed::environment = :test
+  raise "I require JRuby" unless RUBY_ENGINE == "jruby"
 
+  require 'rspec'
+  require 'rack/test'
+end
+
+Spork.each_run do
+  # This code will be run each time you run your specs.
+  require 'iated'
+
+  set :environment, :test
+  IATed::environment = :test
+
+end
 # EOF

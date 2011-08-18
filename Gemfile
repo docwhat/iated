@@ -10,7 +10,8 @@ group :development do
   gem 'guard'
   gem 'guard-cucumber'
   gem 'guard-rspec'
-  gem 'guard-bundler'
+  gem 'spork', '~> 0.9.0rc'
+  #gem 'guard-spork' # While spork works in jruby guard-spork doesn't seem to. :-(
   gem 'rb-fsevent'
   gem 'growl'
 end

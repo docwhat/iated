@@ -5,14 +5,17 @@ Pathname.glob(Pathname.new(__FILE__).dirname + 'iated' + 'pages' + '*.rb').each 
 end
 
 require 'sinatra'
+require 'haml'
 require 'iated/mcp'
 require 'iated/edit_session'
 require 'iated/browser_token_db'
 require 'optparse'
 
-# Load all the jars in the lib directory.
-Dir[File.join(File.dirname(__FILE__), '*.jar')].each do |jar|
-  require jar
+if RUBY_ENGINE == "jruby"
+  # Load all the jars in the lib directory.
+  Dir[File.join(File.dirname(__FILE__), '*.jar')].each do |jar|
+    require jar
+  end
 end
 
 
@@ -20,6 +23,7 @@ end
 set :run, false
 set :views, (Pathname.new(__FILE__).dirname.dirname + 'views').to_s
 set :public, (Pathname.new(__FILE__).dirname.dirname + 'public').to_s
+set :haml, :format => :html5 # default Haml format is :xhtml
 
 module IATed
   class Application
@@ -94,6 +98,13 @@ module IATed
     @mcp.prefs.reset unless @mcp.nil?
     @mcp = nil
     @sessions = nil
+  end
+
+  ## Deletes all state from the system
+  # @return [nil]
+  def self.purge
+    dir = self.mcp.prefs.config_dir
+    dir.rmtree if dir.directory?
   end
 
   ## Access to the Master Control Program

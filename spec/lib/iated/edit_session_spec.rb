@@ -5,7 +5,7 @@ describe IATed::EditSession do
     IATed::reset
   end
   after(:each) do
-    IATed::reset
+    IATed::purge
   end
 
   context "#find" do
@@ -113,7 +113,7 @@ describe IATed::EditSession do
 
   context "#increment_change_id" do
     it "should increment the #change_id" do
-      sess = IATed::EditSession.new :url => 'http://example.com/'
+      sess = IATed::EditSession.new :url => 'http://example.com/should_increment'
       sess.change_id.should == 0
       sess.increment_change_id
       sess.change_id.should == 1

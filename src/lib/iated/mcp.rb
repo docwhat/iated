@@ -6,7 +6,6 @@ require 'sinatra'
 require 'pathname'
 require 'iated/sys_pref'
 require 'iated/browser_token_db'
-require 'java'
 
 module IATed
   ## The Master Control Progrom
@@ -58,6 +57,7 @@ module IATed
       generate_secret
       # TODO This should do something different for text, vs. gui.
       puts " ** A browser requested authorization: #{@secret}" unless :test == ui
+##      require 'java'
 ##      Thread.new do
 ##        puts " ** A browser requested authorization: #{@secret}"
 ### TODO This needs to be abstracted. There is no reason a purely command line version can't be done. Also, loading swing will break CI.

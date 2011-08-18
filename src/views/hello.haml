@@ -1,0 +1,13 @@
+!!!
+%meta( charset="utf-8" )
+%title Authorize IATed
+
+%body( id="hello" )
+  %h1 Authorize IATed
+
+  %form( method="post" )
+    %input( type="text" name="onetime" )
+    %input( type="submit" name="Authorize!" )
+
+  %pre
+    %= params.inspect

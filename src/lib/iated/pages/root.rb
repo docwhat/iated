@@ -2,5 +2,5 @@
 require 'sinatra'
 
 get '/' do
-  erb :root
+  haml :root
 end

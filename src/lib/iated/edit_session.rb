@@ -107,7 +107,33 @@ module IATed
         # We don't want to fire up real editors in testing mode.
         #$stderr.puts "I would have edited #{filename.to_s.inspect} with #{editor.inspect}"
         return
+      else
+        if RUBY_ENGINE == "jruby"
+          edit_jruby
+        else
+          edit_ruby
+        end
       end
+    end
+
+    ## The Ruby version of edit
+    def edit_ruby
+      editor = IATed.mcp.prefs.editor.to_s
+      cmd = []
+      if RUBY_PLATFORM =~ /darwin/ && editor =~ /\.app$/
+        cmd << "/usr/bin/open"
+        cmd << "-a"
+      end
+      cmd << editor
+      cmd << filename.to_s
+      # TODO This doesn't get the exit code...
+      system *cmd
+    end
+
+    ## The JRuby version of edit
+    def edit_jruby
+      editor = IATed.mcp.prefs.editor.to_s
+
       cmd = nil # We will store the CommandLine object here.
       java_import org.apache.commons.exec.OS
       java_import org.apache.commons.exec.CommandLine

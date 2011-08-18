@@ -1,7 +1,6 @@
 require 'iated/mcp'
 require 'sinatra'
 require 'iated/page_helpers'
-require 'java'
 require 'json'
 
 helpers do 

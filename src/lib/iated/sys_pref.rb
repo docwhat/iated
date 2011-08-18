@@ -1,7 +1,11 @@
 require 'iated'
-require 'java'
 require 'pathname'
 require 'tmpdir'
+
+if RUBY_ENGINE == "jruby"
+  require 'java'
+end
+
 
 ## Class to wrap the system preferences for the user.
 #
@@ -12,27 +16,29 @@ class SysPref
   # Two reasons: It lets me drop in a fake version for testing and
   # because I want to use Java's System Preferences to persist preferences.
 
-  ## Wrapper around Java's `java.util.prefs.Preferences`
-  class JavaStore < java.lang.Object
-    def initialize
-      super
-      @store = java.util.prefs.Preferences.userNodeForPackage(self.getClass)
-    end
-    # @return [Integer]
-    def getInt key, default
-      @store.getInt key.to_s, default.to_i
-    end
-    # @return [nil]
-    def putInt key, value
-      @store.putInt key.to_s, value.to_i
-    end
-    # @return [String]
-    def get key, default
-      @store.get key.to_s, default.to_s
-    end
-    # @return [nil]
-    def put key, value
-      @store.put key.to_s, value.to_s
+  if RUBY_ENGINE == 'jruby'
+    ## Wrapper around Java's `java.util.prefs.Preferences`
+    class JavaStore < java.lang.Object
+      def initialize
+        super
+        @store = java.util.prefs.Preferences.userNodeForPackage(self.getClass)
+      end
+      # @return [Integer]
+      def getInt key, default
+        @store.getInt key.to_s, default.to_i
+      end
+      # @return [nil]
+      def putInt key, value
+        @store.putInt key.to_s, value.to_i
+      end
+      # @return [String]
+      def get key, default
+        @store.get key.to_s, default.to_s
+      end
+      # @return [nil]
+      def put key, value
+        @store.put key.to_s, value.to_s
+      end
     end
   end
 
@@ -59,46 +65,42 @@ class SysPref
     end
   end
 
-  ## Returns the current port number
-  # @return [Integer] The port number
-  def port
-    store.getInt("PORT", default_port)
+  def self.preferences
+    @preferences ||= []
   end
 
-  ## Sets the current port number
-  # @return [nil]
-  def port= val
-    store.putInt("PORT", val.to_i)
-    return nil
+  def self.integer_pref name, default
+    preferences << name
+    jpref_name = name.to_s.upcase
+
+    define_method name do
+      store.getInt(jpref_name, send(default))
+    end
+
+    define_method "#{name}=".to_sym do |value|
+      store.putInt(jpref_name, value.to_i)
+      return nil
+    end
   end
 
-  ## The directory where stuff is saved.
-  # @return [Pathname] The configuration directory
-  def config_dir
-    Pathname.new store.get("CONFIG_DIR", default_config_dir)
+  def self.filename_pref name, default
+    preferences << name
+    jpref_name = name.to_s.upcase
+
+    define_method name do
+      Pathname.new store.get(jpref_name, send(default))
+    end
+
+    define_method "#{name}=".to_sym do |path|
+      path = path.to_s.sub(/^~\//, home + '/')
+      store.put(jpref_name, path)
+      return nil
+    end
   end
 
-  ## Set the config directory.
-  # @param [String] path The path to the config directory. Note: ~/ is expanded to `user.home`
-  # @return [nil]
-  def config_dir= path
-    path = path.to_s.sub(/^~\//, home + '/')
-    store.put("CONFIG_DIR", path)
-    return nil
-  end
-
-  ## The editor to be used.
-  # @return [Pathname] The editor, possibly with path.
-  def editor
-    Pathname.new store.get("EDITOR", default_editor)
-  end
-
-  ## Set the editor
-  # @param [String] editor The editor (possibly with path) to store.
-  # @return [nil]
-  def editor= editor
-    store.put("EDITOR", editor.to_s)
-  end
+  integer_pref  :port,       :default_port
+  filename_pref :config_dir, :default_config_dir
+  filename_pref :editor,     :default_editor
 
   ## Resets the preferences module
   # @return [nil]
@@ -106,6 +108,16 @@ class SysPref
     @test_dir.rmtree unless @test_dir.nil?
     @test_dir = nil
     @store = nil
+  end
+
+  ## User's home directory
+  # @return [String]
+  def home
+    if RUBY_ENGINE == 'jruby'
+      java.lang.System.getProperty("user.home")
+    else
+      ENV['HOME']
+    end
   end
 
   private
@@ -125,40 +137,65 @@ class SysPref
     else
       dir = Pathname.new(home)
       # FIXME Windows should probably use a different directory name.
-      # FIXME Mac maybe should be in library?
+      # FIXME Mac maybe should be in ~/Library?
     end
     dir = dir + '.iat'
     dir.mkdir unless dir.directory?
     return dir.to_s
   end
 
+  def os
+    if RUBY_ENGINE == 'jruby'
+      if os.isFamilyMac
+        return :mac
+      elsif os.isFamilyUnix
+        return :unix
+      elsif os.isFamilyWindows or os.isFamilyWin9x
+        return :windows
+      else
+        return :unknown
+      end
+    else
+      if RUBY_PLATFORM =~ /darwin/
+        return :mac
+      elsif RUBY_PLATFORM =~ /win/
+        return :windows
+      else # It's unix?
+        return :unix
+      end
+    end
+  end
+
   ## Default editor to use.
   # @return [String]
   def default_editor
-    os = org.apache.commons.exec.OS
-
-    if os.isFamilyMac
+    if os == :mac
       return "/Applications/TextEdit.app"
-    elsif os.isFamilyUnix
+    elsif os == :unix
       return "gvim"
-    elsif os.isFamilyWindows or os.isFamilyWin9x
+    elsif os == :windows
       return "notepad.exe"
     else
       return ""
     end
   end
 
-  ## User's home directory
-  # @return [String]
-  def home
-    java.lang.System.getProperty("user.home")
-  end
-
   ## The actual object for storing preferences.
   #
   # Which store to use is determined by the IATed::environment
   def store
-    @store ||= IATed::environment == :test ? FakeStore.new : JavaStore.new
+    unless @store
+      if IATed::environment == :test
+        @store ||= FakeStore.new
+      else
+        if RUBY_ENGINE == "jruby"
+          @store ||= JavaStore.new
+        else
+          @store ||= FakeStore.new
+        end
+      end
+    end
+    return @store
   end
 
 end

@@ -10,7 +10,7 @@ Spork.prefork do
   require 'pathname'
   $: << (Pathname.new(__FILE__).dirname.dirname + 'src' + 'lib').to_s
 
-  raise "I require JRuby" unless RUBY_ENGINE == "jruby"
+  puts "Runing with #{RUBY_ENGINE}"
 
   require 'rspec'
   require 'rack/test'
@@ -22,6 +22,5 @@ Spork.each_run do
 
   set :environment, :test
   IATed::environment = :test
-
 end
 # EOF

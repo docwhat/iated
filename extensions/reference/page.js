@@ -50,11 +50,19 @@ function update() {
     });
 }
 
+function preferences() {
+    event.preventDefault();
+    event.stopPropagation();
+    window.open('http://localhost:9090/preferences?token=' + encodeURIComponent($('#token').val()), "iat_prefs");
+    return true;
+}
+
 $(document).ready( function init() {
     $("#hello-btn").click(hello);
     $("#secret-btn").click(secret);
     $("#edit-btn").click(edit);
     $("#update-btn").click(update);
+    $("#preferences-btn").click(preferences);
 });
 
 

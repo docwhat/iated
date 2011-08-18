@@ -61,6 +61,7 @@ module IATed
     ## Write the data to the store
     # @return [nil]
     def write
+      @fname.dirname.mkpath unless @fname.dirname.directory?
       @fname.open('w') do |f|
         f.puts @tokens.to_yaml
       end

@@ -19,6 +19,9 @@ describe 'IATed /edit' do
                       :url => "http://example.com/create-a-new-edit-session",
                       :text => 'sometext' }
     end
+    after(:each) do
+      IATed::purge
+    end
 
     it "should return 200 (success)" do
       last_response.status.should == 200

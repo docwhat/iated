@@ -4,6 +4,7 @@ source 'http://rubygems.org'
 gem 'sinatra', "~>1.2.6"
 gem 'addressable', "~>2.2.5"
 gem 'json'
+gem 'haml'
 
 group :development do
   gem 'rake'
@@ -17,7 +18,7 @@ group :development do
 end
 
 group :development, :test do
-  gem 'warbler', "~>1.3.0"
+  gem 'warbler', "~>1.3.0" if RUBY_ENGINE =~ /jruby/
   gem 'rspec'
   gem 'ci_reporter'
   gem "rcov"

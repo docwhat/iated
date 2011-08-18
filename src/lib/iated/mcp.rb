@@ -57,7 +57,7 @@ module IATed
     def show_secret
       generate_secret
       # TODO This should do something different for text, vs. gui.
-      puts " ** A browser requested authorization: #{@secret}"
+      puts " ** A browser requested authorization: #{@secret}" unless :test == ui
 ##      Thread.new do
 ##        puts " ** A browser requested authorization: #{@secret}"
 ### TODO This needs to be abstracted. There is no reason a purely command line version can't be done. Also, loading swing will break CI.
@@ -107,7 +107,7 @@ module IATed
 
     def ui
       # Default UI
-      @ui ||= :text
+      @ui ||= (:test == IATed.environment ? :test : :text)
     end
 
     def start_server

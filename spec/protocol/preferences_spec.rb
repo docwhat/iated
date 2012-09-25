@@ -2,10 +2,6 @@ require 'spec_helper'
 
 describe 'IATed pages' do
   describe "/preferences" do
-    include Rack::Test::Methods
-    def app
-      Sinatra::Application
-    end
 
     context "without authentication" do
       it "reports an error without a token" do

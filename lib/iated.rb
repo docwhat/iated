@@ -19,12 +19,6 @@ if RUBY_ENGINE == "jruby"
 end
 
 
-# Global settings for Sinatra
-set :run, false
-set :views, (Pathname.new(__FILE__).dirname + 'iated' + 'templates').to_s
-set :public, (Pathname.new(__FILE__).dirname + 'iated' + 'public').to_s
-set :haml, :format => :html5 # default Haml format is :xhtml
-
 module IATed
   class Application
 

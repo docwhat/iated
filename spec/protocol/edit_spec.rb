@@ -2,11 +2,6 @@ require 'spec_helper'
 require 'json'
 
 describe 'IATed /edit' do
-  include Rack::Test::Methods
-  def app
-    Sinatra::Application
-  end
-
   def last_json
     JSON::load(last_response.body)
   end

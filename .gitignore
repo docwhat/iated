@@ -1,12 +1,6 @@
-/.bundle/
-/db/*.sqlite3
-/log/*.log
-/tmp/
 *~
-/.rspec
-/cache/
-/build/
-/target/
-velocity.log
+/pkg/
+/.bundle/
 /.yardoc/
-/src/lib/*.jar
+/Gemfile.lock
+/doc/

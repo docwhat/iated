@@ -1,26 +1,13 @@
-require 'rubygems'
-require 'bundler'
-Bundler.setup(:default, :test)
-require 'spork'
 
-Spork.prefork do
-  # Loading more in this block will cause your tests to run faster. However,
-  # if you change any configuration or code from libraries loaded here, you'll
-  # need to restart spork for it take effect.
-  require 'pathname'
-  $: << (Pathname.new(__FILE__).dirname.dirname + 'src' + 'lib').to_s
+require 'pathname'
+require 'rspec'
+require 'rack/test'
 
-  puts "Runing with #{RUBY_ENGINE}"
+$: << (Pathname.new(__FILE__).dirname.dirname + 'src' + 'lib').to_s
 
-  require 'rspec'
-  require 'rack/test'
-end
+puts "Runing with #{RUBY_ENGINE}"
 
-Spork.each_run do
-  # This code will be run each time you run your specs.
-  require 'iated'
+require 'iated'
 
-  set :environment, :test
-  IATed::environment = :test
-end
-# EOF
+set :environment, :test
+IATed::environment = :test

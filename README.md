@@ -5,6 +5,10 @@ This gem is the core of the *It's All Text! Editor Daemon*.
 The *IAT Editor Daemon* is a restful web server that allows you to
 open text data in the editor of your choice.
 
+## WARNING WARNING WARNING
+
+This is still being designed and developed!  You probably don't want to play with it (YET)!!!
+
 ## Bugs and Issues
 
 See [the github Issue tracker](https://github.com/docwhat/iated/issues)

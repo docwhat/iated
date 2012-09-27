@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'IATed /doesnotexist' do
+describe 'Iated /doesnotexist' do
   it "returns a 404 for a POST" do
     get '/doesnotexist'
     last_response.status.should == 404

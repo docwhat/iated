@@ -65,12 +65,12 @@ class SysPref
     end
   end
 
-  def self.preferences
-    @preferences ||= []
+  def self.preference_names
+    @preference_names ||= []
   end
 
   def self.integer_pref name, default
-    preferences << name
+    preference_names << name
     jpref_name = name.to_s.upcase
 
     define_method name do
@@ -84,7 +84,7 @@ class SysPref
   end
 
   def self.filename_pref name, default
-    preferences << name
+    preference_names << name
     jpref_name = name.to_s.upcase
 
     define_method name do
@@ -131,7 +131,7 @@ class SysPref
   ## Default config dir.
   # @return [String]
   def default_config_dir
-    if IATed::environment == :test
+    if Iated::environment == :test
       @test_dir = Pathname.new(Dir.mktmpdir) if @test_dir.nil?
       dir = @test_dir
     else
@@ -182,10 +182,10 @@ class SysPref
 
   ## The actual object for storing preferences.
   #
-  # Which store to use is determined by the IATed::environment
+  # Which store to use is determined by the Iated::environment
   def store
     unless @store
-      if IATed::environment == :test
+      if Iated::environment == :test
         @store ||= FakeStore.new
       else
         if RUBY_ENGINE == "jruby"

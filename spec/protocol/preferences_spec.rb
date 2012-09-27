@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'IATed pages' do
+describe 'Iated pages' do
   describe "/preferences" do
 
     context "without authentication" do
@@ -13,13 +13,19 @@ describe 'IATed pages' do
 
     context "authenticated" do
       before(:each) do
-        IATed::reset
-        @token = IATed::mcp.generate_token 'bogus UA'
+        Iated::reset
+        @token = Iated::mcp.generate_token 'bogus UA'
       end
 
       it "returns a preferences web page" do
         get "/preferences", { :token => @token }
         last_response.status.should == 200
+        last_response.content_type.should =~ /text\/html/
+        last_response.body =~ /<h1>/i
+      end
+
+      it "returns a preferences web page" do
+        post "/preferences", { :token => @token }
         last_response.content_type.should =~ /text\/html/
         last_response.body =~ /<h1>/i
       end

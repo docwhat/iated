@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'IATed /hello' do
+describe 'Iated /hello' do
   include Rack::Test::Methods
 
   def app

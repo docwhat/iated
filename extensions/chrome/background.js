@@ -63,7 +63,7 @@ function edit(text, url, id, callback) {
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("edit: failure: %o - %o - %o", jqXHR, textStatus, errorThrown);
-            callback({ error: "Unable to get update from IATed" });
+            callback({ error: "Unable to get update from Iated" });
         }
     });
 }
@@ -94,7 +94,7 @@ function update(sid, change_id, callback) {
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("update: failure: %o - %o - %o", jqXHR, textStatus, errorThrown);
             console.log('narf4');
-            callback({ error: "Unable to get update from IATed" });
+            callback({ error: "Unable to get update from Iated" });
         }
     });
 }

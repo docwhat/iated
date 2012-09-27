@@ -2,7 +2,7 @@ require 'yaml'
 require 'pathname'
 require 'digest/md5'
 
-module IATed
+module Iated
   ## The database for storing authorized browser tokens
   class BrowserTokenDB
 

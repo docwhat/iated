@@ -9,7 +9,7 @@ require 'json'
 #require path.to_s
 #end
 
-module IATED
+module Iated
   class Server < Sinatra::Base
     # Server HAML as HTML5
     set :haml, :format => :html5
@@ -23,14 +23,14 @@ module IATED
     post '/edit' do
       requires_token
       halt 400 unless params['url']
-      halt 400 unless params['text']
       values = {
         :tid  => params['tid'] ? params['tid'] : '',
-        :text => params['text'],
         :url  => params['url'],
         :extension => params['extension'] ? params['extension'] : '.txt',
       }
-      session = IATed::EditSession.new values
+      values[:text] = params['text'] if params['text']
+
+      session = Iated::EditSession.new values
       session.edit
       content_type "text/json"
       return {:sid => session.sid}.to_json
@@ -38,7 +38,7 @@ module IATED
 
     get '/edit/:sid/:change_id' do |sid, change_id|
       change_id = change_id.to_i
-      session = IATed::sessions[sid]
+      session = Iated::sessions[sid]
       if session.nil?
         halt 404
       else
@@ -55,21 +55,21 @@ module IATED
 
     get '/hello/?' do
       last_modified Time.now.httpdate
-      if IATed::mcp.showing_secret?
+      if Iated::mcp.showing_secret?
         content_type "text/plain"
         response.status = 409
         return "busy"
       else
-        IATed::mcp.show_secret
+        Iated::mcp.show_secret
         content_type "text/json"
         return {:status => "ok"}.to_json
       end
     end
 
     post '/hello' do
-      if IATed::mcp.confirm_secret params["secret"]
+      if Iated::mcp.confirm_secret params["secret"]
         content_type "text/json"
-        token = IATed::mcp.generate_token env['HTTP_USER_AGENT']
+        token = Iated::mcp.generate_token env['HTTP_USER_AGENT']
         return {:token => token}.to_json
       else
         halt 403
@@ -96,13 +96,47 @@ module IATED
     ## Display the preferences web page.
     get '/preferences' do
       requires_token
-      haml :preferences
+      locals = {}
+      SysPref::preference_names.each do |name|
+        locals[name] = Iated.mcp.prefs.send(name)
+      end
+      params.keys.each do |key|
+        locals[key] = params[key]
+      end
+      haml :preferences, :locals => locals
     end
 
     ## Handle changes.
     post '/preferences' do
-      # TODO require_authtoken params
-      redirect to('/preferences')
+      requires_token
+
+      SysPref::preference_names.each do |name|
+        if params.key? name.to_s
+          Iated.mcp.prefs.send("#{name}=", params[name])
+        end
+      end
+
+      redirect to("/preferences?token=#{params[:token]}")
+    end
+    get '/reference' do
+      redirect to('/reference/'), 301
+    end
+
+    get '/reference/?' do
+      last_modified(Time.now)
+      haml :reference
+    end
+
+    get '/reference/script.js' do
+      content_type "text/javascript", :charset => 'utf-8'
+      last_modified(Time.now)
+      coffee :reference
+    end
+
+    get '/reference/style.css' do
+      content_type "text/css", :charset => 'utf-8'
+      last_modified(Time.now)
+      scss :reference
     end
 
     get '/' do
@@ -112,7 +146,7 @@ module IATED
     not_found do
       content_type "text/plain"
       last_modified Time.now.httpdate
-      "IATed doesn't respond to that."
+      "Iated doesn't respond to that."
     end
 
     error do

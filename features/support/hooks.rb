@@ -1,11 +1,11 @@
 
 # Before each scenerio
 Before do
-  IATed::reset
-  IATed::mcp.ui = :test
+  Iated::reset
+  Iated::mcp.ui = :test
 end
 
 After do
   # This cleans up test directories.
-  IATed::reset
+  Iated::reset
 end

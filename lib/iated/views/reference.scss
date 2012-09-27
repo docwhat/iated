@@ -1,0 +1,36 @@
+body {
+  font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+  background-color: #def;
+}
+
+dd {
+  font-size: 90%;
+}
+
+#content-text {
+  margin: 0 1em;
+  float: left;
+  width: 30%;
+  #textarea-wrapper {
+    textarea {
+      position: fixed;
+      left: inherit;
+      top: inherit;
+      width: 28%;
+      height: 8em;
+    }
+  }
+}
+#content-data {
+  margin: 0 1em;
+  float: left;
+  width: 30%;
+  input {
+    font-family: Menlo, monospace;
+  }
+}
+#content-requests {
+  margin: 0 1em;
+  float: left;
+  width: 30%;
+}

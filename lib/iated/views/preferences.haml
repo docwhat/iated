@@ -1,7 +1,27 @@
 !!!
 %meta( charset="utf-8" )
-%title IAT Preferences
+%title It's All Text!
+%link( rel="stylesheet" type="text/css" href="iated.css" )
 
 %body( class="preferences" )
+
+  %div( id="content" )
   %h1
     It's All Text! Preferences
+
+  %form( method="post" action="/preferences" )
+    %input( type="hidden" name="token" value="#{token}" )
+
+    %label( for="editor" )
+      Editor:
+    %input( type="text" name="editor" value="#{editor}")
+
+    %label( for="port" )
+      Port:
+    %input( type="text" name="port" value="#{port}")
+
+    %label( for="config_dir" )
+      Config Directory:
+    %input( type="text" name="config_dir" value="#{config_dir}")
+
+    %input( type="submit" value="Save" )

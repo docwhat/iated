@@ -6,13 +6,13 @@ end
 
 Given /^I have a secret$/ do
   @secret.should be_nil
-  @secret = IATed::mcp.generate_secret
+  @secret = Iated::mcp.generate_secret
   @secret.should_not be_nil
 end
 
 Given /^I have a token$/ do
   @token.should be_nil
-  @token = IATed::mcp.generate_token "cucumber testing user agent"
+  @token = Iated::mcp.generate_token "cucumber testing user agent"
   @token.should_not be_nil
 end
 
@@ -20,7 +20,7 @@ Given /^I have a new session$/ do
   @textarea = {}
   @textarea[:text] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   @textarea[:url] = "http://example.com/cucumber"
-  @session = IATed::EditSession.new @textarea
+  @session = Iated::EditSession.new @textarea
   @sid = @session.sid
   @session.change_id.should == 0
 end
@@ -82,7 +82,7 @@ end
 
 ## Thens
 Then /^the user should be shown the secret$/ do
-  IATed::mcp.should be_showing_secret
+  Iated::mcp.should be_showing_secret
 end
 
 Then /^I should be sent a response with a token$/ do
@@ -92,9 +92,9 @@ Then /^I should be sent a response with a token$/ do
 end
 
 Then /^the token should be registered$/ do
-  IATed::mcp.is_token_valid?(@token).should be_true
+  Iated::mcp.is_token_valid?(@token).should be_true
   # FIXME This is here because I'm having a hard time aggregating rcov reports.
-  IATed::mcp.cucumber_coverage_check
+  Iated::mcp.cucumber_coverage_check
 end
 
 Then /^I expect the text to be sent$/ do
@@ -105,7 +105,7 @@ Then /^I expect a valid session id$/ do
   last_response.status.should == 200
   @sid = last_json["sid"]
   @sid.should_not be_nil
-  @session = IATed::sessions[@sid]
+  @session = Iated::sessions[@sid]
   @session.should_not be_nil
 end
 

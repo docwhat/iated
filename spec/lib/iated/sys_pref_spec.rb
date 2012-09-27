@@ -4,11 +4,11 @@ require 'pathname'
 describe SysPref do
   context "FakeStore" do
     before(:each) do
-      IATed::reset
-      @prefs = IATed.mcp.prefs
+      Iated::reset
+      @prefs = Iated.mcp.prefs
     end
     after(:each) do
-      IATed::reset
+      Iated::reset
     end
 
     context "#home" do

@@ -1,0 +1,94 @@
+!!!
+%meta( charset="utf-8" )
+%title Reference Implementation
+%script( type="text/javascript" src="/jquery.js" )
+%script( type="text/javascript" src="/jquery-ui.js" )
+%script( type="text/javascript" src="script.js" )
+%link( rel="stylesheet" type="text/css" href="style.css" )
+%body
+  %h1 Reference Implementation of IAT
+
+  %p
+    This is a reference implementation of IAT's browser side code.  See the code on
+    %a( href="http://github.com/docwhat/iated" ) GitHub
+
+  %div#content-text
+    %h2 Textarea
+    An example textarea to play in.
+
+    %div#textarea-wrapper
+      %textarea#text="Some example text\nto play with."
+
+  %div#content-data
+    %h2 The data
+
+    %dl
+      %dt
+        Extension:
+      %dd
+        %input#extension( name="extension" type="text" value=".txt" )
+        %br
+        The extension used for the file when opening it up to the editor.
+        This value is checked on the server side against the list of approved
+        extensions.
+
+      %dt
+        Browser Authentication Secret:
+      %dd
+        %input#secret( name="secret" type="text" )
+        %br
+        This is a one-time secret used to verify the browser is actually under
+        control of the user who is running Iated.
+
+      %dt
+        Browser Token:
+      %dd
+        %input#token( name="token" type="text" )
+        %br
+        This is the unique token to be used by this one browser extension instance
+        to validate against Iated.
+
+      %dt
+        Edit Session ID (sid):
+      %dd
+        %input#sid( name="sid" type="text" )
+        %br
+        The session identifier for editing this particular textarea.
+
+      %dt
+        Change ID:
+      %dd
+        %input#change-id( name="change-id" type="text" )
+        %br
+        Every time the file changes on disk, the change id is incremented. It starts
+        at zero when the edit session is created and increments during the lifetime
+        of the session.
+
+  %div#content-requests
+    %h2 The requests
+
+    %ol
+      %li
+        %button#hello-btn GET /hello
+        %br
+        Ask for a secret to authenticate
+      %li
+        %button#secret-btn POST /hello (with secret)
+        %br
+        Send the secret to retrieve a token.
+      %li
+        %button#edit-btn POST /edit
+        %br
+        Request that the text be opened in an editor.
+      %li
+        %button#edit-prev-btn POST /edit
+        %br
+        Request the existing file be opened in an editor.
+      %li
+        %button#update-btn POST /edit/:sid/:change_id
+        %br
+        Check the status of the edit, retrieving changes as needed.
+      %li
+        %button#preferences-btn GET /preferences
+        %br
+        Open the preference window.

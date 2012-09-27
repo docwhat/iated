@@ -19,7 +19,7 @@ if RUBY_ENGINE == "jruby"
 end
 
 
-module IATed
+module Iated
   class Application
 
     #:nocov:
@@ -29,20 +29,20 @@ module IATed
         opts.banner =    "Usage: #{opts.program_name} [OPTIONS]"
 
         opts.on('-p', '--port PORT', Integer,
-                "The port number to run the server on (default: #{IATed.mcp.prefs.port}).") do |p|
-          IATed.mcp.prefs.port = p
+                "The port number to run the server on (default: #{Iated.mcp.prefs.port}).") do |p|
+          Iated.mcp.prefs.port = p
         end
 
-        opts.on('-e', '--editor EDITOR', "Set editor (default #{IATed.mcp.prefs.editor}).") do |editor|
-          IATed.mcp.prefs.editor = editor
+        opts.on('-e', '--editor EDITOR', "Set editor (default #{Iated.mcp.prefs.editor}).") do |editor|
+          Iated.mcp.prefs.editor = editor
         end
 
-        opts.on('-u', '--ui UI', "Set the UI to be 'gui' or 'text' (default #{IATed.mcp.ui}).") do |ui|
-          IATed.mcp.ui = ui.to_sym
+        opts.on('-u', '--ui UI', "Set the UI to be 'gui' or 'text' (default #{Iated.mcp.ui}).") do |ui|
+          Iated.mcp.ui = ui.to_sym
         end
 
         opts.on('-d', '--debug', "Turn on debugging mode.") do
-          IATed.mcp.debug = true
+          Iated.mcp.debug = true
         end
 
         opts.on_tail('-h', '--help', 'Show this help.') do
@@ -57,7 +57,7 @@ module IATed
     #:nocov:
     def run
       @optparse.parse!
-      IATed.mcp.begin!
+      Iated.mcp.begin!
     end
     #:nocov:
 
@@ -82,7 +82,7 @@ module IATed
       @environment = env
       @mcp.prefs.reset unless @mcp.nil?
     else
-      raise "Invalid IATed::environment specified: #{env.inspect}"
+      raise "Invalid Iated::environment specified: #{env.inspect}"
     end
   end
 
@@ -102,9 +102,9 @@ module IATed
   end
 
   ## Access to the Master Control Program
-  # @return [IATed::MCP]
+  # @return [Iated::MCP]
   def self.mcp
-    @mcp ||= IATed::MCP.new
+    @mcp ||= Iated::MCP.new
   end
 
 end

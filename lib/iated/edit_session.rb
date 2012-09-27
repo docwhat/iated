@@ -5,7 +5,7 @@ require 'fileutils'
 require 'pathname'
 require 'digest/md5'
 
-module IATed
+module Iated
   ## An Edit Session
   #
   # A single session for editing a textarea. It tracks the editor, etc.
@@ -31,7 +31,7 @@ module IATed
       @last_checksum     = :nochecksum
 
       # Save session.
-      IATed::sessions[@sid] = self
+      Iated::sessions[@sid] = self
 
       # Save the text, if passed in the original options
       self.text = options[:text] if options.key?(:text)
@@ -46,7 +46,7 @@ module IATed
       else
         tok = calculate_sid search
       end
-      IATed::sessions[tok]
+      Iated::sessions[tok]
     end
 
     ## Finds an existing session or creates a new one
@@ -102,8 +102,8 @@ module IATed
 
     ## Opens the user's configured editor.
     def edit
-      editor = IATed.mcp.prefs.editor.to_s
-      if IATed::environment == :test
+      editor = Iated.mcp.prefs.editor.to_s
+      if Iated::environment == :test
         # We don't want to fire up real editors in testing mode.
         #$stderr.puts "I would have edited #{filename.to_s.inspect} with #{editor.inspect}"
         return
@@ -118,7 +118,7 @@ module IATed
 
     ## The Ruby version of edit
     def edit_ruby
-      editor = IATed.mcp.prefs.editor.to_s
+      editor = Iated.mcp.prefs.editor.to_s
       cmd = []
       if RUBY_PLATFORM =~ /darwin/ && editor =~ /\.app$/
         cmd << "/usr/bin/open"
@@ -132,7 +132,7 @@ module IATed
 
     ## The JRuby version of edit
     def edit_jruby
-      editor = IATed.mcp.prefs.editor.to_s
+      editor = Iated.mcp.prefs.editor.to_s
 
       cmd = nil # We will store the CommandLine object here.
       java_import org.apache.commons.exec.OS
@@ -158,7 +158,7 @@ module IATed
       if @filename.nil?
         bad_chars = /[^a-zA-Z0-9._-]+/
         url = Addressable::URI.parse(@url)
-        config_dir = IATed::mcp.prefs.config_dir
+        config_dir = Iated::mcp.prefs.config_dir
         if url.host
           # TODO Handle case where url is the root and filename is empty.
           @filename = config_dir + url.host.gsub(bad_chars, '') +
@@ -209,7 +209,7 @@ module IATed
     end
 
     ## Alias for the class-method `normalize_keys`
-    # @see IATed::EditSession.normalize_keys
+    # @see Iated::EditSession.normalize_keys
     # @return [Hash]
     def normalize_keys hash
       self.class.normalize_keys hash

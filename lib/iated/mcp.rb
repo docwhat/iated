@@ -1,4 +1,4 @@
-## IATed Master Controller Package
+## Iated Master Controller Package
 # This is the coordination point for
 # all the data stored, and the UI.
 
@@ -7,7 +7,7 @@ require 'pathname'
 require 'iated/sys_pref'
 require 'iated/browser_token_db'
 
-module IATed
+module Iated
   ## The Master Control Progrom
   #
   # Yes, I've been watching Tron lately, why do ask?
@@ -23,7 +23,7 @@ module IATed
     def initialize
       @debug = false
       @prefs = SysPref.new
-      @browser_token_db = IATed::BrowserTokenDB.new(@prefs.config_dir + 'browser_tokens.yml')
+      @browser_token_db = Iated::BrowserTokenDB.new(@prefs.config_dir + 'browser_tokens.yml')
     end
 
     ## Called by the main program to get everything started.
@@ -107,7 +107,7 @@ module IATed
 
     def ui
       # Default UI
-      @ui ||= (:test == IATed.environment ? :test : :text)
+      @ui ||= (:test == Iated.environment ? :test : :text)
     end
 
     def start_server

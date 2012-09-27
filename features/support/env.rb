@@ -6,13 +6,13 @@ $: << (Pathname.new(__FILE__).dirname.dirname.dirname + 'src' + 'lib').to_s
 
 require 'yaml'
 require 'json'
-require 'iated'
+require 'iated/server'
 
 ## Force the application name because polyglot breaks the auto-detection logic.
 #Sinatra::Application.app_file = app_file
 
 set :environment, :test
-IATed::environment = :test
+Iated::environment = :test
 
 require 'rspec/expectations'
 require 'rack/test'
@@ -30,7 +30,7 @@ class MyWorld
   Webrat::Methods.delegate_to_session :response_code, :response_body
 
   def app
-    Sinatra::Application
+    Iated::Server
   end
 
   def last_yaml

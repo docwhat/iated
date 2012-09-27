@@ -28,11 +28,11 @@ can run cucumber to read them.
 `GET /preferences` requires "token".
 
 Opens a web-page displaying the preferences.  Note, there are other
-URLs that IATed supports for modifying the preferences.
+URLs that Iated supports for modifying the preferences.
 
 `GET /preferences/set-editor` require "token".
 
-This opens  a dialog on the system running IATed to choose the editor.
+This opens  a dialog on the system running Iated to choose the editor.
 
 ## Example sessions.
 
@@ -55,9 +55,9 @@ response.  Side-effects are in square braces (`[]`).
     b: GET /edit/<sid>
     s: <next textarea data>
 
-## IATed Dialogs
+## Iated Dialogs
 
-This is a list of dialogs that IATed needs to be able to generate:
+This is a list of dialogs that Iated needs to be able to generate:
 
 * Set Editor -- The dialog to select an editor.
 * Auth Code -- A dialog to show the auth-code for entering in the
@@ -82,6 +82,6 @@ Some info here:
 
 ## License
 
-IATed is licensed under the
+Iated is licensed under the
 [MIT License](http://www.opensource.org/licenses/mit-license.php). A
 `LICENSE` file should have been included with this code.

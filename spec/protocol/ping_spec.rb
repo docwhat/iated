@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'IATed /ping' do
+describe 'Iated /ping' do
   it "says pong" do
     get '/ping'
     last_response.should be_ok

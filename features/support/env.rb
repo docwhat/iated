@@ -8,10 +8,6 @@ require 'yaml'
 require 'json'
 require 'iated/server'
 
-## Force the application name because polyglot breaks the auto-detection logic.
-#Sinatra::Application.app_file = app_file
-
-set :environment, :test
 Iated::environment = :test
 
 require 'rspec/expectations'

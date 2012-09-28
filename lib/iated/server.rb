@@ -1,22 +1,48 @@
 require 'sinatra/base'
 require 'iated/mcp'
-require 'iated/page_helpers'
+require 'iated/edit_session'
 require 'json'
-
-## The various URLs
-#pages_dir = File.expand_path '../pages', __FILE__
-#Dir["#{pages_dir}/*.rb"].each do |path|
-#require path.to_s
-#end
 
 module Iated
   class Server < Sinatra::Base
     # Server HAML as HTML5
     set :haml, :format => :html5
 
+    configure do
+      class << Sinatra::Base
+        def options(path, opts={}, &block)
+          route 'OPTIONS', path, opts, &block
+        end
+      end
+      Sinatra::Delegator.delegate :options
+
+      set(:environment, Iated::environment)
+      set(:show_exceptions, Iated::environment != :production)
+    end
+
+    # This enables cross site scripting.
+    before do
+      response['Access-Control-Allow-Origin'] = request.env['HTTP_ORIGIN'] || '*'
+    end
+
+    options '/*' do
+      content_type "text/plain"
+      response['Access-Control-Allow-Origin'] = request.env['HTTP_ORIGIN'] || '*'
+      response['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+      response['Access-Control-Max-Age'] = '1000'
+      response['Access-Control-Allow-Headers'] = 'X-REQUESTED-WITH'
+      return ""
+    end
+
     helpers do
       def request_headers
         env.inject({}){|acc, (k,v)| acc[$1.downcase] = v if k =~ /^http_(.*)/i; acc}
+      end
+
+      def requires_token
+        unless Iated.mcp.is_token_valid? params[:token]
+          halt 403
+        end
       end
     end
 

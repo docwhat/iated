@@ -1,18 +1,20 @@
 require 'spec_helper'
 
 describe 'Iated /hello' do
-  include Rack::Test::Methods
 
-  def app
-    Sinatra::Application
-  end
+  context "OPTIONS /hello" do
+    subject do
+      header "Origin", "null"
+      options "/hello"
+      last_response
+    end
 
-  it "returns options" do
-    header "Origin", "null"
-    options "/hello"
-    last_response.should be_ok
-    last_response.content_type.should =~ /text\/plain/
-    last_response.headers['Access-Control-Allow-Origin'].should == 'null'
-    last_response.body.should == ''
+    it { should be_ok }
+    its(:content_type) { should =~ /text\/plain/ }
+    its(:body) { should == '' }
+
+    it "should have access control allow origin turned off" do
+      subject.headers['Access-Control-Allow-Origin'].should == 'null'
+    end
   end
 end

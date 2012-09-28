@@ -2,10 +2,11 @@
 # This is the coordination point for
 # all the data stored, and the UI.
 
-require 'sinatra'
 require 'pathname'
+require 'iated'
 require 'iated/sys_pref'
 require 'iated/browser_token_db'
+require 'iated/server'
 
 module Iated
   ## The Master Control Progrom
@@ -105,9 +106,13 @@ module Iated
       end
     end
 
+    def default_ui
+      :test == Iated.environment ? :test : :text
+    end
+
     def ui
       # Default UI
-      @ui ||= (:test == Iated.environment ? :test : :text)
+      @ui ||= default_ui
     end
 
     def start_server
@@ -116,20 +121,18 @@ module Iated
       set :bind, 'localhost'
       set :port, prefs.port
       if @debug
-        set :show_exceptions, true
-        set :environment, :development
+        Iated::environment = :development
       else
-        set :show_exceptions, false
-        set :environment, :production
+        Iated::environment = :production
       end
 
       @is_running = true
-      Sinatra::Application.run!
+      Iated::Server.run!
     end
 
     def stop_server
       @is_running = false
-      Sinatra::Application.quit!
+      Iated::Server.quit!
     end
 
     def cucumber_coverage_check
@@ -140,5 +143,11 @@ module Iated
       @rspec_check = true
     end
 
+  end
+
+  ## Access to the Master Control Program
+  # @return [Iated::MCP]
+  def self.mcp
+    @mcp ||= Iated::MCP.new
   end
 end

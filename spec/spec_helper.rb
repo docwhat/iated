@@ -9,7 +9,6 @@ puts "Runing with #{RUBY_ENGINE}"
 
 require 'iated/server'
 
-set :environment, :test
 Iated::environment = :test
 
 def app

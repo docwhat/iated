@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'iated/edit_session'
 
 describe Iated::EditSession do
   before(:each) do

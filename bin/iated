@@ -1,4 +1,4 @@
-#!ruby
+#!/usr/bin/env ruby
 
 require 'rubygems'
 require 'bundler'
@@ -6,7 +6,7 @@ Bundler.setup(:default)
 require 'pathname'
 $: << (Pathname.new(__FILE__).dirname.dirname + 'lib').to_s
 
-require 'iated'
+require 'iated/application'
 
 Iated::Application.new.run
 

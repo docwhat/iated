@@ -5,7 +5,6 @@ require 'rack/test'
 
 $: << (Pathname.new(__FILE__).dirname.dirname + 'src' + 'lib').to_s
 
-puts "Runing with #{RUBY_ENGINE}"
 
 require 'iated/server'
 
@@ -18,3 +17,5 @@ end
 RSpec.configure do |conf|
   conf.include Rack::Test::Methods, :example_group => { :file_path => /spec\/protocol/ }
 end
+
+puts "Running with #{RUBY_ENGINE} v#{RUBY_VERSION}"

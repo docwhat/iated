@@ -1,5 +1,8 @@
 require 'iated/version'
 
+RUBY_ENGINE = 'mri' unless Object.constants.include?( :RUBY_ENGINE ) ||
+  Object.constants.include?( 'RUBY_ENGINE'  )
+
 if RUBY_ENGINE == "jruby"
   # Load all the jars in the lib directory.
   Dir[File.join(File.dirname(__FILE__), '*.jar')].each do |jar|

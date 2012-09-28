@@ -21,3 +21,7 @@ YARD::Rake::YardocTask.new(:docs) do |t|
   t.files = ['lib/**/*.rb']
 end
 
+# For TravisCI
+desc "Run the Travis CI tests"
+task :travis => [:build, :doc]
+

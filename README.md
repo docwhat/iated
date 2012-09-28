@@ -1,5 +1,7 @@
 # It's All Text! Editor Daemon
 
+[![Build Status](https://secure.travis-ci.org/docwhat/iated.png?branch=master,next)](http://travis-ci.org/docwhat/iated)
+
 This gem is the core of the *It's All Text! Editor Daemon*.
 
 The *IAT Editor Daemon* is a restful web server that allows you to

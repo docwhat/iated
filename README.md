@@ -1,6 +1,6 @@
 # It's All Text! Editor Daemon
 
-[![Build Status](https://secure.travis-ci.org/docwhat/iated.png?branch=master,next)](http://travis-ci.org/docwhat/iated)
+[![Build Status](https://secure.travis-ci.org/docwhat/iated.png)](http://travis-ci.org/docwhat/iated)
 
 This gem is the core of the *It's All Text! Editor Daemon*.
 

@@ -29,6 +29,9 @@ See [the github Issue tracker](https://github.com/docwhat/iated/issues)
 The API is documented in the `features/extension_*.feature` files. You
 can run cucumber to read them.
 
+Further documentation is availble by running `rake docs` or visiting [Iated on
+RubyDoc.info](http://rubydoc.info/github/docwhat/iated)
+
 ### Open preferences
 
 `GET /preferences` requires "token".

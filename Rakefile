@@ -23,5 +23,5 @@ end
 
 # For TravisCI
 desc "Run the Travis CI tests"
-task :travis => [:build, :doc]
+task :travis => [:build, :docs]
 

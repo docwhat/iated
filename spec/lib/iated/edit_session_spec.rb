@@ -9,7 +9,7 @@ describe Iated::EditSession do
     Iated::purge
   end
 
-  context "#find" do
+  describe "#find" do
 
     it "should find existing by params" do
       params = {:url => 'http://example.com/'}
@@ -23,7 +23,7 @@ describe Iated::EditSession do
     end
   end
 
-  context "#find_or_create" do
+  describe "#find_or_create" do
     it "should find or create by exact match" do
       tid = "fc-tid#{rand(1000)}"
 
@@ -34,7 +34,7 @@ describe Iated::EditSession do
     end
   end
 
-  context "#sid" do
+  describe "#sid" do
     it "should be 32 character hex string" do
       tok = Iated::EditSession.calculate_sid :url => 'http://example.com/'
       tok.should =~ /^[a-f0-9]{32}$/
@@ -59,7 +59,7 @@ describe Iated::EditSession do
     end
   end
 
-  context "#text" do
+  describe "#text" do
     it "should save the text when assigned" do
       text = "\t Random Number: #{rand}"
       sess = Iated::EditSession.new :url => 'http://example.com/', :text => text
@@ -93,7 +93,7 @@ describe Iated::EditSession do
     end
   end
 
-  context "#change_id" do
+  describe ".change_id" do
     it "should be zero for new sessions" do
       params = {}
       params[:text] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -112,7 +112,7 @@ describe Iated::EditSession do
     end
   end
 
-  context "#increment_change_id" do
+  describe ".increment_change_id" do
     it "should increment the #change_id" do
       sess = Iated::EditSession.new :url => 'http://example.com/should_increment'
       sess.change_id.should == 0

@@ -27,6 +27,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "addressable", "~> 2.3", ">= 2.3"
   gem.add_runtime_dependency "coffee-script"
   gem.add_runtime_dependency "sass"
+  gem.add_runtime_dependency "os", ">= 0.9.6"
 
   gem.add_development_dependency "rake"
   gem.add_development_dependency "rspec", "> 2.0"

@@ -1,201 +1,131 @@
-require 'iated'
 require 'pathname'
 require 'tmpdir'
+require 'pstore'
+require 'OS'
 
-if RUBY_ENGINE == "jruby"
-  require 'java'
-end
-
-
-## Class to wrap the system preferences for the user.
-#
-# This either uses Java System Preferences (if production) or an in-memory store (if testing).
-class SysPref
-  # Why am I mucking around with JavaStore and FakeStore?
+module Iated
+  ## Class to wrap the system preferences for the user.
   #
-  # Two reasons: It lets me drop in a fake version for testing and
-  # because I want to use Java's System Preferences to persist preferences.
+  class SysPref
+    # @return [Pathname] The location of the system preference file
+    attr_reader :storage_path
 
-  if RUBY_ENGINE == 'jruby'
-    ## Wrapper around Java's `java.util.prefs.Preferences`
-    class JavaStore < java.lang.Object
-      def initialize
-        super
-        @store = java.util.prefs.Preferences.userNodeForPackage(self.getClass)
-      end
-      # @return [Integer]
-      def getInt key, default
-        @store.getInt key.to_s, default.to_i
-      end
-      # @return [nil]
-      def putInt key, value
-        @store.putInt key.to_s, value.to_i
-      end
-      # @return [String]
-      def get key, default
-        @store.get key.to_s, default.to_s
-      end
-      # @return [nil]
-      def put key, value
-        @store.put key.to_s, value.to_s
-      end
+    # @param [Pathname,String] config_dir Override the configuration directory. Useful for testing.
+    def initialize( config_dir=nil )
+      @config_dir = Pathname.new(config_dir) unless config_dir.nil?
     end
-  end
 
-  ## An in-memory replacement for {JavaStore}
-  class FakeStore
-    def initialize
-      @store = {}
+    # @return [Array] A list of all the editable preferences.
+    def self.preferences
+      @preferences ||= []
     end
-    # @return [Integer]
-    def getInt key, default
-      (@store[key.to_s] || default).to_i
+
+    # @return [Array] A list of all the editable preferences. Alias for {Iated::SysPref::preferences}.
+    def preferences
+      p self.class
+      self.class.preferences
     end
+
+    ## Define a preference.
+    #
+    # Creates the setter and getter for a preference.  You can also set a coercion method as
+    # a passed in block.
+    #
+    # There must be a `default_<name>` method to provide the default for the preference.
+    #
+    # @param [Symbol] name The name of a preference to define
+    # @yield [value] The value for the block to coerce. You should only use ruby built-ins since the value will be mashalled.
     # @return [nil]
-    def putInt key, value
-      @store[key.to_s] = value.to_i
-    end
-    # @return [String]
-    def get key, default
-      (@store[key.to_s] || default).to_s
-    end
-    # @return [nil]
-    def put key, value
-      @store[key.to_s] = value.to_s
-    end
-  end
+    def self.define_preference name
+      name = name.to_sym
+      default = "default_#{name}".to_sym
+      preferences << name
 
-  def self.preference_names
-    @preference_names ||= []
-  end
+      define_method name do
+        value = store.transaction do
+          store[name]
+        end
 
-  def self.integer_pref name, default
-    preference_names << name
-    jpref_name = name.to_s.upcase
-
-    define_method name do
-      store.getInt(jpref_name, send(default))
-    end
-
-    define_method "#{name}=".to_sym do |value|
-      store.putInt(jpref_name, value.to_i)
-      return nil
-    end
-  end
-
-  def self.filename_pref name, default
-    preference_names << name
-    jpref_name = name.to_s.upcase
-
-    define_method name do
-      Pathname.new store.get(jpref_name, send(default))
-    end
-
-    define_method "#{name}=".to_sym do |path|
-      path = path.to_s.sub(/^~\//, home + '/')
-      store.put(jpref_name, path)
-      return nil
-    end
-  end
-
-  integer_pref  :port,       :default_port
-  filename_pref :config_dir, :default_config_dir
-  filename_pref :editor,     :default_editor
-
-  ## Resets the preferences module
-  # @return [nil]
-  def reset
-    @test_dir.rmtree unless @test_dir.nil?
-    @test_dir = nil
-    @store = nil
-  end
-
-  ## User's home directory
-  # @return [String]
-  def home
-    if RUBY_ENGINE == 'jruby'
-      java.lang.System.getProperty("user.home")
-    else
-      ENV['HOME']
-    end
-  end
-
-  private
-
-  ## Returns the default port number.
-  def default_port
-    # TODO: This should probe for unused ports.
-    9090
-  end
-
-  ## Default config dir.
-  # @return [String]
-  def default_config_dir
-    if Iated::environment == :test
-      @test_dir = Pathname.new(Dir.mktmpdir) if @test_dir.nil?
-      dir = @test_dir
-    else
-      dir = Pathname.new(home)
-      # FIXME Windows should probably use a different directory name.
-      # FIXME Mac maybe should be in ~/Library?
-    end
-    dir = dir + '.iat'
-    dir.mkdir unless dir.directory?
-    return dir.to_s
-  end
-
-  def os
-    if RUBY_ENGINE == 'jruby'
-      if os.isFamilyMac
-        return :mac
-      elsif os.isFamilyUnix
-        return :unix
-      elsif os.isFamilyWindows or os.isFamilyWin9x
-        return :windows
-      else
-        return :unknown
-      end
-    else
-      if RUBY_PLATFORM =~ /darwin/
-        return :mac
-      elsif RUBY_PLATFORM =~ /win/
-        return :windows
-      else # It's unix?
-        return :unix
-      end
-    end
-  end
-
-  ## Default editor to use.
-  # @return [String]
-  def default_editor
-    if os == :mac
-      return "/Applications/TextEdit.app"
-    elsif os == :unix
-      return "gvim"
-    elsif os == :windows
-      return "notepad.exe"
-    else
-      return ""
-    end
-  end
-
-  ## The actual object for storing preferences.
-  #
-  # Which store to use is determined by the Iated::environment
-  def store
-    unless @store
-      if Iated::environment == :test
-        @store ||= FakeStore.new
-      else
-        if RUBY_ENGINE == "jruby"
-          @store ||= JavaStore.new
+        if value.nil?
+          return send(default)
         else
-          @store ||= FakeStore.new
+          return value
         end
       end
-    end
-    return @store
-  end
 
+      define_method "#{name}=".to_sym do |value|
+        value = yield(value) if block_given?
+        store.transaction { store[name] = value }
+        return nil
+      end
+    end
+
+    define_preference(:port)       { |v| v.to_i }
+    define_preference(:editor)     { |v| Pathname.new(v) }
+
+    ## User's home directory
+    # @return [Pathname]
+    def home
+      Pathname.new RUBY_ENGINE == 'jruby' ?  java.lang.System.getProperty("user.home") : ENV['HOME']
+    end
+
+    # @return [Fixnum] Returns the default port number.
+    def default_port
+      # TODO: This should probe for unused ports.
+      9090
+    end
+
+    # @return [Pathname] The configuration directory.
+    def config_dir
+      @config_dir ||= calculate_config_dir
+    end
+
+    # @return [Symbol] Returns the Operating System: `:mac`, `:unix`, `:windows`, `:unknown`
+    def os
+      return :windows if OS.windows?
+      return :mac if OS.mac?
+      return :unix if OS.posix?
+      return :unknown
+    end
+
+    # @return [Pathname] The default editor to use.
+    def default_editor
+      editor = if os == :mac
+                 "/Applications/TextEdit.app"
+               elsif os == :unix
+                 "gedit"
+               elsif os == :windows
+                 "notepad.exe"
+               else
+                 ""
+               end
+      return Pathname.new editor
+    end
+
+    # @return [Pathname] Returns the location of the configuration file used by the {Iated::SysPref}
+    def config_file
+      (config_dir + 'config')
+    end
+
+    # @return [PStore] Returns the store object.
+    def store
+      @store ||= PStore.new config_file.to_s
+    end
+
+    private
+
+    # @return [Pathname] Returns the configuration directory based on OS.
+    def calculate_config_dir
+      config_dir = home
+      if :windows == os
+        config_dir += '_iat'
+      elsif :mac == os
+        config_dir = config_dir + 'Library' + 'Application Support' +  "It's All Text Editor Daemon"
+      else
+        config_dir += '.iat'
+      end
+      config_dir.mkdir unless config_dir.directory?
+      return config_dir
+    end
+  end
 end

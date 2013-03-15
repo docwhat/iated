@@ -1,6 +1,8 @@
 # It's All Text! Editor Daemon
 
-[![Build Status](https://secure.travis-ci.org/docwhat/iated.png)](http://travis-ci.org/docwhat/iated)
+* [![Build Status](https://secure.travis-ci.org/docwhat/iated.png)](http://travis-ci.org/docwhat/iated)
+* [![Dependencies](https://gemnasium.com/docwhat/iated.png)](https://gemnasium.com/docwhat/iated)
+* [![Coverage Status](https://coveralls.io/repos/docwhat/iated/badge.png?branch=master)](https://coveralls.io/r/docwhat/iated)
 
 This gem is the core of the *It's All Text! Editor Daemon*.
 

@@ -1,7 +1,13 @@
+language: ruby
+env:
+  - TRAVIS=true
+branches:
+  only:
+    - 'master'
 rvm:
   - 1.8.7
   - 1.9.2
   - 1.9.3
-script: "bundle exec rake travis"
 notifications:
   irc: "irc.freenode.org#itsalltext"
+script: "bundle exec rake travis"

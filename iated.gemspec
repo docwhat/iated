@@ -22,7 +22,7 @@ Gem::Specification.new do |gem|
   gem.version       = Iated::VERSION
 
   gem.add_runtime_dependency "sinatra", "~> 1.3", ">= 1.3.3"
-  gem.add_runtime_dependency "haml", "~> 3.1", ">= 3.1.7"
+  gem.add_runtime_dependency "haml", ">= 3.1.7"
   gem.add_runtime_dependency "json", "~> 1.1"
   gem.add_runtime_dependency "addressable", "~> 2.3", ">= 2.3"
   gem.add_runtime_dependency "coffee-script"
@@ -30,6 +30,7 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency "rake"
   gem.add_development_dependency "rspec", "> 2.0"
+  gem.add_development_dependency "coveralls", ">= 0.6.0 "
   gem.add_development_dependency "yard"
   gem.add_development_dependency "kramdown"
 

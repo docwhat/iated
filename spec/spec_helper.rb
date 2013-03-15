@@ -1,10 +1,13 @@
-
 require 'pathname'
 require 'rspec'
 require 'rack/test'
 
-$: << (Pathname.new(__FILE__).dirname.dirname + 'src' + 'lib').to_s
+if ENV['TRAVIS'] == 'true'
+  require 'coveralls'
+  Coveralls.wear!
+end
 
+$: << (Pathname.new(__FILE__).dirname.dirname + 'src' + 'lib').to_s
 
 require 'iated/server'
 
